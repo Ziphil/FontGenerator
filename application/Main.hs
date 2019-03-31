@@ -4,7 +4,7 @@
 module Main where
 
 import System.FilePath
-import Ziphil.Font.Core
+import Ziphil.Font.Render
 import qualified Ziphil.Font.Vekos.Glyph as Vekos
 
 

@@ -1,7 +1,7 @@
 --
 
 
-module Ziphil.Font.Core
+module Ziphil.Font.Render
   ( renderGlyph
   , renderAllGlyphs
   , renderString
