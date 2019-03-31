@@ -33,5 +33,5 @@ renderAllGlyphs path correspondence = Map.traverseWithKey renderGlyph' correspon
 renderString :: FilePath -> String -> Map Char Glyph -> IO ()
 renderString path string correspondence = renderPretty path absolute diagram
   where
-    diagram = foldl (|||) mempty $ mapMaybe make string
+    diagram = hcat $ mapMaybe make string
     make char = styleGlyph <$> Map.lookup char correspondence
