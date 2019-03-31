@@ -21,4 +21,4 @@ renderAllGlyphs path correspondence = Map.traverseWithKey renderGlyph' correspon
     renderGlyph' code glyph = renderGlyph (path </> show code <.> "svg") glyph
 
 renderGlyph :: FilePath -> Glyph -> IO ()
-renderGlyph path glyph = renderPretty path absolute $ fillColor black glyph
+renderGlyph path glyph = renderPretty path absolute $ (lineWidth none . fillColor black) glyph
