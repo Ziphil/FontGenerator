@@ -32,6 +32,7 @@ correspondence = Map.fromList list
       , ('s', glyphSal)
       , ('z', glyphZol)
       , ('a', glyphAt)
+      , (' ', glyphSpace)
       ]
 
 glyphLes :: Glyph
@@ -130,6 +131,9 @@ glyphAt = makeGlyph bearing bearing $ mconcat parts
     parts = 
       [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
       ]
+
+glyphSpace :: Glyph
+glyphSpace = makeGlyph 0 spaceWidth $ mempty
 
 makeGlyph :: Double -> Double -> Part -> Glyph
 makeGlyph left right = addBearing left right . fixVertical descender (mean * 2) . strokePath

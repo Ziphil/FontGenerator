@@ -10,6 +10,7 @@ module Ziphil.Font.Vekos.Param
   , weightY
   , bowlWidth
   , transphoneSpace
+  , spaceWidth
   )
 where
 
@@ -42,3 +43,6 @@ bowlWidth = 450
 
 transphoneSpace :: Double
 transphoneSpace = -10
+
+spaceWidth :: Double
+spaceWidth = 300
