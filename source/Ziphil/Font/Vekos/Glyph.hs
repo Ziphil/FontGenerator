@@ -27,15 +27,15 @@ glyphLes :: Glyph
 glyphLes = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
-      [ translate ~: r2 (0, mean / 2 + descender) ~: strokePath partLes
+      [ partLes # translate ~: r2 (0, mean / 2 + descender)
       ]
 
 glyphRes :: Glyph
 glyphRes = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams =
-      [ translate ~: r2 (bowlWidth, mean / 2 + descender) $ rotate ~: (180 @@ deg) $ strokePath partLes
+      [ partLes # rotate ~: (180 @@ deg) # translate ~: r2 (bowlWidth, mean / 2 + descender) 
       ]
 
-makeGlyph :: Double -> Double -> Glyph -> Glyph
-makeGlyph left right = addBearing left right . fixVertical (mean + descender * 2)
+makeGlyph :: Double -> Double -> Part -> Glyph
+makeGlyph left right = addBearing left right . fixVertical (mean + descender * 2) . strokePath
