@@ -3,7 +3,9 @@
 
 
 module Ziphil.Font.Util
-  ( turn
+  ( ($^)
+  , ($.)
+  , turn
   , reverse
   , invert
   , Part
@@ -17,6 +19,14 @@ import Diagrams.Backend.SVG
 import Diagrams.Prelude hiding (turn)
 import Prelude hiding (reverse)
 
+
+infixl 9 $^
+($^) :: (V2 n -> b) -> (n, n) -> b
+func $^ coord = func $ r2 coord
+
+infixl 9 $.
+($.) :: (P2 n -> b) -> (n, n) -> b
+func $. coord = func $ p2 coord
 
 -- 与えられた図形を 180° 回転します。
 turn :: (InSpace V2 n t, Transformable t, Floating n) => t -> t
