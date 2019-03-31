@@ -83,14 +83,14 @@ weightTransphoneX = weightX * 0.95
 partTransphone :: Part
 partTransphone = pathFromTrail trail # moveOriginBy ~^ (0, -height)
   where
-    bend = 50
+    bend = bowlWidth / 6
     height = mean
     segments = 
-      [ bezier3 ~^ (0, 0) ~^ (bend, -height / 2 + 100) ~^ (bend, -height / 2)
-      , bezier3 ~^ (0, 0) ~^ (bend, height / 2 - 100) ~^ (bend, height / 2) # reverseSegment
+      [ bezier3 ~^ (0, 0) ~^ (bend, -height / 2 + 150) ~^ (bend, -height / 2)
+      , bezier3 ~^ (0, 0) ~^ (bend, height / 2 - 150) ~^ (bend, height / 2) # reverseSegment
       , straight ~^ (weightTransphoneX, 0)
-      , bezier3 ~^ (0, 0) ~^ (bend, height / 2 - 100) ~^ (bend, height / 2)
-      , bezier3 ~^ (0, 0) ~^ (bend, -height / 2 + 100) ~^ (bend, -height / 2) # reverseSegment
+      , bezier3 ~^ (0, 0) ~^ (bend, height / 2 - 150) ~^ (bend, height / 2)
+      , bezier3 ~^ (0, 0) ~^ (bend, -height / 2 + 150) ~^ (bend, -height / 2) # reverseSegment
       , straight ~^ (weightTransphoneX, 0) # reverseSegment
       ]
     trail = closeTrail $ fromSegments segments
