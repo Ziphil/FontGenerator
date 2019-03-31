@@ -5,6 +5,7 @@ module Ziphil.Font.Vekos.Part
   ( partBowl
   , partTail
   , partLes
+  , partYes
   , partTransphone
   )
 where
@@ -74,6 +75,28 @@ partLes = mconcat parts
       [ partBowl
       , partTail # translate ~^ (bowlWidth / 2 - weightX, 0)
       ]
+
+-- y の文字と同じ形のパスを生成します。
+-- 原点は丸い部分の中央にあります。
+partYes :: Part
+partYes = pathFromTrail trail # moveOriginBy ~^ (bowlWidth / 2 - bend, height / 2)
+  where
+    width = bowlWidth
+    bend = bowlWidth / 6
+    height = mean
+    segments =
+      [ bezier3 ~^ (0, -150) ~^ (bend, -height / 2) ~^ (bend, -height / 2) # reverseSegment
+      , bezier3 ~^ (0, 10) ~^ (0, height / 2 + overshoot) ~^ (width / 2, height / 2 + overshoot)
+      , bezier3 ~^ (0, 10) ~^ (0, height / 2 + overshoot) ~^ (-width / 2, height / 2 + overshoot) # reverseSegment
+      , bezier3 ~^ (0, -150) ~^ (-bend, -height / 2) ~^ (-bend, -height / 2)
+      , straight ~^ (weightX, 0) # reverseSegment
+      , bezier3 ~^ (0, -150) ~^ (-bend, -height / 2) ~^ (-bend, -height / 2) # reverseSegment
+      , bezier3 ~^ (0, 10) ~^ (0, height / 2 - weightY + overshoot) ~^ (-width / 2 + weightX, height / 2 - weightY + overshoot)
+      , bezier3 ~^ (0, 10) ~^ (0, height / 2 - weightY + overshoot) ~^ (width / 2 - weightX, height / 2 - weightY + overshoot) # reverseSegment
+      , bezier3 ~^ (0, -150) ~^ (bend, -height / 2) ~^ (bend, -height / 2)
+      , straight ~^ (weightX, 0) # reverseSegment
+      ]
+    trail = reverseTrail $ closeTrail $ fromSegments segments
 
 weightTransphoneX :: Double
 weightTransphoneX = weightX * 0.95

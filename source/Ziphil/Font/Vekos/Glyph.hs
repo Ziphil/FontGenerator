@@ -28,6 +28,10 @@ correspondence = Map.fromList list
       , ('q', glyphQol)
       , ('k', glyphKal)
       , ('g', glyphGol)
+      , ('y', glyphYes)
+      , ('h', glyphHes)
+      , ('s', glyphSal)
+      , ('z', glyphZol)
       , ('a', glyphAt)
       ]
 
@@ -88,6 +92,36 @@ glyphGol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
       [ partLes # invert # translate ~^ (bowlWidth / 2, mean / 2)
+      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      ]
+
+glyphYes :: Glyph
+glyphYes = makeGlyph bearing bearing $ mconcat parts
+  where
+    parts = 
+      [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
+      ]
+
+glyphHes :: Glyph
+glyphHes = makeGlyph bearing bearing $ mconcat parts
+  where
+    parts = 
+      [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
+      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      ]
+
+glyphSal :: Glyph
+glyphSal = makeGlyph bearing bearing $ mconcat parts
+  where
+    parts = 
+      [ partYes # invert # translate ~^ (bowlWidth / 2, mean / 2)
+      ]
+
+glyphZol :: Glyph
+glyphZol = makeGlyph bearing bearing $ mconcat parts
+  where
+    parts = 
+      [ partYes # invert # translate ~^ (bowlWidth / 2, mean / 2)
       , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
       ]
 
