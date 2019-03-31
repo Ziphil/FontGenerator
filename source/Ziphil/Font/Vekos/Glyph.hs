@@ -47,7 +47,7 @@ glyphRes = makeGlyph bearing bearing $ mconcat parts
   where
     parts =
       [ partLes # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
 glyphPal :: Glyph
@@ -62,7 +62,7 @@ glyphBol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
       [ partLes # transTurn # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
 glyphCal :: Glyph
@@ -77,7 +77,7 @@ glyphQol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
       [ partLes # transReverse # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
 glyphKal :: Glyph
@@ -92,7 +92,7 @@ glyphGol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
       [ partLes # transInvert # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
 glyphYes :: Glyph
@@ -107,7 +107,7 @@ glyphHes = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
       [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
 glyphSal :: Glyph
@@ -122,7 +122,7 @@ glyphZol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
       [ partYes # transInvert # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
+      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
 glyphAt :: Glyph
