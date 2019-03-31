@@ -8,7 +8,8 @@ where
 
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Diagrams.Prelude
+import Diagrams.Prelude hiding (turn)
+import Prelude hiding (reverse)
 import Ziphil.Font.Util
 import Ziphil.Font.Vekos.Param
 import Ziphil.Font.Vekos.Part
@@ -48,14 +49,14 @@ glyphPal :: Glyph
 glyphPal = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
-      [ partLes # rotate ~: (180 @@ deg) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      [ partLes # turn # translate ~: r2 (bowlWidth, mean / 2 + descender)
       ]
 
 glyphBol :: Glyph
 glyphBol = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
-      [ partLes # rotate ~: (180 @@ deg) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      [ partLes # turn # translate ~: r2 (bowlWidth, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
@@ -63,14 +64,14 @@ glyphCal :: Glyph
 glyphCal = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
-      [ partLes # scaleX ~: (-1) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      [ partLes # reverse # translate ~: r2 (bowlWidth, mean / 2 + descender)
       ]
 
 glyphQol :: Glyph
 glyphQol = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
-      [ partLes # scaleX ~: (-1) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      [ partLes # reverse # translate ~: r2 (bowlWidth, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
@@ -78,14 +79,14 @@ glyphKal :: Glyph
 glyphKal = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
-      [ partLes # rotate ~: (180 @@ deg) # scaleX ~: (-1) # translate ~: r2 (0, mean / 2 + descender)
+      [ partLes # invert # translate ~: r2 (0, mean / 2 + descender)
       ]
 
 glyphGol :: Glyph
 glyphGol = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
-      [ partLes # rotate ~: (180 @@ deg) # scaleX ~: (-1) # translate ~: r2 (0, mean / 2 + descender)
+      [ partLes # invert # translate ~: r2 (0, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
