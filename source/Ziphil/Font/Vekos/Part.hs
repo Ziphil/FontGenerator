@@ -4,11 +4,12 @@
 module Ziphil.Font.Vekos.Part
   ( partBowl
   , partTail
+  , partLes
   , partTransphone
   )
 where
 
-import Diagrams.Prelude as Diagrams
+import Diagrams.Prelude
 import Ziphil.Font.Util
 import Ziphil.Font.Vekos.Param
 import Ziphil.Util.Core
@@ -29,7 +30,7 @@ partBowlOuter = pathFromTrail trail
       , bezier3 ~: r2 (0, -25) ~: r2 (0, -height / 2 - overshoot) ~: r2 (-width / 2, -height / 2 - overshoot)
       , bezier3 ~: r2 (0, -25) ~: r2 (0, -height / 2 - overshoot) ~: r2 (width / 2, -height / 2 - overshoot) # reverseSegment
       ]
-    trail = closeTrail $ fromSegments segments
+    trail = reverseTrail $ closeTrail $ fromSegments segments
 
 partBowlInner :: Part
 partBowlInner = pathFromTrailAt trail ~: p2 (weightX, 0)
@@ -42,7 +43,7 @@ partBowlInner = pathFromTrailAt trail ~: p2 (weightX, 0)
       , bezier3 ~: r2 (0, -25) ~: r2 (0, -height / 2 - overshoot) ~: r2 (-width / 2, -height / 2 - overshoot)
       , bezier3 ~: r2 (0, -25) ~: r2 (0, -height / 2 - overshoot) ~: r2 (width / 2, -height / 2 - overshoot) # reverseSegment
       ]
-    trail = reverseTrail $ closeTrail $ fromSegments segments
+    trail = closeTrail $ fromSegments segments
 
 -- k, p, c, l などの文字に共通するエックスハイトの上下に飛び出す部分のパスを生成します。
 partTail :: Part
@@ -57,6 +58,14 @@ partTail = pathFromTrail trail
       , straight ~: r2 (weightX, 0) # reverseSegment
       ]
     trail = closeTrail $ fromSegments segments
+  
+partLes :: Part
+partLes = mconcat parts
+  where
+    parts =
+      [ partBowl
+      , partTail # translate ~: r2 (bowlWidth - weightX, 0)
+      ]
 
 weightTransphoneX :: Double
 weightTransphoneX = weightX * 0.95
