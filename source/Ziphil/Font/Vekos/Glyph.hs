@@ -21,6 +21,8 @@ correspondence = Map.fromList list
     list =
       [ (0x6C, glyphLes)
       , (0x72, glyphRes)
+      , (0x70, glyphPal)
+      , (0x62, glyphBol)
       ]
 
 glyphLes :: Glyph
@@ -34,7 +36,23 @@ glyphRes :: Glyph
 glyphRes = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams =
-      [ partLes # rotate ~: (180 @@ deg) # translate ~: r2 (bowlWidth, mean / 2 + descender) 
+      [ partLes # translate ~: r2 (0, mean / 2 + descender)
+      , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
+      ]
+
+glyphPal :: Glyph
+glyphPal = makeGlyph bearing bearing $ mconcat diagrams
+  where
+    diagrams = 
+      [ partLes # rotate ~: (180 @@ deg) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      ]
+
+glyphBol :: Glyph
+glyphBol = makeGlyph bearing bearing $ mconcat diagrams
+  where
+    diagrams = 
+      [ partLes # rotate ~: (180 @@ deg) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
 makeGlyph :: Double -> Double -> Part -> Glyph
