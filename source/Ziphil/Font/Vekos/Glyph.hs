@@ -15,14 +15,14 @@ import Ziphil.Font.Vekos.Part
 import Ziphil.Util.Core
 
 
-correspondence :: Map Int Glyph
+correspondence :: Map Char Glyph
 correspondence = Map.fromList list
   where
     list =
-      [ (0x6C, glyphLes)
-      , (0x72, glyphRes)
-      , (0x70, glyphPal)
-      , (0x62, glyphBol)
+      [ ('l', glyphLes)
+      , ('r', glyphRes)
+      , ('p', glyphPal)
+      , ('b', glyphBol)
       ]
 
 glyphLes :: Glyph
