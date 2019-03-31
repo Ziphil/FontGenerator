@@ -5,9 +5,9 @@
 module Ziphil.Font.Util
   ( (~^)
   , (~.)
-  , turn
-  , reverse
-  , invert
+  , transTurn
+  , transReverse
+  , transInvert
   , Part
   , Glyph
   , fixVertical
@@ -16,8 +16,7 @@ module Ziphil.Font.Util
 where
 
 import Diagrams.Backend.SVG
-import Diagrams.Prelude hiding (turn)
-import Prelude hiding (reverse)
+import Diagrams.Prelude 
 
 
 infixl 9 ~^
@@ -29,16 +28,16 @@ infixl 9 ~.
 func ~. coord = func $ p2 coord
 
 -- 与えられた図形を 180° 回転します。
-turn :: (InSpace V2 n t, Transformable t, Floating n) => t -> t
-turn = rotate (180 @@ deg)
+transTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
+transTurn = rotate (180 @@ deg)
 
 -- 与えられた図形を左右反転します。
-reverse :: (InSpace v n t, R2 v, Fractional n, Transformable t) => t -> t
-reverse = scaleX (-1)
+transReverse :: (InSpace v n t, R2 v, Fractional n, Transformable t) => t -> t
+transReverse = scaleX (-1)
 
 -- 与えられた図形を上下反転します。
-invert :: (InSpace v n t, R2 v, Fractional n, Transformable t) => t -> t
-invert = scaleY (-1)
+transInvert :: (InSpace v n t, R2 v, Fractional n, Transformable t) => t -> t
+transInvert = scaleY (-1)
 
 type Part = Path V2 Double
 type Glyph = Diagram B

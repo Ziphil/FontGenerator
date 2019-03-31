@@ -8,8 +8,7 @@ where
 
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Diagrams.Prelude hiding (turn)
-import Prelude hiding (reverse)
+import Diagrams.Prelude
 import Ziphil.Font.Util
 import Ziphil.Font.Vekos.Param
 import Ziphil.Font.Vekos.Part
@@ -54,14 +53,14 @@ glyphPal :: Glyph
 glyphPal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # turn # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # transTurn # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphBol :: Glyph
 glyphBol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # turn # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # transTurn # translate ~^ (bowlWidth / 2, mean / 2)
       , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
       ]
 
@@ -69,14 +68,14 @@ glyphCal :: Glyph
 glyphCal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # reverse # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # transReverse # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphQol :: Glyph
 glyphQol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # reverse # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # transReverse # translate ~^ (bowlWidth / 2, mean / 2)
       , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
       ]
 
@@ -84,14 +83,14 @@ glyphKal :: Glyph
 glyphKal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # invert # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # transInvert # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphGol :: Glyph
 glyphGol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # invert # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # transInvert # translate ~^ (bowlWidth / 2, mean / 2)
       , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
       ]
 
@@ -114,14 +113,14 @@ glyphSal :: Glyph
 glyphSal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partYes # invert # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partYes # transInvert # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphZol :: Glyph
 glyphZol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partYes # invert # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partYes # transInvert # translate ~^ (bowlWidth / 2, mean / 2)
       , partTransphone # translate ~^ (bowlWidth + transphoneSpace, 0)
       ]
 
