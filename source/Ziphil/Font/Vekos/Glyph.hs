@@ -31,61 +31,61 @@ correspondence = Map.fromList list
       ]
 
 glyphLes :: Glyph
-glyphLes = makeGlyph bearing bearing $ mconcat diagrams
+glyphLes = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams = 
+    parts = 
       [ partLes # translate ~: r2 (0, mean / 2 + descender)
       ]
 
 glyphRes :: Glyph
-glyphRes = makeGlyph bearing bearing $ mconcat diagrams
+glyphRes = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams =
+    parts =
       [ partLes # translate ~: r2 (0, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
 glyphPal :: Glyph
-glyphPal = makeGlyph bearing bearing $ mconcat diagrams
+glyphPal = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams = 
+    parts = 
       [ partLes # turn # translate ~: r2 (bowlWidth, mean / 2 + descender)
       ]
 
 glyphBol :: Glyph
-glyphBol = makeGlyph bearing bearing $ mconcat diagrams
+glyphBol = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams = 
+    parts = 
       [ partLes # turn # translate ~: r2 (bowlWidth, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
 glyphCal :: Glyph
-glyphCal = makeGlyph bearing bearing $ mconcat diagrams
+glyphCal = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams = 
+    parts = 
       [ partLes # reverse # translate ~: r2 (bowlWidth, mean / 2 + descender)
       ]
 
 glyphQol :: Glyph
-glyphQol = makeGlyph bearing bearing $ mconcat diagrams
+glyphQol = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams = 
+    parts = 
       [ partLes # reverse # translate ~: r2 (bowlWidth, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
 glyphKal :: Glyph
-glyphKal = makeGlyph bearing bearing $ mconcat diagrams
+glyphKal = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams = 
+    parts = 
       [ partLes # invert # translate ~: r2 (0, mean / 2 + descender)
       ]
 
 glyphGol :: Glyph
-glyphGol = makeGlyph bearing bearing $ mconcat diagrams
+glyphGol = makeGlyph bearing bearing $ mconcat parts
   where
-    diagrams = 
+    parts = 
       [ partLes # invert # translate ~: r2 (0, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
