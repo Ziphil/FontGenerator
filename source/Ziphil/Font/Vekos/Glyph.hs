@@ -28,6 +28,7 @@ correspondence = Map.fromList list
       , ('q', glyphQol)
       , ('k', glyphKal)
       , ('g', glyphGol)
+      , ('a', glyphAt)
       ]
 
 glyphLes :: Glyph
@@ -88,6 +89,13 @@ glyphGol = makeGlyph bearing bearing $ mconcat parts
     parts = 
       [ partLes # invert # translate $^ (0, mean / 2 + descender)
       , partTransphone # translate $^ (bowlWidth + transphoneSpace, mean + descender)
+      ]
+
+glyphAt :: Glyph
+glyphAt = makeGlyph bearing bearing $ mconcat parts
+  where
+    parts = 
+      [ partBowl # translate $^ (0, mean / 2 + descender)
       ]
 
 makeGlyph :: Double -> Double -> Part -> Glyph
