@@ -29,7 +29,7 @@ overshoot :: Double
 overshoot = 10
 
 bearing :: Double
-bearing = 40
+bearing = 30
 
 weightX :: Double
 weightX = 100
