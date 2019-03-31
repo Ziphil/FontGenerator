@@ -23,6 +23,10 @@ correspondence = Map.fromList list
       , ('r', glyphRes)
       , ('p', glyphPal)
       , ('b', glyphBol)
+      , ('c', glyphCal)
+      , ('q', glyphQol)
+      , ('k', glyphKal)
+      , ('g', glyphGol)
       ]
 
 glyphLes :: Glyph
@@ -52,6 +56,36 @@ glyphBol = makeGlyph bearing bearing $ mconcat diagrams
   where
     diagrams = 
       [ partLes # rotate ~: (180 @@ deg) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
+      ]
+
+glyphCal :: Glyph
+glyphCal = makeGlyph bearing bearing $ mconcat diagrams
+  where
+    diagrams = 
+      [ partLes # scaleX ~: (-1) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      ]
+
+glyphQol :: Glyph
+glyphQol = makeGlyph bearing bearing $ mconcat diagrams
+  where
+    diagrams = 
+      [ partLes # scaleX ~: (-1) # translate ~: r2 (bowlWidth, mean / 2 + descender)
+      , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
+      ]
+
+glyphKal :: Glyph
+glyphKal = makeGlyph bearing bearing $ mconcat diagrams
+  where
+    diagrams = 
+      [ partLes # rotate ~: (180 @@ deg) # scaleX ~: (-1) # translate ~: r2 (0, mean / 2 + descender)
+      ]
+
+glyphGol :: Glyph
+glyphGol = makeGlyph bearing bearing $ mconcat diagrams
+  where
+    diagrams = 
+      [ partLes # rotate ~: (180 @@ deg) # scaleX ~: (-1) # translate ~: r2 (0, mean / 2 + descender)
       , partTransphone # translate ~: r2 (bowlWidth + transphoneSpace, mean + descender)
       ]
 
