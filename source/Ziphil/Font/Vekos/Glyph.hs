@@ -35,68 +35,68 @@ glyphLes :: Glyph
 glyphLes = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # translate $^ (0, mean / 2 + descender)
+      [ partLes # translate $^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphRes :: Glyph
 glyphRes = makeGlyph bearing bearing $ mconcat parts
   where
     parts =
-      [ partLes # translate $^ (0, mean / 2 + descender)
-      , partTransphone # translate $^ (bowlWidth + transphoneSpace, mean + descender)
+      [ partLes # translate $^ (bowlWidth / 2, mean / 2)
+      , partTransphone # translate $^ (bowlWidth + transphoneSpace, 0)
       ]
 
 glyphPal :: Glyph
 glyphPal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # turn # translate $^ (bowlWidth, mean / 2 + descender)
+      [ partLes # turn # translate $^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphBol :: Glyph
 glyphBol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # turn # translate $^ (bowlWidth, mean / 2 + descender)
-      , partTransphone # translate $^ (bowlWidth + transphoneSpace, mean + descender)
+      [ partLes # turn # translate $^ (bowlWidth / 2, mean / 2)
+      , partTransphone # translate $^ (bowlWidth + transphoneSpace, 0)
       ]
 
 glyphCal :: Glyph
 glyphCal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # reverse # translate $^ (bowlWidth, mean / 2 + descender)
+      [ partLes # reverse # translate $^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphQol :: Glyph
 glyphQol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # reverse # translate $^ (bowlWidth, mean / 2 + descender)
-      , partTransphone # translate $^ (bowlWidth + transphoneSpace, mean + descender)
+      [ partLes # reverse # translate $^ (bowlWidth / 2, mean / 2)
+      , partTransphone # translate $^ (bowlWidth + transphoneSpace, 0)
       ]
 
 glyphKal :: Glyph
 glyphKal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # invert # translate $^ (0, mean / 2 + descender)
+      [ partLes # invert # translate $^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphGol :: Glyph
 glyphGol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partLes # invert # translate $^ (0, mean / 2 + descender)
-      , partTransphone # translate $^ (bowlWidth + transphoneSpace, mean + descender)
+      [ partLes # invert # translate $^ (bowlWidth / 2, mean / 2)
+      , partTransphone # translate $^ (bowlWidth + transphoneSpace, 0)
       ]
 
 glyphAt :: Glyph
 glyphAt = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partBowl # translate $^ (0, mean / 2 + descender)
+      [ partBowl # translate $^ (bowlWidth / 2, mean / 2)
       ]
 
 makeGlyph :: Double -> Double -> Part -> Glyph
-makeGlyph left right = addBearing left right . fixVertical (mean + descender * 2) . strokePath
+makeGlyph left right = addBearing left right . fixVertical descender (mean * 2) . strokePath

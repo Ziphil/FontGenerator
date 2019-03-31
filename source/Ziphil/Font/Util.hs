@@ -43,12 +43,13 @@ invert = scaleY (-1)
 type Part = Path V2 Double
 type Glyph = Diagram B
 
--- 垂直方向の直径が与えられた長さになるように、グリフのエンベロープを修正します。
--- ディセンダーラインからアセンダーラインまでの長さを渡してください。
-fixVertical :: Double -> Glyph -> Glyph
-fixVertical height diagram = rectEnvelope origin corner diagram
+-- 与えられたディセンダーの深さとボディの高さに従って、出力用にグリフのエンベロープを修正します。
+-- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
+fixVertical :: Double -> Double -> Glyph -> Glyph
+fixVertical descender height diagram = rectEnvelope $. base $^ size $ diagram
   where
-    corner = r2 (width diagram, height)
+    base = (0, -descender)
+    size = (width diagram, height)
 
 -- 左右に与えられた長さの分のスペースができるように、グリフのエンベロープを修正します。
 addBearing :: Double -> Double -> Glyph -> Glyph

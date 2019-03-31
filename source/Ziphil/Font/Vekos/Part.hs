@@ -15,8 +15,14 @@ import Ziphil.Font.Vekos.Param
 
 
 -- k, p, c, l, a などの文字に共通する丸い部分のパスを生成します。
+-- 原点は丸い部分の中央にあります。
 partBowl :: Part
-partBowl = partBowlOuter <> partBowlInner
+partBowl = mconcat parts # moveOriginBy $^ (bowlWidth / 2, 0)
+  where
+    parts =
+      [ partBowlOuter
+      , partBowlInner
+      ] 
 
 partBowlOuter :: Part
 partBowlOuter = pathFromTrail trail
@@ -32,7 +38,7 @@ partBowlOuter = pathFromTrail trail
     trail = reverseTrail $ closeTrail $ fromSegments segments
 
 partBowlInner :: Part
-partBowlInner = pathFromTrailAt trail $. (weightX, 0)
+partBowlInner = pathFromTrail trail # translate $^ (weightX, 0)
   where
     width = bowlWidth - weightX * 2
     height = mean - weightY * 2
@@ -45,6 +51,7 @@ partBowlInner = pathFromTrailAt trail $. (weightX, 0)
     trail = closeTrail $ fromSegments segments
 
 -- k, p, c, l などの文字に共通するエックスハイトの上下に飛び出す部分のパスを生成します。
+-- 原点は左上の角にあります。
 partTail :: Part
 partTail = pathFromTrail trail
   where
@@ -57,21 +64,24 @@ partTail = pathFromTrail trail
       , straight $^ (weightX, 0) # reverseSegment
       ]
     trail = closeTrail $ fromSegments segments
-  
+
+-- l の文字と同じ形のパスを生成します。
+-- 原点は丸い部分の中央にあります。
 partLes :: Part
 partLes = mconcat parts
   where
     parts =
       [ partBowl
-      , partTail # translate $^ (bowlWidth - weightX, 0)
+      , partTail # translate $^ (bowlWidth / 2 - weightX, 0)
       ]
 
 weightTransphoneX :: Double
 weightTransphoneX = weightX * 0.95
 
 -- g, b などの文字に共通する変音符部分のパスを生成します。
+-- 原点は左下の角にあります。
 partTransphone :: Part
-partTransphone = pathFromTrail trail
+partTransphone = pathFromTrail trail # moveOriginBy $^ (0, -height)
   where
     bend = 50
     height = mean
