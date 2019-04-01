@@ -6,6 +6,7 @@ module Ziphil.Font.Vekos.Part
   , partTail
   , partLes
   , partYes
+  , partTal
   , partTransphone
   )
 where
@@ -95,6 +96,30 @@ partYes = pathFromTrail trail # moveOriginBy ~^ (bowlWidth / 2 - bend, height / 
       , bezier3 ~^ (0, 10) ~^ (0, height / 2 - weightY + overshoot) ~^ (width / 2 - weightX, height / 2 - weightY + overshoot) # reverseSegment
       , bezier3 ~^ (0, -150) ~^ (bend, -height / 2) ~^ (bend, -height / 2)
       , straight ~^ (weightX, 0) # reverseSegment
+      ]
+    trail = reverseTrail $ closeTrail $ fromSegments segments
+
+shoulderHeight :: Double
+shoulderHeight = mean / 3
+
+-- t の文字と同じ形のパスを生成します。
+-- 原点は丸い部分の中央にあります。
+partTal :: Part
+partTal = pathFromTrail trail # moveOriginBy ~^ (bowlWidth / 2, 0)
+  where
+    width = bowlWidth
+    height = mean
+    segments =
+      [ bezier3 ~^ (0, 10) ~^ (0, height / 2 + overshoot) ~^ (width / 2, height / 2 + overshoot)
+      , bezier3 ~^ (0, 10) ~^ (0, shoulderHeight + overshoot) ~^ (-width / 2, shoulderHeight + overshoot) # reverseSegment
+      , straight ~^ (weightX, 0) # reverseSegment
+      , bezier3 ~^ (0, 10) ~^ (0, shoulderHeight - weightY + overshoot) ~^ (-width / 2 + weightX, shoulderHeight - weightY + overshoot)
+      , bezier3 ~^ (0, 10) ~^ (0, height / 2 - weightY + overshoot) ~^ (width / 2 - weightX, height / 2 - weightY + overshoot) # reverseSegment
+      , bezier3 ~^ (0, 10) ~^ (0, -height / 2 + weightY - overshoot) ~^ (width / 2 - weightX, -height / 2 + weightY - overshoot)
+      , bezier3 ~^ (0, 10) ~^ (0, -shoulderHeight + weightY - overshoot) ~^ (-width / 2 + weightX, -shoulderHeight + weightY - overshoot) # reverseSegment
+      , straight ~^ (weightX, 0)
+      , bezier3 ~^ (0, 10) ~^ (0, -shoulderHeight - overshoot) ~^ (-width / 2, -shoulderHeight - overshoot)
+      , bezier3 ~^ (0, 10) ~^ (0, -height / 2 - overshoot) ~^ (width / 2, -height / 2 - overshoot) # reverseSegment
       ]
     trail = reverseTrail $ closeTrail $ fromSegments segments
 
