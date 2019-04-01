@@ -42,14 +42,14 @@ partBowl = mconcat parts # moveOriginBy ~^ (bowlWidth / 2, 0)
       , segmentOuterBowl # reverseSegment
       ]
     innerSegments =
-      [ segmentInnerBowl
-      , segmentInnerBowl # transReverse # reverseSegment
-      , segmentInnerBowl # transTurn
-      , segmentInnerBowl # transInvert # reverseSegment
+      [ segmentInnerBowl # transInvert
+      , segmentInnerBowl # transTurn # reverseSegment
+      , segmentInnerBowl # transReverse
+      , segmentInnerBowl # reverseSegment
       ]
     parts =
       [ makePart outerSegments
-      , makePart innerSegments # translate ~^ (weightX, 0)
+      , makePart innerSegments # reversePath # translate ~^ (weightX, 0)
       ]
 
 tailBend :: Double
