@@ -14,6 +14,7 @@ module Ziphil.Font.Vekos.Part
   , beakHeight
   , narrowBowlWidth
   , narrowBowlOverlap
+  , transphoneWeightX
   , transphoneBend
   )
 where
@@ -212,6 +213,9 @@ partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlWidth / 2, 0)
       , makePart innerSegments # reversePath # translate ~^ (weightX, 0)
       ]
 
+transphoneWeightX :: Double
+transphoneWeightX = weightX * 0.95
+
 transphoneBend :: Double
 transphoneBend = bowlWidth / 6
 
@@ -221,6 +225,10 @@ segmentTransphone = bezier3 ~^ (0, 0) ~^ (transphoneBend, -height + 150) ~^ (tra
   where
     height = mean / 2
 
+-- 変音符の上下にある水平に切られた部分を、左から右への向きで生成します。
+segmentTransphoneCut :: PartSegment
+segmentTransphoneCut = straight ~^ (transphoneWeightX, 0)
+
 -- g, b などの文字に共通する変音符部分のパスを生成します。
 -- 原点は左下の角にあります。
 partTransphone :: Part
@@ -229,10 +237,10 @@ partTransphone = makePart segments # moveOriginBy ~^ (0, -mean)
     segments = 
       [ segmentTransphone
       , segmentTransphone # transInvert # reverseSegment
-      , segmentCut
+      , segmentTransphoneCut
       , segmentTransphone # transInvert
       , segmentTransphone # reverseSegment
-      , segmentCut # reverseSegment
+      , segmentTransphoneCut # reverseSegment
       ]
 
 makePart :: [PartSegment] -> Part
