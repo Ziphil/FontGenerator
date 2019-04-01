@@ -5,6 +5,7 @@ module Ziphil.Font.Render
   ( renderGlyph
   , renderAllGlyphs
   , renderString
+  , renderStrings
   )
 where
 
@@ -34,4 +35,10 @@ renderString :: FilePath -> String -> Map Char Glyph -> IO ()
 renderString path string correspondence = renderPretty path absolute diagram
   where
     diagram = hcat $ mapMaybe make string
+    make char = styleGlyph <$> Map.lookup char correspondence
+
+renderStrings :: FilePath -> [String] -> Map Char Glyph -> IO ()
+renderStrings path strings correspondence = renderPretty path absolute diagram
+  where
+    diagram = vsep 200 $ map (hcat . mapMaybe make) strings
     make char = styleGlyph <$> Map.lookup char correspondence
