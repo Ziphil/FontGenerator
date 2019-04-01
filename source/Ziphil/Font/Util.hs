@@ -9,6 +9,7 @@ module Ziphil.Font.Util
   , transReverse
   , transInvert
   , Part
+  , PartSegment
   , Glyph
   , fixVertical
   , addBearing
@@ -40,6 +41,7 @@ transInvert :: (InSpace v n t, R2 v, Fractional n, Transformable t) => t -> t
 transInvert = scaleY (-1)
 
 type Part = Path V2 Double
+type PartSegment = Segment Closed V2 Double
 type Glyph = Diagram B
 
 -- 与えられたディセンダーの深さとボディの高さに従って、出力用にグリフのエンベロープを修正します。
