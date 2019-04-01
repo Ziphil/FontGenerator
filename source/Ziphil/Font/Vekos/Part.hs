@@ -7,7 +7,14 @@ module Ziphil.Font.Vekos.Part
   , partLes
   , partYes
   , partTal
+  , partNarrowBowl
   , partTransphone
+  , tailBend
+  , legBend
+  , beakHeight
+  , narrowBowlWidth
+  , narrowBowlOverlap
+  , transphoneBend
   )
 where
 
@@ -147,6 +154,62 @@ partTal = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
       , segmentCut
       , segmentOuterBeak
       , segmentOuterBowl # reverseSegment
+      ]
+
+narrowBowlVirtualWidth :: Double
+narrowBowlVirtualWidth = bowlWidth * 0.9
+
+narrowBowlCorrection :: Double
+narrowBowlCorrection = weightX * 0.15
+
+narrowBowlWidth :: Double
+narrowBowlWidth = narrowBowlVirtualWidth - narrowBowlCorrection
+
+narrowBowlOverlap :: Double
+narrowBowlOverlap = (weightX - narrowBowlCorrection) * 2 - weightX
+
+-- x などの文字で使われる細い丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
+segmentOuterLeftNarrowBowl :: PartSegment
+segmentOuterLeftNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+  where
+    width = narrowBowlVirtualWidth / 2
+    height = mean / 2
+
+-- x などの文字で使われる細い丸い部分の外側の曲線のうち、右端から上端に進む全体の 4 分の 1 の曲線を生成します。
+segmentOuterRightNarrowBowl :: PartSegment
+segmentOuterRightNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+  where
+    width = narrowBowlVirtualWidth / 2 - narrowBowlCorrection
+    height = mean / 2
+
+-- x などの文字で使われる細い丸い部分の内側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
+segmentInnerNarrowBowl :: PartSegment
+segmentInnerNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+  where
+    width = narrowBowlVirtualWidth / 2 - weightX
+    height = mean / 2 - weightY
+
+-- x, j などの文字に共通する細い丸い部分のパスを生成します。
+-- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
+-- 原点は丸い部分の中央にあります。
+partNarrowBowl :: Part
+partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlWidth / 2, 0)
+  where
+    outerSegments =
+      [ segmentOuterLeftNarrowBowl # transInvert
+      , segmentOuterRightNarrowBowl # transTurn # reverseSegment
+      , segmentOuterRightNarrowBowl # transReverse
+      , segmentOuterLeftNarrowBowl # reverseSegment
+      ]
+    innerSegments =
+      [ segmentInnerNarrowBowl # transInvert
+      , segmentInnerNarrowBowl # transTurn # reverseSegment
+      , segmentInnerNarrowBowl # transReverse
+      , segmentInnerNarrowBowl # reverseSegment
+      ]
+    parts =
+      [ makePart outerSegments
+      , makePart innerSegments # reversePath # translate ~^ (weightX, 0)
       ]
 
 transphoneBend :: Double
