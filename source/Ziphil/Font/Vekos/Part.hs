@@ -44,15 +44,15 @@ partBowl :: Part
 partBowl = mconcat parts # moveOriginBy ~^ (bowlWidth / 2, 0)
   where
     outerSegments =
-      [ segmentOuterBowl # transInvert
-      , segmentOuterBowl # transTurn # reverseSegment
-      , segmentOuterBowl # transReverse
+      [ segmentOuterBowl # reflectY
+      , segmentOuterBowl # rotateHalfTurn # reverseSegment
+      , segmentOuterBowl # reflectX
       , segmentOuterBowl # reverseSegment
       ]
     innerSegments =
-      [ segmentInnerBowl # transInvert
-      , segmentInnerBowl # transTurn # reverseSegment
-      , segmentInnerBowl # transReverse
+      [ segmentInnerBowl # reflectY
+      , segmentInnerBowl # rotateHalfTurn # reverseSegment
+      , segmentInnerBowl # reflectX
       , segmentInnerBowl # reverseSegment
       ]
     parts =
@@ -114,11 +114,11 @@ partYes = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
       , segmentCut
       , segmentLeg # reverseSegment
       , segmentInnerBowl
-      , segmentInnerBowl # transReverse # reverseSegment
-      , segmentLeg # transReverse
+      , segmentInnerBowl # reflectX # reverseSegment
+      , segmentLeg # reflectX
       , segmentCut
-      , segmentLeg # transReverse # reverseSegment
-      , segmentOuterBowl # transReverse
+      , segmentLeg # reflectX # reverseSegment
+      , segmentOuterBowl # reflectX
       , segmentOuterBowl # reverseSegment
       ]
 
@@ -145,11 +145,11 @@ partTal :: Part
 partTal = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
   where
     segments =
-      [ segmentOuterBowl # transInvert
-      , segmentOuterBeak # transInvert # reverseSegment
+      [ segmentOuterBowl # reflectY
+      , segmentOuterBeak # reflectY # reverseSegment
       , segmentCut # reverseSegment
-      , segmentInnerBeak # transInvert
-      , segmentInnerBowl # transInvert # reverseSegment
+      , segmentInnerBeak # reflectY
+      , segmentInnerBowl # reflectY # reverseSegment
       , segmentInnerBowl
       , segmentInnerBeak # reverseSegment
       , segmentCut
@@ -197,15 +197,15 @@ partNarrowBowl :: Part
 partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlWidth / 2, 0)
   where
     outerSegments =
-      [ segmentOuterLeftNarrowBowl # transInvert
-      , segmentOuterRightNarrowBowl # transTurn # reverseSegment
-      , segmentOuterRightNarrowBowl # transReverse
+      [ segmentOuterLeftNarrowBowl # reflectY
+      , segmentOuterRightNarrowBowl # rotateHalfTurn # reverseSegment
+      , segmentOuterRightNarrowBowl # reflectX
       , segmentOuterLeftNarrowBowl # reverseSegment
       ]
     innerSegments =
-      [ segmentInnerNarrowBowl # transInvert
-      , segmentInnerNarrowBowl # transTurn # reverseSegment
-      , segmentInnerNarrowBowl # transReverse
+      [ segmentInnerNarrowBowl # reflectY
+      , segmentInnerNarrowBowl # rotateHalfTurn # reverseSegment
+      , segmentInnerNarrowBowl # reflectX
       , segmentInnerNarrowBowl # reverseSegment
       ]
     parts =
@@ -236,9 +236,9 @@ partTransphone = makePart segments # moveOriginBy ~^ (0, -mean)
   where
     segments = 
       [ segmentTransphone
-      , segmentTransphone # transInvert # reverseSegment
+      , segmentTransphone # reflectY # reverseSegment
       , segmentTransphoneCut
-      , segmentTransphone # transInvert
+      , segmentTransphone # reflectY
       , segmentTransphone # reverseSegment
       , segmentTransphoneCut # reverseSegment
       ]

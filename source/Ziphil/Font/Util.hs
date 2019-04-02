@@ -5,9 +5,7 @@
 module Ziphil.Font.Util
   ( (~^)
   , (~.)
-  , transTurn
-  , transReverse
-  , transInvert
+  , rotateHalfTurn
   , Part
   , PartSegment
   , Glyph
@@ -29,16 +27,8 @@ infixl 9 ~.
 func ~. coord = func $ p2 coord
 
 -- 与えられた図形を 180° 回転します。
-transTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
-transTurn = rotate (180 @@ deg)
-
--- 与えられた図形を左右反転します。
-transReverse :: (InSpace v n t, R2 v, Fractional n, Transformable t) => t -> t
-transReverse = scaleX (-1)
-
--- 与えられた図形を上下反転します。
-transInvert :: (InSpace v n t, R2 v, Fractional n, Transformable t) => t -> t
-transInvert = scaleY (-1)
+rotateHalfTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
+rotateHalfTurn = rotate halfTurn
 
 type Part = Path V2 Double
 type PartSegment = Segment Closed V2 Double
