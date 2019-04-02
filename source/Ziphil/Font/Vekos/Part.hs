@@ -125,7 +125,7 @@ partYes = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
       ]
 
 beakWidth :: Double
-beakWidth = bowlWidth / 2 * 0.9
+beakWidth = bowlWidth / 2 * 0.95
   
 beakHeight :: Double
 beakHeight = mean * 0.35
