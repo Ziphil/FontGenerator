@@ -126,30 +126,30 @@ glyphTal :: Glyph
 glyphTal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partTal # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partTal # translate ~^ (talWidth / 2, mean / 2)
       ]
 
 glyphDol :: Glyph
 glyphDol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partTal # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partTal # translate ~^ (talWidth / 2, mean / 2)
+      , partTransphone # translate ~^ (talWidth + transphoneGap, 0)
       ]
 
 glyphFal :: Glyph
 glyphFal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partTal # reflectX # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partTal # reflectX # translate ~^ (talWidth / 2, mean / 2)
       ]
 
 glyphVol :: Glyph
 glyphVol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partTal # reflectX # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partTal # reflectX # translate ~^ (talWidth / 2, mean / 2)
+      , partTransphone # translate ~^ (talWidth + transphoneGap, 0)
       ]
   
 glyphXal :: Glyph

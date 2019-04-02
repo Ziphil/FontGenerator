@@ -11,7 +11,9 @@ module Ziphil.Font.Vekos.Part
   , partTransphone
   , tailBend
   , legBend
+  , beakWidth
   , beakHeight
+  , talWidth
   , narrowBowlVirtualWidth
   , narrowBowlWidth
   , transphoneWeightX
@@ -122,27 +124,33 @@ partYes = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
       , segmentOuterBowl # reverseSegment
       ]
 
+beakWidth :: Double
+beakWidth = bowlWidth / 2 * 0.9
+  
 beakHeight :: Double
 beakHeight = mean * 0.35
+
+talWidth :: Double
+talWidth = bowlWidth / 2 + beakWidth
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端に進む向きで生成します。
 segmentOuterBeak :: PartSegment
 segmentOuterBeak = bezier3 ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
-    width = bowlWidth / 2
+    width = beakWidth
     height = beakHeight
 
 -- t の文字の右上にある部分の内側の曲線を、右端から上端に進む向きで生成します。
 segmentInnerBeak :: PartSegment
 segmentInnerBeak =  bezier3 ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
-    width = bowlWidth / 2 - weightX
+    width = beakWidth - weightX
     height = beakHeight - weightY
 
 -- t の文字と同じ形のパスを生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partTal :: Part
-partTal = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
+partTal = makePart segments # moveOriginBy ~^ (talWidth / 2, 0)
   where
     segments =
       [ segmentOuterBowl # reflectY
