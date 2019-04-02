@@ -61,7 +61,7 @@ partBowl = mconcat parts # moveOriginBy ~^ (bowlWidth / 2, 0)
       ]
 
 tailBend :: Double
-tailBend = bowlWidth / 2
+tailBend = bowlWidth * 0.5
 
 -- c, l などの文字に共通する飛び出す部分の曲線を、上から下の向きで生成します。
 segmentTail :: PartSegment
@@ -96,7 +96,7 @@ partLes = mconcat parts
       ]
 
 legBend :: Double
-legBend = bowlWidth / 6
+legBend = bowlWidth * 0.15
 
 -- y の文字の下半分にある曲線を、上から下への向きで生成します。
 segmentLeg :: PartSegment
@@ -123,7 +123,7 @@ partYes = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
       ]
 
 beakHeight :: Double
-beakHeight = mean / 3
+beakHeight = mean * 0.35
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端に進む向きで生成します。
 segmentOuterBeak :: PartSegment
@@ -214,7 +214,7 @@ transphoneWeightX :: Double
 transphoneWeightX = weightX * 0.95
 
 transphoneBend :: Double
-transphoneBend = bowlWidth / 6
+transphoneBend = bowlWidth * 0.15
 
 -- 変音符の外側に向かって曲がる曲線を、上から下の向きで生成します。
 segmentTransphone :: PartSegment
