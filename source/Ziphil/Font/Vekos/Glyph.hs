@@ -156,17 +156,17 @@ glyphXal :: Glyph
 glyphXal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partNarrowBowl # translate ~^ (narrowBowlWidth / 2, mean / 2)
-      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlWidth + narrowBowlWidth / 2 - narrowBowlOverlap, mean / 2)
+      [ partNarrowBowl # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
+      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth + narrowBowlVirtualWidth / 2 - weightX, mean / 2)
       ]
 
 glyphJol :: Glyph
 glyphJol = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
-      [ partNarrowBowl # translate ~^ (narrowBowlWidth / 2, mean / 2)
-      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlWidth + narrowBowlWidth / 2 - narrowBowlOverlap, mean / 2)
-      , partTransphone # translate ~^ (narrowBowlWidth * 2 - narrowBowlOverlap + transphoneGap, 0)
+      [ partNarrowBowl # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
+      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth / 2 * 3 - weightX, mean / 2)
+      , partTransphone # translate ~^ (narrowBowlVirtualWidth * 2 - weightX + transphoneGap, 0)
       ]
 
 glyphAt :: Glyph

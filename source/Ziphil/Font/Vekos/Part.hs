@@ -12,8 +12,8 @@ module Ziphil.Font.Vekos.Part
   , tailBend
   , legBend
   , beakHeight
+  , narrowBowlVirtualWidth
   , narrowBowlWidth
-  , narrowBowlOverlap
   , transphoneWeightX
   , transphoneBend
   )
@@ -166,9 +166,6 @@ narrowBowlCorrection = weightX * 0.15
 narrowBowlWidth :: Double
 narrowBowlWidth = narrowBowlVirtualWidth - narrowBowlCorrection
 
-narrowBowlOverlap :: Double
-narrowBowlOverlap = (weightX - narrowBowlCorrection) * 2 - weightX
-
 -- x などの文字で使われる細い丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
 segmentOuterLeftNarrowBowl :: PartSegment
 segmentOuterLeftNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
@@ -194,7 +191,7 @@ segmentInnerNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
 -- 原点は丸い部分の中央にあります。
 partNarrowBowl :: Part
-partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlWidth / 2, 0)
+partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlVirtualWidth / 2, 0)
   where
     outerSegments =
       [ segmentOuterLeftNarrowBowl # reflectY
