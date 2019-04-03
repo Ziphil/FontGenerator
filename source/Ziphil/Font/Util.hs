@@ -5,9 +5,11 @@
 module Ziphil.Font.Util
   ( (~^)
   , (~.)
+  , fromSegment
   , rotateHalfTurn
   , Part
   , PartSegment
+  , PartTrail
   , Glyph
   , fixVertical
   , addBearing
@@ -26,12 +28,16 @@ infixl 9 ~.
 (~.) :: (P2 n -> b) -> (n, n) -> b
 func ~. coord = func $ p2 coord
 
+fromSegment :: TrailLike t => Segment Closed (V t) (N t) -> t
+fromSegment = fromSegments . (: [])
+
 -- 与えられた図形を 180° 回転します。
 rotateHalfTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
 rotateHalfTurn = rotate halfTurn
 
 type Part = Path V2 Double
 type PartSegment = Segment Closed V2 Double
+type PartTrail = Trail V2 Double
 type Glyph = Diagram B
 
 -- 与えられたディセンダーの深さとボディの高さに従って、出力用にグリフのエンベロープを修正します。

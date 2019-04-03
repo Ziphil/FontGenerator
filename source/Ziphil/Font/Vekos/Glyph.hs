@@ -29,6 +29,7 @@ correspondence = Map.fromList list
       , ('f', glyphFal), ('v', glyphVol)
       , ('x', glyphXal), ('j', glyphJol)
       , ('a', glyphAt)
+      , ('e', glyphEt), ('i', glyphIt)
       , (' ', glyphSpace)
       ]
 
@@ -176,6 +177,20 @@ glyphAt = makeGlyph bearing bearing $ mconcat parts
       [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
+glyphIt :: Glyph
+glyphIt = makeGlyph bearing bearing $ mconcat parts
+  where
+    parts = 
+      [ partIt # translate ~^ (talWidth / 2, mean / 2)
+      ]
+
+glyphEt :: Glyph
+glyphEt = makeGlyph bearing bearing $ mconcat parts
+  where
+    parts = 
+      [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
+      ]
+      
 glyphSpace :: Glyph
 glyphSpace = makeGlyph 0 spaceWidth $ mempty
 
