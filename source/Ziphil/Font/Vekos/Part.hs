@@ -30,15 +30,15 @@ import Ziphil.Font.Vekos.Param
 
 
 -- 丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
-segmentOuterBowl :: PartTrail
-segmentOuterBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+trailOuterBowl :: PartTrail
+trailOuterBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = bowlWidth / 2
     height = mean / 2
 
 -- 丸い部分の内側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
-segmentInnerBowl :: PartTrail
-segmentInnerBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+trailInnerBowl :: PartTrail
+trailInnerBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = bowlWidth / 2 - weightX
     height = mean / 2 - weightY
@@ -48,46 +48,46 @@ segmentInnerBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, hei
 partBowl :: Part
 partBowl = mconcat parts # moveOriginBy ~^ (bowlWidth / 2, 0)
   where
-    outerSegments =
-      [ segmentOuterBowl # reflectY
-      , segmentOuterBowl # rotateHalfTurn # reverseTrail
-      , segmentOuterBowl # reflectX
-      , segmentOuterBowl # reverseTrail
+    outerTrails =
+      [ trailOuterBowl # reflectY
+      , trailOuterBowl # rotateHalfTurn # reverseTrail
+      , trailOuterBowl # reflectX
+      , trailOuterBowl # reverseTrail
       ]
-    innerSegments =
-      [ segmentInnerBowl # reflectY
-      , segmentInnerBowl # rotateHalfTurn # reverseTrail
-      , segmentInnerBowl # reflectX
-      , segmentInnerBowl # reverseTrail
+    innerTrails =
+      [ trailInnerBowl # reflectY
+      , trailInnerBowl # rotateHalfTurn # reverseTrail
+      , trailInnerBowl # reflectX
+      , trailInnerBowl # reverseTrail
       ]
     parts =
-      [ makePart outerSegments
-      , makePart innerSegments # reversePath # translate ~^ (weightX, 0)
+      [ makePart outerTrails
+      , makePart innerTrails # reversePath # translate ~^ (weightX, 0)
       ]
 
 tailBend :: Double
 tailBend = bowlWidth * 0.5
 
 -- c, l などの文字に共通する飛び出す部分の曲線を、上から下の向きで生成します。
-segmentTail :: PartTrail
-segmentTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
+trailTail :: PartTrail
+trailTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
   where
     height = mean / 2 + descent
 
 -- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左から右への向きで生成します。
-segmentCut :: PartTrail
-segmentCut = straight' ~^ (weightX, 0)
+trailCut :: PartTrail
+trailCut = straight' ~^ (weightX, 0)
 
 -- c, l などの文字に共通するエックスハイトの下に飛び出す部分のパスを生成します。
 -- 原点は左上の角にあります。
 partTail :: Part
-partTail = makePart segments
+partTail = makePart trails
   where
-    segments =
-      [ segmentTail
-      , segmentCut
-      , segmentTail # reverseTrail
-      , segmentCut # reverseTrail
+    trails =
+      [ trailTail
+      , trailCut
+      , trailTail # reverseTrail
+      , trailCut # reverseTrail
       ]
 
 -- l の文字と同じ形のパスを生成します。
@@ -104,27 +104,27 @@ legBend :: Double
 legBend = bowlWidth * 0.15
 
 -- y の文字の下半分にある曲線を、上から下への向きで生成します。
-segmentLeg :: PartTrail
-segmentLeg = bezier3' ~^ (0, -150) ~^ (legBend, -height) ~^ (legBend, -height)
+trailLeg :: PartTrail
+trailLeg = bezier3' ~^ (0, -150) ~^ (legBend, -height) ~^ (legBend, -height)
   where
     height = mean / 2
 
 -- y の文字と同じ形のパスを生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partYes :: Part
-partYes = makePart segments # moveOriginBy ~^ (bowlWidth / 2, 0)
+partYes = makePart trails # moveOriginBy ~^ (bowlWidth / 2, 0)
   where
-    segments =
-      [ segmentLeg
-      , segmentCut
-      , segmentLeg # reverseTrail
-      , segmentInnerBowl
-      , segmentInnerBowl # reflectX # reverseTrail
-      , segmentLeg # reflectX
-      , segmentCut
-      , segmentLeg # reflectX # reverseTrail
-      , segmentOuterBowl # reflectX
-      , segmentOuterBowl # reverseTrail
+    trails =
+      [ trailLeg
+      , trailCut
+      , trailLeg # reverseTrail
+      , trailInnerBowl
+      , trailInnerBowl # reflectX # reverseTrail
+      , trailLeg # reflectX
+      , trailCut
+      , trailLeg # reflectX # reverseTrail
+      , trailOuterBowl # reflectX
+      , trailOuterBowl # reverseTrail
       ]
 
 beakWidth :: Double
@@ -137,15 +137,15 @@ talWidth :: Double
 talWidth = bowlWidth / 2 + beakWidth
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端に進む向きで生成します。
-segmentOuterBeak :: PartTrail
-segmentOuterBeak = bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
+trailOuterBeak :: PartTrail
+trailOuterBeak = bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
     width = beakWidth
     height = beakHeight
 
 -- t の文字の右上にある部分の内側の曲線を、右端から上端に進む向きで生成します。
-segmentInnerBeak :: PartTrail
-segmentInnerBeak =  bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
+trailInnerBeak :: PartTrail
+trailInnerBeak =  bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
     width = beakWidth - weightX
     height = beakHeight - weightY
@@ -153,19 +153,19 @@ segmentInnerBeak =  bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, h
 -- t の文字と同じ形のパスを生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partTal :: Part
-partTal = makePart segments # moveOriginBy ~^ (talWidth / 2, 0)
+partTal = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
   where
-    segments =
-      [ segmentOuterBowl # reflectY
-      , segmentOuterBeak # reflectY # reverseTrail
-      , segmentCut # reverseTrail
-      , segmentInnerBeak # reflectY
-      , segmentInnerBowl # reflectY # reverseTrail
-      , segmentInnerBowl
-      , segmentInnerBeak # reverseTrail
-      , segmentCut
-      , segmentOuterBeak
-      , segmentOuterBowl # reverseTrail
+    trails =
+      [ trailOuterBowl # reflectY
+      , trailOuterBeak # reflectY # reverseTrail
+      , trailCut # reverseTrail
+      , trailInnerBeak # reflectY
+      , trailInnerBowl # reflectY # reverseTrail
+      , trailInnerBowl
+      , trailInnerBeak # reverseTrail
+      , trailCut
+      , trailOuterBeak
+      , trailOuterBowl # reverseTrail
       ]
 
 narrowBowlVirtualWidth :: Double
@@ -178,22 +178,22 @@ narrowBowlWidth :: Double
 narrowBowlWidth = narrowBowlVirtualWidth - narrowBowlCorrection
 
 -- x などの文字で使われる細い丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
-segmentOuterLeftNarrowBowl :: PartTrail
-segmentOuterLeftNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+trailOuterLeftNarrowBowl :: PartTrail
+trailOuterLeftNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2
     height = mean / 2
 
 -- x などの文字で使われる細い丸い部分の外側の曲線のうち、右端から上端に進む全体の 4 分の 1 の曲線を生成します。
-segmentOuterRightNarrowBowl :: PartTrail
-segmentOuterRightNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+trailOuterRightNarrowBowl :: PartTrail
+trailOuterRightNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2 - narrowBowlCorrection
     height = mean / 2
 
 -- x などの文字で使われる細い丸い部分の内側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
-segmentInnerNarrowBowl :: PartTrail
-segmentInnerNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
+trailInnerNarrowBowl :: PartTrail
+trailInnerNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2 - weightX
     height = mean / 2 - weightY
@@ -204,52 +204,52 @@ segmentInnerNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (widt
 partNarrowBowl :: Part
 partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlVirtualWidth / 2, 0)
   where
-    outerSegments =
-      [ segmentOuterLeftNarrowBowl # reflectY
-      , segmentOuterRightNarrowBowl # rotateHalfTurn # reverseTrail
-      , segmentOuterRightNarrowBowl # reflectX
-      , segmentOuterLeftNarrowBowl # reverseTrail
+    outerTrails =
+      [ trailOuterLeftNarrowBowl # reflectY
+      , trailOuterRightNarrowBowl # rotateHalfTurn # reverseTrail
+      , trailOuterRightNarrowBowl # reflectX
+      , trailOuterLeftNarrowBowl # reverseTrail
       ]
-    innerSegments =
-      [ segmentInnerNarrowBowl # reflectY
-      , segmentInnerNarrowBowl # rotateHalfTurn # reverseTrail
-      , segmentInnerNarrowBowl # reflectX
-      , segmentInnerNarrowBowl # reverseTrail
+    innerTrails =
+      [ trailInnerNarrowBowl # reflectY
+      , trailInnerNarrowBowl # rotateHalfTurn # reverseTrail
+      , trailInnerNarrowBowl # reflectX
+      , trailInnerNarrowBowl # reverseTrail
       ]
     parts =
-      [ makePart outerSegments
-      , makePart innerSegments # reversePath # translate ~^ (weightX, 0)
+      [ makePart outerTrails
+      , makePart innerTrails # reversePath # translate ~^ (weightX, 0)
       ]
 
 itTailBend :: Double
 itTailBend = bowlWidth * 0.5
 
 -- i の文字に含まれる飛び出す部分の左側の曲線を、上から下の向きで生成します。
-segmentLeftItTail :: PartTrail
-segmentLeftItTail = bezier3' ~^ (0, -250) ~^ (itTailBend, -height + 300) ~^ (itTailBend, -height)
+trailLeftItTail :: PartTrail
+trailLeftItTail = bezier3' ~^ (0, -250) ~^ (itTailBend, -height + 300) ~^ (itTailBend, -height)
   where
     height = mean / 2 + descent
 
 -- i の文字に含まれる飛び出す部分の右側の曲線を、上から下の向きで生成します。
-segmentRightItTail :: PartTrail
-segmentRightItTail = bezier3' ~^ (0, -210) ~^ (itTailBend, -height + 325) ~^ (itTailBend, -height)
+trailRightItTail :: PartTrail
+trailRightItTail = bezier3' ~^ (0, -210) ~^ (itTailBend, -height + 325) ~^ (itTailBend, -height)
   where
     height = mean / 2 + descent
 
 -- i の文字と同じ形のパスを生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partIt :: Part
-partIt = makePart segments # moveOriginBy ~^ (talWidth / 2, 0)
+partIt = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
   where
-    segments =
-      [ segmentLeftItTail
-      , segmentCut
-      , segmentRightItTail # reverseTrail
-      , segmentInnerBowl
-      , segmentInnerBeak # reverseTrail
-      , segmentCut
-      , segmentOuterBeak
-      , segmentOuterBowl # reverseTrail
+    trails =
+      [ trailLeftItTail
+      , trailCut
+      , trailRightItTail # reverseTrail
+      , trailInnerBowl
+      , trailInnerBeak # reverseTrail
+      , trailCut
+      , trailOuterBeak
+      , trailOuterBowl # reverseTrail
       ]
 
 transphoneWeightX :: Double
@@ -259,27 +259,27 @@ transphoneBend :: Double
 transphoneBend = bowlWidth * 0.15
 
 -- 変音符の外側に向かって曲がる曲線を、上から下の向きで生成します。
-segmentTransphone :: PartTrail
-segmentTransphone = bezier3' ~^ (0, 0) ~^ (transphoneBend, -height + 150) ~^ (transphoneBend, -height)
+trailTransphone :: PartTrail
+trailTransphone = bezier3' ~^ (0, 0) ~^ (transphoneBend, -height + 150) ~^ (transphoneBend, -height)
   where
     height = mean / 2
 
 -- 変音符の上下にある水平に切られた部分を、左から右への向きで生成します。
-segmentTransphoneCut :: PartTrail
-segmentTransphoneCut = straight' ~^ (transphoneWeightX, 0)
+trailTransphoneCut :: PartTrail
+trailTransphoneCut = straight' ~^ (transphoneWeightX, 0)
 
 -- g, b などの文字に共通する変音符部分のパスを生成します。
 -- 原点は左下の角にあります。
 partTransphone :: Part
-partTransphone = makePart segments # moveOriginBy ~^ (0, -mean)
+partTransphone = makePart trails # moveOriginBy ~^ (0, -mean)
   where
-    segments = 
-      [ segmentTransphone
-      , segmentTransphone # reflectY # reverseTrail
-      , segmentTransphoneCut
-      , segmentTransphone # reflectY
-      , segmentTransphone # reverseTrail
-      , segmentTransphoneCut # reverseTrail
+    trails = 
+      [ trailTransphone
+      , trailTransphone # reflectY # reverseTrail
+      , trailTransphoneCut
+      , trailTransphone # reflectY
+      , trailTransphone # reverseTrail
+      , trailTransphoneCut # reverseTrail
       ]
 
 makePart :: [PartTrail] -> Part
