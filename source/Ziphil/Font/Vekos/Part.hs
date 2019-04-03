@@ -68,9 +68,15 @@ partBowl = mconcat parts # moveOriginBy ~^ (bowlWidth / 2, 0)
 tailBend :: Double
 tailBend = bowlWidth * 0.5
 
--- c, l などの文字に共通する飛び出す部分の曲線を、上から下の向きで生成します。
-trailTail :: PartTrail
-trailTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
+-- l などの文字に共通する飛び出す部分の右側の曲線を、上から下の向きで生成します。
+trailRightTail :: PartTrail
+trailRightTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
+  where
+    height = mean / 2 + descent
+
+-- l などの文字に共通する飛び出す部分の左側の曲線を、上から下の向きで生成します。
+trailLeftTail :: PartTrail
+trailLeftTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
   where
     height = mean / 2 + descent
 
@@ -84,9 +90,9 @@ partTail :: Part
 partTail = makePart trails
   where
     trails =
-      [ trailTail
+      [ trailLeftTail
       , trailCut
-      , trailTail # reverseTrail
+      , trailRightTail # reverseTrail
       , trailCut # reverseTrail
       ]
 
