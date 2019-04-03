@@ -37,9 +37,9 @@ type Glyph = Diagram B
 -- 与えられたディセンダーの深さとボディの高さに従って、出力用にグリフのエンベロープを修正します。
 -- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
 fixVertical :: Double -> Double -> Glyph -> Glyph
-fixVertical descender height diagram = rectEnvelope ~. base ~^ size $ diagram
+fixVertical descent height diagram = rectEnvelope ~. base ~^ size $ diagram
   where
-    base = (0, -descender)
+    base = (0, -descent)
     size = (width diagram, height)
 
 -- 左右に与えられた長さの分のスペースができるように、グリフのエンベロープを修正します。

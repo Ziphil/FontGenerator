@@ -2,7 +2,7 @@
 
 
 module Ziphil.Font.Vekos.Param
-  ( descender
+  ( descent
   , mean
   , overshoot
   , bearing
@@ -19,8 +19,8 @@ import Ziphil.Util.Core
 
 -- ディセンダーラインの深さを表します。
 -- このフォントではディセンダー部分とアセンダー部分の高さが同じなので、アセンダーラインの高さとしても利用されます。
-descender :: Double
-descender = 250
+descent :: Double
+descent = 250
 
 -- ミーンラインの高さ (エックスハイト) を表します。
 mean :: Double

@@ -69,7 +69,7 @@ tailBend = bowlWidth * 0.5
 segmentTail :: PartSegment
 segmentTail = bezier3 ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
   where
-    height = mean / 2 + descender
+    height = mean / 2 + descent
 
 -- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左から右への向きで生成します。
 segmentCut :: PartSegment

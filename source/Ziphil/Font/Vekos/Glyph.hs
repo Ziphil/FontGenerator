@@ -180,4 +180,4 @@ glyphSpace :: Glyph
 glyphSpace = makeGlyph 0 spaceWidth $ mempty
 
 makeGlyph :: Double -> Double -> Part -> Glyph
-makeGlyph left right = addBearing left right . fixVertical descender (mean * 2) . strokePath
+makeGlyph left right = addBearing left right . fixVertical descent (mean * 2) . strokePath
