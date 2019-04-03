@@ -31,14 +31,14 @@ import Ziphil.Font.Vekos.Param
 
 -- 丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
 segmentOuterBowl :: PartTrail
-segmentOuterBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot) # fromSegment
+segmentOuterBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = bowlWidth / 2
     height = mean / 2
 
 -- 丸い部分の内側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
 segmentInnerBowl :: PartTrail
-segmentInnerBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot) # fromSegment
+segmentInnerBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = bowlWidth / 2 - weightX
     height = mean / 2 - weightY
@@ -70,13 +70,13 @@ tailBend = bowlWidth * 0.5
 
 -- c, l などの文字に共通する飛び出す部分の曲線を、上から下の向きで生成します。
 segmentTail :: PartTrail
-segmentTail = bezier3 ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height) # fromSegment
+segmentTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
   where
     height = mean / 2 + descent
 
 -- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左から右への向きで生成します。
 segmentCut :: PartTrail
-segmentCut = straight ~^ (weightX, 0) # fromSegment
+segmentCut = straight' ~^ (weightX, 0)
 
 -- c, l などの文字に共通するエックスハイトの下に飛び出す部分のパスを生成します。
 -- 原点は左上の角にあります。
@@ -105,7 +105,7 @@ legBend = bowlWidth * 0.15
 
 -- y の文字の下半分にある曲線を、上から下への向きで生成します。
 segmentLeg :: PartTrail
-segmentLeg = bezier3 ~^ (0, -150) ~^ (legBend, -height) ~^ (legBend, -height) # fromSegment
+segmentLeg = bezier3' ~^ (0, -150) ~^ (legBend, -height) ~^ (legBend, -height)
   where
     height = mean / 2
 
@@ -138,14 +138,14 @@ talWidth = bowlWidth / 2 + beakWidth
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端に進む向きで生成します。
 segmentOuterBeak :: PartTrail
-segmentOuterBeak = bezier3 ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot) # fromSegment
+segmentOuterBeak = bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
     width = beakWidth
     height = beakHeight
 
 -- t の文字の右上にある部分の内側の曲線を、右端から上端に進む向きで生成します。
 segmentInnerBeak :: PartTrail
-segmentInnerBeak =  bezier3 ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot) # fromSegment
+segmentInnerBeak =  bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
     width = beakWidth - weightX
     height = beakHeight - weightY
@@ -179,21 +179,21 @@ narrowBowlWidth = narrowBowlVirtualWidth - narrowBowlCorrection
 
 -- x などの文字で使われる細い丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
 segmentOuterLeftNarrowBowl :: PartTrail
-segmentOuterLeftNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot) # fromSegment
+segmentOuterLeftNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2
     height = mean / 2
 
 -- x などの文字で使われる細い丸い部分の外側の曲線のうち、右端から上端に進む全体の 4 分の 1 の曲線を生成します。
 segmentOuterRightNarrowBowl :: PartTrail
-segmentOuterRightNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot) # fromSegment
+segmentOuterRightNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2 - narrowBowlCorrection
     height = mean / 2
 
 -- x などの文字で使われる細い丸い部分の内側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
 segmentInnerNarrowBowl :: PartTrail
-segmentInnerNarrowBowl = bezier3 ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot) # fromSegment
+segmentInnerNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2 - weightX
     height = mean / 2 - weightY
@@ -226,13 +226,13 @@ itTailBend = bowlWidth * 0.5
 
 -- i の文字に含まれる飛び出す部分の左側の曲線を、上から下の向きで生成します。
 segmentLeftItTail :: PartTrail
-segmentLeftItTail = bezier3 ~^ (0, -250) ~^ (itTailBend, -height + 300) ~^ (itTailBend, -height) # fromSegment
+segmentLeftItTail = bezier3' ~^ (0, -250) ~^ (itTailBend, -height + 300) ~^ (itTailBend, -height)
   where
     height = mean / 2 + descent
 
 -- i の文字に含まれる飛び出す部分の右側の曲線を、上から下の向きで生成します。
 segmentRightItTail :: PartTrail
-segmentRightItTail = bezier3 ~^ (0, -210) ~^ (itTailBend, -height + 325) ~^ (itTailBend, -height) # fromSegment
+segmentRightItTail = bezier3' ~^ (0, -210) ~^ (itTailBend, -height + 325) ~^ (itTailBend, -height)
   where
     height = mean / 2 + descent
 
@@ -260,13 +260,13 @@ transphoneBend = bowlWidth * 0.15
 
 -- 変音符の外側に向かって曲がる曲線を、上から下の向きで生成します。
 segmentTransphone :: PartTrail
-segmentTransphone = bezier3 ~^ (0, 0) ~^ (transphoneBend, -height + 150) ~^ (transphoneBend, -height) # fromSegment
+segmentTransphone = bezier3' ~^ (0, 0) ~^ (transphoneBend, -height + 150) ~^ (transphoneBend, -height)
   where
     height = mean / 2
 
 -- 変音符の上下にある水平に切られた部分を、左から右への向きで生成します。
 segmentTransphoneCut :: PartTrail
-segmentTransphoneCut = straight ~^ (transphoneWeightX, 0) # fromSegment
+segmentTransphoneCut = straight' ~^ (transphoneWeightX, 0)
 
 -- g, b などの文字に共通する変音符部分のパスを生成します。
 -- 原点は左下の角にあります。
