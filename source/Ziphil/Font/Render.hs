@@ -14,7 +14,7 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Diagrams.Backend.SVG
-import Diagrams.Prelude as Diagrams
+import Diagrams.Prelude
 import System.FilePath
 import Ziphil.Font.Util
 import Ziphil.Util.Core
