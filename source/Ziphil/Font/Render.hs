@@ -34,11 +34,11 @@ renderAllGlyphs path correspondence = Map.traverseWithKey renderGlyph' correspon
 renderString :: FilePath -> String -> Map Char Glyph -> IO ()
 renderString path string correspondence = renderPretty path absolute diagram
   where
-    diagram = hcat $ mapMaybe make string
+    diagram = scale 0.1 $ hcat $ mapMaybe make string
     make char = styleGlyph <$> Map.lookup char correspondence
 
 renderStrings :: FilePath -> [String] -> Map Char Glyph -> IO ()
 renderStrings path strings correspondence = renderPretty path absolute diagram
   where
-    diagram = vsep 200 $ map (hcat . mapMaybe make) strings
+    diagram = scale 0.1 $ vsep 200 $ map (hcat . mapMaybe make) strings
     make char = styleGlyph <$> Map.lookup char correspondence
