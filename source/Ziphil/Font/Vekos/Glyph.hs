@@ -157,7 +157,7 @@ glyphXal = makeGlyph bearing bearing $ mconcat parts
   where
     parts = 
       [ partNarrowBowl # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
-      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth + narrowBowlVirtualWidth / 2 - weightX, mean / 2)
+      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth / 2 * 3 - weightX, mean / 2)
       ]
 
 glyphJol :: Glyph
