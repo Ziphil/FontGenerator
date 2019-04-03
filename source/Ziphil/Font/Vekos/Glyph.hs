@@ -34,14 +34,14 @@ correspondence = Map.fromList list
       ]
 
 glyphLes :: Glyph
-glyphLes = makeGlyph bearing bearing $ mconcat parts
+glyphLes = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphRes :: Glyph
-glyphRes = makeGlyph bearing bearing $ mconcat parts
+glyphRes = makeGlyph bearing bearing parts
   where
     parts =
       [ partLes # translate ~^ (bowlWidth / 2, mean / 2)
@@ -49,14 +49,14 @@ glyphRes = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphPal :: Glyph
-glyphPal = makeGlyph bearing bearing $ mconcat parts
+glyphPal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # rotateHalfTurn # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphBol :: Glyph
-glyphBol = makeGlyph bearing bearing $ mconcat parts
+glyphBol = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # rotateHalfTurn # translate ~^ (bowlWidth / 2, mean / 2)
@@ -64,14 +64,14 @@ glyphBol = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphCal :: Glyph
-glyphCal = makeGlyph bearing bearing $ mconcat parts
+glyphCal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # reflectX # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphQol :: Glyph
-glyphQol = makeGlyph bearing bearing $ mconcat parts
+glyphQol = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # reflectX # translate ~^ (bowlWidth / 2, mean / 2)
@@ -79,14 +79,14 @@ glyphQol = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphKal :: Glyph
-glyphKal = makeGlyph bearing bearing $ mconcat parts
+glyphKal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphGol :: Glyph
-glyphGol = makeGlyph bearing bearing $ mconcat parts
+glyphGol = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
@@ -94,14 +94,14 @@ glyphGol = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphYes :: Glyph
-glyphYes = makeGlyph bearing bearing $ mconcat parts
+glyphYes = makeGlyph bearing bearing parts
   where
     parts = 
       [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphHes :: Glyph
-glyphHes = makeGlyph bearing bearing $ mconcat parts
+glyphHes = makeGlyph bearing bearing parts
   where
     parts = 
       [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
@@ -109,14 +109,14 @@ glyphHes = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphSal :: Glyph
-glyphSal = makeGlyph bearing bearing $ mconcat parts
+glyphSal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partYes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphZol :: Glyph
-glyphZol = makeGlyph bearing bearing $ mconcat parts
+glyphZol = makeGlyph bearing bearing parts
   where
     parts = 
       [ partYes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
@@ -124,14 +124,14 @@ glyphZol = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphTal :: Glyph
-glyphTal = makeGlyph bearing bearing $ mconcat parts
+glyphTal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partTal # translate ~^ (talWidth / 2, mean / 2)
       ]
 
 glyphDol :: Glyph
-glyphDol = makeGlyph bearing bearing $ mconcat parts
+glyphDol = makeGlyph bearing bearing parts
   where
     parts = 
       [ partTal # translate ~^ (talWidth / 2, mean / 2)
@@ -139,14 +139,14 @@ glyphDol = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphFal :: Glyph
-glyphFal = makeGlyph bearing bearing $ mconcat parts
+glyphFal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partTal # reflectX # translate ~^ (talWidth / 2, mean / 2)
       ]
 
 glyphVol :: Glyph
-glyphVol = makeGlyph bearing bearing $ mconcat parts
+glyphVol = makeGlyph bearing bearing parts
   where
     parts = 
       [ partTal # reflectX # translate ~^ (talWidth / 2, mean / 2)
@@ -154,7 +154,7 @@ glyphVol = makeGlyph bearing bearing $ mconcat parts
       ]
   
 glyphXal :: Glyph
-glyphXal = makeGlyph bearing bearing $ mconcat parts
+glyphXal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partNarrowBowl # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
@@ -162,7 +162,7 @@ glyphXal = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphJol :: Glyph
-glyphJol = makeGlyph bearing bearing $ mconcat parts
+glyphJol = makeGlyph bearing bearing parts
   where
     parts = 
       [ partNarrowBowl # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
@@ -171,28 +171,28 @@ glyphJol = makeGlyph bearing bearing $ mconcat parts
       ]
 
 glyphAt :: Glyph
-glyphAt = makeGlyph bearing bearing $ mconcat parts
+glyphAt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
 glyphIt :: Glyph
-glyphIt = makeGlyph bearing bearing $ mconcat parts
+glyphIt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # translate ~^ (talWidth / 2, mean / 2)
       ]
 
 glyphEt :: Glyph
-glyphEt = makeGlyph bearing bearing $ mconcat parts
+glyphEt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
       ]
       
 glyphSpace :: Glyph
-glyphSpace = makeGlyph 0 spaceWidth $ mempty
+glyphSpace = makeGlyph 0 spaceWidth []
 
-makeGlyph :: Double -> Double -> Part -> Glyph
-makeGlyph left right = addBearing left right . fixVertical descent (mean * 2) . strokePath
+makeGlyph :: Double -> Double -> [Part] -> Glyph
+makeGlyph left right = addBearing left right . fixVertical descent (mean * 2) . strokePath . mconcat
