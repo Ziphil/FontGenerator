@@ -2,7 +2,7 @@
 
 
 module Ziphil.FontGen.Vekos.Glyph
-  ( correspondence
+  ( glyphs
   )
 where
 
@@ -13,8 +13,8 @@ import Ziphil.FontGen.Vekos.Param
 import Ziphil.FontGen.Vekos.Part
 
 
-correspondence :: Map Char Glyph
-correspondence = Map.fromList list
+glyphs :: Glyphs
+glyphs = Map.fromList list
   where
     list =
       [ ('l', glyphLes), ('r', glyphRes)

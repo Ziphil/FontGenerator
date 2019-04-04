@@ -1,17 +1,20 @@
 --
 
 
-module Data.FontGen.Type
+module Data.FontGen.GlyphType
   ( Part
   , PartSegment
   , PartTrail
   , Glyph
+  , Glyphs
   , fixVertical
   , addBearing
   )
 where
 
 import Data.FontGen.Util
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
@@ -21,6 +24,7 @@ type PartSegment = Segment Closed V2 Double
 type PartTrail = Trail V2 Double
 
 type Glyph = Diagram B
+type Glyphs = Map Char Glyph
 
 -- 与えられたディセンダーの深さとボディの高さに従って、出力用にグリフのエンベロープを修正します。
 -- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。

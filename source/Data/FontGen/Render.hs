@@ -10,7 +10,7 @@ module Data.FontGen.Render
 where
 
 import Data.Char
-import Data.FontGen.Type
+import Data.FontGen.GlyphType
 import Data.FontGen.Util
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -26,19 +26,19 @@ styleGlyph = lineWidth none . fillColor black
 renderGlyph :: FilePath -> Glyph -> IO ()
 renderGlyph path glyph = renderPretty path absolute $ styleGlyph glyph
 
-renderAllGlyphs :: FilePath -> Map Char Glyph -> IO ()
-renderAllGlyphs path correspondence = Map.traverseWithKey renderGlyph' correspondence >> return ()
+renderAllGlyphs :: FilePath -> Glyphs -> IO ()
+renderAllGlyphs path glyphs = Map.traverseWithKey renderGlyph' glyphs >> return ()
   where
     renderGlyph' char glyph = renderGlyph (path </> show (ord char) <.> "svg") glyph
 
-renderString :: FilePath -> String -> Map Char Glyph -> IO ()
-renderString path string correspondence = renderPretty path absolute diagram
+renderString :: FilePath -> String -> Glyphs -> IO ()
+renderString path string glyphs = renderPretty path absolute diagram
   where
     diagram = scale 0.15 $ hcat $ mapMaybe make string
-    make char = styleGlyph <$> Map.lookup char correspondence
+    make char = styleGlyph <$> Map.lookup char glyphs
 
-renderStrings :: FilePath -> [String] -> Map Char Glyph -> IO ()
-renderStrings path strings correspondence = renderPretty path absolute diagram
+renderStrings :: FilePath -> [String] -> Glyphs -> IO ()
+renderStrings path strings glyphs = renderPretty path absolute diagram
   where
     diagram = scale 0.15 $ vsep 200 $ map (hcat . mapMaybe make) strings
-    make char = styleGlyph <$> Map.lookup char correspondence
+    make char = styleGlyph <$> Map.lookup char glyphs

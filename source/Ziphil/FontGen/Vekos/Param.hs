@@ -14,8 +14,6 @@ module Ziphil.FontGen.Vekos.Param
   )
 where
 
-import Data.FontGen
-
 
 -- ディセンダーラインの深さを表します。
 -- このフォントではディセンダー部分とアセンダー部分の高さが同じなので、アセンダーラインの高さとしても利用されます。
