@@ -9,6 +9,9 @@ module Ziphil.FontGen.Vekos.Part
   , partTal
   , partNarrowBowl
   , partIt
+  , partUpperUt
+  , partUtTail
+  , partUt
   , partTransphone
   , tailBend
   , legBend
@@ -18,6 +21,10 @@ module Ziphil.FontGen.Vekos.Part
   , narrowBowlVirtualWidth
   , narrowBowlWidth
   , itTailBend
+  , linkWidth
+  , linkUpperCorrection
+  , linkLowerCorrection
+  , utTailBend
   , transphoneWeightX
   , transphoneBend
   )
@@ -254,6 +261,84 @@ partIt = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
       , trailCut
       , trailOuterBeak
       , trailOuterBowl # reverseTrail
+      ]
+
+linkWidth :: Double
+linkWidth = bowlWidth * 0.8
+
+linkUpperCorrection :: Double
+linkUpperCorrection = weightY * 0.1
+
+linkLowerCorrection :: Double
+linkLowerCorrection = weightY * 0.1
+
+utTailBend :: Double
+utTailBend = bowlWidth * 0.55
+
+-- u の文字に含まれる飛び出す部分と接続する部分の外側の曲線を、上から下の向きで生成します。
+-- 飛び出す部分と重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
+trailOuterLink :: PartTrail
+trailOuterLink = bezier3' ~^ (0, 25) ~^ (0, -height) ~^ (width, -height)
+  where
+    width = linkWidth
+    height = mean / 2 - linkLowerCorrection
+
+-- u の文字に含まれる飛び出す部分と接続する部分の内側の曲線を、上から下の向きで生成します。
+-- 飛び出す部分と重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
+trailInnerLink :: PartTrail
+trailInnerLink = bezier3' ~^ (0, 25) ~^ (0, -height) ~^ (width, -height)
+  where
+    width = linkWidth - weightX
+    height = mean / 2 - weightY
+
+-- u の文字に含まれる飛び出す部分の左側の曲線を、下から上の向きで生成します。
+trailLeftUtTail :: PartTrail
+trailLeftUtTail = bezier3' ~^ (0, 25) ~^ (0, height) ~^ (utTailBend, height)
+  where
+    height = descent + weightY - linkUpperCorrection
+
+-- u の文字に含まれる飛び出す部分の左側の曲線を、下から上の向きで生成します。
+trailRightUtTail :: PartTrail
+trailRightUtTail = bezier3' ~^ (0, 25) ~^ (0, height) ~^ (utTailBend - weightX, height)
+  where
+    height = descent
+
+-- u の文字のベースラインより上の部分のパスを生成します。
+-- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+partUpperUt :: Part
+partUpperUt = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
+  where
+    trails =
+      [ trailOuterLink
+      , straight' ~^ (0, weightY - linkLowerCorrection)
+      , trailInnerLink # reverseTrail
+      , trailInnerBowl
+      , trailInnerBeak # reverseTrail
+      , trailCut
+      , trailOuterBeak
+      , trailOuterBowl # reverseTrail
+      ]
+
+-- u の文字の飛び出す部分のパスを生成します。
+-- 原点は右上の角にあります。
+partUtTail :: Part
+partUtTail = makePart trails
+  where
+    trails =
+      [ trailLeftUtTail # reverseTrail
+      , trailCut
+      , trailRightUtTail
+      , straight' ~^ (0, weightY - linkUpperCorrection)
+      ]
+
+-- u の文字と同じ形のパスを生成します。
+-- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+partUt :: Part
+partUt = mconcat parts
+  where
+    parts =
+      [ partUpperUt
+      , partUtTail # translate ~^ (-talWidth / 2 + linkWidth, -mean / 2 + weightY - linkUpperCorrection)
       ]
 
 transphoneWeightX :: Double

@@ -28,6 +28,7 @@ correspondence = Map.fromList list
       , ('x', glyphXal), ('j', glyphJol)
       , ('a', glyphAt)
       , ('e', glyphEt), ('i', glyphIt)
+      , ('u', glyphUt), ('o', glyphOt)
       , (' ', glyphSpace)
       ]
 
@@ -187,6 +188,20 @@ glyphEt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
+      ]
+
+glyphUt :: Glyph
+glyphUt = makeGlyph bearing bearing parts
+  where
+    parts = 
+      [ partUt # translate ~^ (talWidth / 2, mean / 2)
+      ]
+
+glyphOt :: Glyph
+glyphOt = makeGlyph bearing bearing parts
+  where
+    parts = 
+      [ partUt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
       ]
       
 glyphSpace :: Glyph
