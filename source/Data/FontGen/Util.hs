@@ -8,7 +8,6 @@
 module Data.FontGen.Util
   ( (~^)
   , (~.)
-  , fromSegment
   , rotateHalfTurn
   , SegmentLike (..)
   , straight'
@@ -26,9 +25,6 @@ func ~^ coord = func $ r2 coord
 infixl 9 ~.
 (~.) :: (P2 n -> b) -> (n, n) -> b
 func ~. coord = func $ p2 coord
-
-fromSegment :: TrailLike t => Segment Closed (V t) (N t) -> t
-fromSegment = fromSegments . (: [])
 
 -- 与えられた図形を 180° 回転します。
 rotateHalfTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
