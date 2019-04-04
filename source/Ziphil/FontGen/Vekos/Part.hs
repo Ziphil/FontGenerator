@@ -1,7 +1,7 @@
 --
 
 
-module Ziphil.Font.Vekos.Part
+module Ziphil.FontGen.Vekos.Part
   ( partBowl
   , partTail
   , partLes
@@ -23,10 +23,8 @@ module Ziphil.Font.Vekos.Part
   )
 where
 
-import Diagrams.Prelude
-import Diagrams.TwoD.Offset
-import Ziphil.Font.Util
-import Ziphil.Font.Vekos.Param
+import Data.FontGen
+import Ziphil.FontGen.Vekos.Param
 
 
 -- 丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。

@@ -1,18 +1,16 @@
 --
 
 
-module Ziphil.Font.Vekos.Glyph
+module Ziphil.FontGen.Vekos.Glyph
   ( correspondence
   )
 where
 
+import Data.FontGen
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Diagrams.Prelude
-import Ziphil.Font.Util
-import Ziphil.Font.Vekos.Param
-import Ziphil.Font.Vekos.Part
-import Ziphil.Util.Core
+import Ziphil.FontGen.Vekos.Param
+import Ziphil.FontGen.Vekos.Part
 
 
 correspondence :: Map Char Glyph

@@ -1,7 +1,7 @@
 --
 
 
-module Ziphil.Font.Render
+module Data.FontGen.Render
   ( renderGlyph
   , renderAllGlyphs
   , renderString
@@ -10,14 +10,14 @@ module Ziphil.Font.Render
 where
 
 import Data.Char
+import Data.FontGen.Type
+import Data.FontGen.Util
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Diagrams.Backend.SVG
 import Diagrams.Prelude
 import System.FilePath
-import Ziphil.Font.Util
-import Ziphil.Util.Core
 
 
 styleGlyph :: Glyph -> Glyph

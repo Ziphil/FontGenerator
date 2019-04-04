@@ -1,7 +1,7 @@
 --
 
 
-module Ziphil.Font.Vekos.Param
+module Ziphil.FontGen.Vekos.Param
   ( descent
   , mean
   , overshoot
@@ -14,7 +14,7 @@ module Ziphil.Font.Vekos.Param
   )
 where
 
-import Ziphil.Util.Core
+import Data.FontGen
 
 
 -- ディセンダーラインの深さを表します。
