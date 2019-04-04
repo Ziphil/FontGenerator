@@ -208,4 +208,4 @@ glyphSpace :: Glyph
 glyphSpace = makeGlyph 0 spaceWidth []
 
 makeGlyph :: Double -> Double -> [Part] -> Glyph
-makeGlyph left right = addBearing left right . fixVertical descent (mean * 2) . strokePath . mconcat
+makeGlyph left right = addBearing left right . fixVertical descent (mean + descent * 2) . strokePath . mconcat
