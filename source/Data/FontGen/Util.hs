@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE UndecidableInstances #-}
 
 
 module Data.FontGen.Util
@@ -39,7 +40,7 @@ class (Metric (V s), OrderedField (N s)) => SegmentLike s where
 instance (Metric v, OrderedField n) => SegmentLike (Segment Closed v n) where
   segmentLike = id
 
-instance (Metric v, OrderedField n) => SegmentLike (Trail v n) where
+instance TrailLike t => SegmentLike t where
   segmentLike = fromSegments . (: [])
 
 straight' :: SegmentLike s => Vn s -> s
