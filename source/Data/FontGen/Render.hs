@@ -2,14 +2,14 @@
 
 
 module Data.FontGen.Render
-  ( renderGlyph
-  , renderAllGlyphs
+  ( renderGlyphs
   , renderString
   , renderStrings
   )
 where
 
 import Data.Char
+import Data.FontGen.FontType
 import Data.FontGen.GlyphType
 import Data.FontGen.Util
 import Data.Map (Map)
@@ -23,22 +23,30 @@ import System.FilePath
 styleGlyph :: Glyph -> Glyph
 styleGlyph = lineWidth none . fillColor black
 
-renderGlyph :: FilePath -> Glyph -> IO ()
-renderGlyph path glyph = renderPretty path absolute $ styleGlyph glyph
-
-renderAllGlyphs :: FilePath -> Glyphs -> IO ()
-renderAllGlyphs path glyphs = Map.traverseWithKey renderGlyph' glyphs >> return ()
+outputDir :: FontInfo -> FilePath
+outputDir info = outputRoot </> dir
   where
-    renderGlyph' char glyph = renderGlyph (path </> show (ord char) <.> "svg") glyph
+    outputRoot = "out"
+    dir = map toLower (family info) ++ "-" ++ map toLower (weight info)
 
-renderString :: FilePath -> String -> Glyphs -> IO ()
-renderString path string glyphs = renderPretty path absolute diagram
+renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
+renderGlyph info char glyph = renderPretty path absolute $ styleGlyph glyph
   where
+    path = outputDir info </> show (ord char) <.> "svg"
+
+renderGlyphs :: FontInfo -> IO ()
+renderGlyphs info = Map.traverseWithKey (renderGlyph info) (glyphs info) >> return ()
+
+renderString :: FontInfo -> String -> IO ()
+renderString info string = renderPretty path absolute diagram
+  where
+    path = outputDir info </> "test" <.> "svg"
     diagram = scale 0.15 $ hcat $ mapMaybe make string
-    make char = styleGlyph <$> Map.lookup char glyphs
+    make char = styleGlyph <$> Map.lookup char (glyphs info)
 
-renderStrings :: FilePath -> [String] -> Glyphs -> IO ()
-renderStrings path strings glyphs = renderPretty path absolute diagram
+renderStrings :: FontInfo -> [String] -> IO ()
+renderStrings info strings = renderPretty path absolute diagram
   where
+    path = outputDir info </> "test" <.> "svg"
     diagram = scale 0.15 $ vsep 200 $ map (hcat . mapMaybe make) strings
-    make char = styleGlyph <$> Map.lookup char glyphs
+    make char = styleGlyph <$> Map.lookup char (glyphs info)

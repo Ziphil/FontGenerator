@@ -3,12 +3,12 @@
 
 module Main where
 
+import Data.FontGen.Render
 import System.FilePath
-import Ziphil.Font.Render
-import qualified Ziphil.Font.Vekos.Glyph as Vekos
+import qualified Ziphil.FontGen.Vekos as Vekos
 
 
 main :: IO ()
 main = do
-  renderAllGlyphs "out" Vekos.correspondence
-  renderString ("out" </> "test" <.> "svg") "sztdkgfvpbcqxjlrnmyhaeiou" Vekos.correspondence
+  renderGlyphs Vekos.regularInfo
+  renderStrings Vekos.regularInfo ["qolamet", "hizelis", "kofet"]
