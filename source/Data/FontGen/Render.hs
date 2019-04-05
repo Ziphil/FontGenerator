@@ -1,4 +1,4 @@
---
+{-# LANGUAGE TemplateHaskell #-}
 
 
 module Data.FontGen.Render
@@ -8,6 +8,7 @@ module Data.FontGen.Render
   )
 where
 
+import Control.Monad
 import Data.Char
 import Data.FontGen.FontType
 import Data.FontGen.GlyphType
@@ -16,37 +17,42 @@ import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Diagrams.Backend.SVG
-import Diagrams.Prelude
-import System.FilePath
+import Diagrams.Prelude hiding (Path)
+import Path
 
 
-styleGlyph :: Glyph -> Glyph
+styleGlyph :: Glyph -> Diagram B
 styleGlyph = lineWidth none . fillColor black
 
-outputDir :: FontInfo -> FilePath
-outputDir info = outputRoot </> dir
+renderDiagram :: FilePath -> Diagram B -> IO ()
+renderDiagram path diagram = renderPretty path absolute diagram
+
+outputFile :: FontInfo -> String -> IO (Path Rel File)
+outputFile info name = (-<.> "svg") =<< (root </>) <$> ((</>) <$> dir <*> file)
   where
-    outputRoot = "out"
-    dir = map toLower (family info) ++ "-" ++ map toLower (weight info)
+    root = $(mkRelDir "out")
+    dir = parseRelDir $ map toLower (family info) ++ "-" ++ map toLower (weight info)
+    file = parseRelFile $ name
 
 renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
-renderGlyph info char glyph = renderPretty path absolute $ styleGlyph glyph
+renderGlyph info char glyph = join $ renderDiagram <$> path <*> return (styleGlyph glyph)
   where
-    path = outputDir info </> show (ord char) <.> "svg"
+    path = toFilePath <$> outputFile info name
+    name = show (ord char)
 
 renderGlyphs :: FontInfo -> IO ()
 renderGlyphs info = Map.traverseWithKey (renderGlyph info) (glyphs info) >> return ()
 
 renderString :: FontInfo -> String -> IO ()
-renderString info string = renderPretty path absolute diagram
+renderString info string = join $ renderDiagram <$> path <*> return diagram
   where
-    path = outputDir info </> "test" <.> "svg"
+    path = toFilePath <$> outputFile info "test"
     diagram = scale 0.15 $ hcat $ mapMaybe make string
     make char = styleGlyph <$> Map.lookup char (glyphs info)
 
 renderStrings :: FontInfo -> [String] -> IO ()
-renderStrings info strings = renderPretty path absolute diagram
+renderStrings info strings = join $ renderDiagram <$> path <*> return diagram
   where
-    path = outputDir info </> "test" <.> "svg"
+    path = toFilePath <$> outputFile info "test"
     diagram = scale 0.15 $ vsep 200 $ map (hcat . mapMaybe make) strings
     make char = styleGlyph <$> Map.lookup char (glyphs info)

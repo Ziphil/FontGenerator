@@ -19,6 +19,7 @@ dependencies:
   - diagrams-svg
   - filepath
   - hspec
+  - path
 
 library:
   source-dirs: source
