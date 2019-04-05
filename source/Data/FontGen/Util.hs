@@ -12,6 +12,7 @@ module Data.FontGen.Util
   , SegmentLike (..)
   , straight'
   , bezier3'
+  , bezier2'
   )
 where
 
@@ -44,3 +45,9 @@ straight' = segmentLike . straight
 
 bezier3' :: SegmentLike s => Vn s -> Vn s -> Vn s -> s
 bezier3' = ((segmentLike .) .) . bezier3
+
+bezier2' :: SegmentLike s => Vn s -> Vn s -> s
+bezier2' cont end = bezier3' fstCont sndCont end
+  where
+    fstCont = cont ^* (2 / 3)
+    sndCont = cont ^* (2 / 3) ^+^ end ^* (1 / 3)
