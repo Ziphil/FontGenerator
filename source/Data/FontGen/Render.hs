@@ -28,11 +28,11 @@ renderDiagram :: FilePath -> Diagram B -> IO ()
 renderDiagram path diagram = renderPretty path absolute diagram
 
 outputFile :: FontInfo -> String -> IO (Path Rel File)
-outputFile info name = (-<.> "svg") =<< (root </>) <$> ((</>) <$> dir <*> file)
+outputFile info name = (root </>) <$> ((</>) <$> dir <*> file)
   where
     root = $(mkRelDir "out")
     dir = parseRelDir $ map toLower (family info) ++ "-" ++ map toLower (weight info)
-    file = parseRelFile $ name
+    file = (-<.> "svg") =<< parseRelFile name
 
 renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
 renderGlyph info char glyph = join $ renderDiagram <$> path <*> return (styleGlyph glyph)
