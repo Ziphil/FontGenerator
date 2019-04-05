@@ -2,7 +2,8 @@
 
 
 module Data.FontGen.Render
-  ( renderGlyphs
+  ( createOutputDir
+  , renderGlyphs
   , renderString
   , renderStrings
   )
@@ -19,6 +20,7 @@ import Data.Maybe
 import Diagrams.Backend.SVG
 import Diagrams.Prelude hiding (Path)
 import Path
+import Path.IO
 
 
 styleGlyph :: Glyph -> Diagram B
@@ -27,12 +29,19 @@ styleGlyph = lineWidth none . fillColor black
 renderDiagram :: FilePath -> Diagram B -> IO ()
 renderDiagram path diagram = renderPretty path absolute diagram
 
-outputFile :: FontInfo -> String -> IO (Path Rel File)
-outputFile info name = (root </>) <$> ((</>) <$> dir <*> file)
+outputDir :: FontInfo -> IO (Path Rel Dir)
+outputDir info = (root </>) <$> dir
   where
     root = $(mkRelDir "out")
     dir = parseRelDir $ map toLower (family info) ++ "-" ++ map toLower (weight info)
+
+outputFile :: FontInfo -> String -> IO (Path Rel File)
+outputFile info name = (</>) <$> outputDir info <*> file
+  where
     file = (-<.> "svg") =<< parseRelFile name
+
+createOutputDir :: FontInfo -> IO ()
+createOutputDir info = createDirIfMissing True =<< outputDir info
 
 renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
 renderGlyph info char glyph = join $ renderDiagram <$> path <*> return (styleGlyph glyph)

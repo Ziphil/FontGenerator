@@ -20,6 +20,7 @@ dependencies:
   - filepath
   - hspec
   - path
+  - path-io
 
 library:
   source-dirs: source
