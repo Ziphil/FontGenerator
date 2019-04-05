@@ -33,7 +33,7 @@ outputDir :: FontInfo -> IO (Path Rel Dir)
 outputDir info = (root </>) <$> dir
   where
     root = $(mkRelDir "out")
-    dir = parseRelDir $ map toLower (family info) ++ "-" ++ map toLower (weight info)
+    dir = parseRelDir $ map toLower (family info) ++ "-" ++ map toLower (show $ weight info)
 
 outputFile :: FontInfo -> String -> IO (Path Rel File)
 outputFile info name = (</>) <$> outputDir info <*> file

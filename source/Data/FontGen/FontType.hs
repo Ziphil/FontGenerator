@@ -3,6 +3,7 @@
 
 module Data.FontGen.FontType
   ( FontMetrics (..)
+  , Weight (..)
   , FontInfo (..)
   )
 where
@@ -10,9 +11,13 @@ where
 import Data.FontGen.GlyphType
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Version
 
 
 data FontMetrics = FontMetrics {em :: Double, ascent :: Double, descent :: Double}
   deriving (Eq, Show)
 
-data FontInfo = FontInfo {family :: String, weight :: String, version :: String, metrics :: FontMetrics, glyphs :: Glyphs}
+data Weight = Thin | ExtraLight | Light | Regular | Medium | SemiBold | Bold | ExtraBold | Heavy
+  deriving (Eq, Show, Enum)
+
+data FontInfo = FontInfo {family :: String, weight :: Weight, version :: Version, metrics :: FontMetrics, glyphs :: Glyphs}
