@@ -13,6 +13,7 @@ module Ziphil.FontGen.Vekos.Part
   , partUtTail
   , partUt
   , partTransphone
+  , partAcute
   , tailBend
   , legBend
   , beakWidth
@@ -369,6 +370,38 @@ partTransphone = makePart trails # moveOriginBy ~^ (0, -mean)
       , trailTransphone # reflectY
       , trailTransphone # reverseTrail
       , trailTransphoneCut # reverseTrail
+      ]
+  
+-- アキュートアクセントの丸い部分の外側の曲線の半分を、左下端から上端への向きで生成します。
+trailOuterAcute :: PartTrail
+trailOuterAcute = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
+  where
+    width = diacriticWidth / 2
+    height = diacriticHeight
+    
+-- アキュートアクセントの丸い部分の内側の曲線の半分を、左下端から上端への向きで生成します。
+trailInnerAcute :: PartTrail
+trailInnerAcute = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
+  where
+    width = diacriticWidth / 2 - diacriticWeightX
+    height = diacriticHeight - diacriticWeightY
+
+-- アキュートアクセントの下部にある水平に切られた部分を、左端から右端への向きで生成します。
+trailAcuteCut :: PartTrail
+trailAcuteCut = straight' ~^ (diacriticWeightX, 0)
+
+-- アキュートアクセントを生成します。
+-- 原点は全体の中央にあるので、回転や反転で変化しません。
+partAcute :: Part
+partAcute = makePart trails # moveOriginBy ~^ (diacriticWidth / 2, diacriticHeight / 2)
+  where
+    trails =
+      [ trailAcuteCut
+      , trailInnerAcute
+      , trailInnerAcute # reflectX # reverseTrail
+      , trailAcuteCut
+      , trailOuterAcute # reflectX
+      , trailOuterAcute # reverseTrail
       ]
 
 makePart :: [PartTrail] -> Part

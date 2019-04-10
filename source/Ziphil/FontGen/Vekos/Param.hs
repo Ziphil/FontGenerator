@@ -8,8 +8,13 @@ module Ziphil.FontGen.Vekos.Param
   , bearing
   , weightX
   , weightY
+  , diacriticWeightX
+  , diacriticWeightY
   , bowlWidth
   , transphoneGap
+  , diacriticWidth
+  , diacriticHeight
+  , diacriticGap
   , spaceWidth
   )
 where
@@ -36,11 +41,26 @@ weightX = 100
 weightY :: Double
 weightY = 75
 
+diacriticWeightX :: Double
+diacriticWeightX = 75
+
+diacriticWeightY :: Double
+diacriticWeightY = 60
+
 bowlWidth :: Double
 bowlWidth = 450
 
 transphoneGap :: Double
 transphoneGap = -10
+
+diacriticWidth :: Double
+diacriticWidth = 250
+
+diacriticHeight :: Double
+diacriticHeight = 100
+
+diacriticGap :: Double
+diacriticGap = 100
 
 spaceWidth :: Double
 spaceWidth = 300
