@@ -35,22 +35,22 @@ import Data.FontGen
 import Ziphil.FontGen.Vekos.Param
 
 
--- 丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
+-- k, p, c, l, a などの文字に共通する丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterBowl :: PartTrail
 trailOuterBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = bowlWidth / 2
     height = mean / 2
 
--- 丸い部分の内側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
+-- k, p, c, l, a などの文字に共通する丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerBowl :: PartTrail
 trailInnerBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = bowlWidth / 2 - weightX
     height = mean / 2 - weightY
 
--- k, p, c, l, a などの文字に共通する丸い部分のパスを生成します。
--- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+-- k, p, c, l, a などの文字に共通する丸い部分を生成します。
+-- 原点は全体の中央にあるので、回転や反転で変化しません。
 partBowl :: Part
 partBowl = mconcat parts # moveOriginBy ~^ (bowlWidth / 2, 0)
   where
@@ -74,23 +74,24 @@ partBowl = mconcat parts # moveOriginBy ~^ (bowlWidth / 2, 0)
 tailBend :: Double
 tailBend = bowlWidth * 0.5
 
--- l などの文字に共通する飛び出す部分の右側の曲線を、上から下の向きで生成します。
+-- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
 trailRightTail :: PartTrail
 trailRightTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
   where
     height = mean / 2 + descent
 
--- l などの文字に共通する飛び出す部分の左側の曲線を、上から下の向きで生成します。
+-- l の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
 trailLeftTail :: PartTrail
 trailLeftTail = bezier3' ~^ (0, -250) ~^ (-tailBend, -height + 200) ~^ (-tailBend, -height)
   where
     height = mean / 2 + descent
 
--- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左から右への向きで生成します。
+-- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左端から右端への向きで生成します。
 trailCut :: PartTrail
 trailCut = straight' ~^ (weightX, 0)
 
--- c, l などの文字に共通するエックスハイトの下に飛び出す部分のパスを生成します。
+-- l の文字のディセンダーを生成します。
+-- 反転や回転を施すことで、c などの文字のディセンダーや k, p などの文字のアセンダーとしても使えます。
 -- 原点は左上の角にあります。
 partTail :: Part
 partTail = makePart trails
@@ -102,7 +103,7 @@ partTail = makePart trails
       , trailCut # reverseTrail
       ]
 
--- l の文字と同じ形のパスを生成します。
+-- l の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partLes :: Part
 partLes = mconcat parts
@@ -115,14 +116,14 @@ partLes = mconcat parts
 legBend :: Double
 legBend = bowlWidth * 0.15
 
--- y の文字の下半分にある曲線を、上から下への向きで生成します。
+-- y の文字の下半分にある曲線を、上端から下端への向きで生成します。
 trailLeg :: PartTrail
 trailLeg = bezier3' ~^ (0, -150) ~^ (legBend, -height) ~^ (legBend, -height)
   where
     height = mean / 2
 
--- y の文字と同じ形のパスを生成します。
--- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+-- y の文字と同じ形を生成します。
+-- 原点は全体の中央にあるので、回転や反転で変化しません。
 partYes :: Part
 partYes = makePart trails # moveOriginBy ~^ (bowlWidth / 2, 0)
   where
@@ -148,22 +149,22 @@ beakHeight = mean * 0.35
 talWidth :: Double
 talWidth = bowlWidth / 2 + beakWidth
 
--- t の文字の右上にある部分の外側の曲線を、右端から上端に進む向きで生成します。
+-- t の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
 trailOuterBeak :: PartTrail
 trailOuterBeak = bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
     width = beakWidth
     height = beakHeight
 
--- t の文字の右上にある部分の内側の曲線を、右端から上端に進む向きで生成します。
+-- t の文字の右上にある部分の内側の曲線を、右端から上端への向きで生成します。
 trailInnerBeak :: PartTrail
 trailInnerBeak =  bezier3' ~^ (0, 10) ~^ (0, height + overshoot) ~^ (-width, height + overshoot)
   where
     width = beakWidth - weightX
     height = beakHeight - weightY
 
--- t の文字と同じ形のパスを生成します。
--- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+-- t の文字と同じ形を生成します。
+-- 原点は全体の中央にあるので、回転や反転で変化しません。
 partTal :: Part
 partTal = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
   where
@@ -189,30 +190,31 @@ narrowBowlCorrection = weightX * 0.15
 narrowBowlWidth :: Double
 narrowBowlWidth = narrowBowlVirtualWidth - narrowBowlCorrection
 
--- x などの文字で使われる細い丸い部分の外側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
+-- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterLeftNarrowBowl :: PartTrail
 trailOuterLeftNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2
     height = mean / 2
 
--- x などの文字で使われる細い丸い部分の外側の曲線のうち、右端から上端に進む全体の 4 分の 1 の曲線を生成します。
+-- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、右端から上端への向きで生成します。
+-- ただし、他のトレイルと使い方を揃えるため、左右反転してあります。
 trailOuterRightNarrowBowl :: PartTrail
 trailOuterRightNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2 - narrowBowlCorrection
     height = mean / 2
 
--- x などの文字で使われる細い丸い部分の内側の曲線のうち、左端から上端に進む全体の 4 分の 1 の曲線を生成します。
+-- x, j の文字に共通する細い丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerNarrowBowl :: PartTrail
 trailInnerNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
   where
     width = narrowBowlVirtualWidth / 2 - weightX
     height = mean / 2 - weightY
 
--- x, j などの文字に共通する細い丸い部分のパスを生成します。
+-- x, j の文字に共通する細い丸い部分を生成します。
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
--- 原点は丸い部分の中央にあります。
+-- 原点は全体の中央にあります。
 partNarrowBowl :: Part
 partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlVirtualWidth / 2, 0)
   where
@@ -236,20 +238,20 @@ partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlVirtualWidth / 2, 0)
 itTailBend :: Double
 itTailBend = bowlWidth * 0.5
 
--- i の文字に含まれる飛び出す部分の左側の曲線を、上から下の向きで生成します。
+-- i の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
 trailLeftItTail :: PartTrail
 trailLeftItTail = bezier3' ~^ (0, -250) ~^ (itTailBend, -height + 300) ~^ (itTailBend, -height)
   where
     height = mean / 2 + descent
 
--- i の文字に含まれる飛び出す部分の右側の曲線を、上から下の向きで生成します。
+-- i の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
 trailRightItTail :: PartTrail
 trailRightItTail = bezier3' ~^ (0, -210) ~^ (itTailBend, -height + 325) ~^ (itTailBend, -height)
   where
     height = mean / 2 + descent
 
--- i の文字と同じ形のパスを生成します。
--- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+-- i の文字と同じ形を生成します。
+-- 原点は上部の丸い部分の中央にあるので、回転や反転で変化しません。
 partIt :: Part
 partIt = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
   where
@@ -276,36 +278,35 @@ linkLowerCorrection = weightY * 0.1
 utTailBend :: Double
 utTailBend = bowlWidth * 0.55
 
--- u の文字に含まれる飛び出す部分と接続する部分の外側の曲線を、上から下の向きで生成します。
--- 飛び出す部分と重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
+-- u の文字のディセンダーと接続する部分の外側の曲線を、上端から下端への向きで生成します。
 trailOuterLink :: PartTrail
 trailOuterLink = bezier3' ~^ (0, 25) ~^ (0, -height) ~^ (width, -height)
   where
     width = linkWidth
     height = mean / 2 - linkLowerCorrection
 
--- u の文字に含まれる飛び出す部分と接続する部分の内側の曲線を、上から下の向きで生成します。
--- 飛び出す部分と重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
+-- u の文字のディセンダーと接続する部分の内側の曲線を、上端から下端への向きで生成します。
 trailInnerLink :: PartTrail
 trailInnerLink = bezier3' ~^ (0, 25) ~^ (0, -height) ~^ (width, -height)
   where
     width = linkWidth - weightX
     height = mean / 2 - weightY
 
--- u の文字に含まれる飛び出す部分の左側の曲線を、下から上の向きで生成します。
+-- u の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
 trailLeftUtTail :: PartTrail
 trailLeftUtTail = bezier3' ~^ (0, 25) ~^ (0, height) ~^ (utTailBend, height)
   where
     height = descent + weightY - linkUpperCorrection
 
--- u の文字に含まれる飛び出す部分の左側の曲線を、下から上の向きで生成します。
+-- u の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
 trailRightUtTail :: PartTrail
 trailRightUtTail = bezier3' ~^ (0, 25) ~^ (0, height) ~^ (utTailBend - weightX, height)
   where
     height = descent
 
--- u の文字のベースラインより上の部分のパスを生成します。
--- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+-- u の文字のベースラインより上にある丸い部分を生成します。
+-- ディセンダーと重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
+-- 原点は全体の中央にあるので、回転や反転で変化しません。
 partUpperUt :: Part
 partUpperUt = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
   where
@@ -320,7 +321,8 @@ partUpperUt = makePart trails # moveOriginBy ~^ (talWidth / 2, 0)
       , trailOuterBowl # reverseTrail
       ]
 
--- u の文字の飛び出す部分のパスを生成します。
+-- u の文字のディセンダーを生成します。
+-- ベースラインより上の部分と重ねたときに太く見えすぎないように、上側を少し細く補正してあります。
 -- 原点は右上の角にあります。
 partUtTail :: Part
 partUtTail = makePart trails
@@ -332,7 +334,7 @@ partUtTail = makePart trails
       , straight' ~^ (0, weightY - linkUpperCorrection)
       ]
 
--- u の文字と同じ形のパスを生成します。
+-- u の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partUt :: Part
 partUt = mconcat parts
@@ -348,17 +350,17 @@ transphoneWeightX = weightX * 0.95
 transphoneBend :: Double
 transphoneBend = bowlWidth * 0.15
 
--- 変音符の外側に向かって曲がる曲線を、上から下の向きで生成します。
+-- 変音符の右に飛び出るように曲がる曲線の上半分を、上端から下端への向きで生成します。
 trailTransphone :: PartTrail
 trailTransphone = bezier3' ~^ (0, 0) ~^ (transphoneBend, -height + 150) ~^ (transphoneBend, -height)
   where
     height = mean / 2
 
--- 変音符の上下にある水平に切られた部分を、左から右への向きで生成します。
+-- 変音符の上下にある水平に切られた部分を、左端から右端への向きで生成します。
 trailTransphoneCut :: PartTrail
 trailTransphoneCut = straight' ~^ (transphoneWeightX, 0)
 
--- g, b などの文字に共通する変音符部分のパスを生成します。
+-- 変音符と同じ形を生成します。
 -- 原点は左下の角にあります。
 partTransphone :: Part
 partTransphone = makePart trails # moveOriginBy ~^ (0, -mean)
@@ -390,7 +392,7 @@ trailInnerAcute = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
 trailAcuteCut :: PartTrail
 trailAcuteCut = straight' ~^ (diacriticWeightX, 0)
 
--- アキュートアクセントを生成します。
+-- アキュートアクセントと同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partAcute :: Part
 partAcute = makePart trails # moveOriginBy ~^ (diacriticWidth / 2, diacriticHeight / 2)
