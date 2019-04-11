@@ -159,7 +159,7 @@ glyphXal = makeGlyph' bearing bearing parts
   where
     parts = 
       [ partNarrowBowl # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
-      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth / 2 * 3 - weightX, mean / 2)
+      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth / 2 * 3 - thicknessX, mean / 2)
       ]
 
 glyphJol :: Given Config => Glyph
@@ -167,8 +167,8 @@ glyphJol = makeGlyph' bearing bearing parts
   where
     parts = 
       [ partNarrowBowl # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
-      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth / 2 * 3 - weightX, mean / 2)
-      , partTransphone # translate ~^ (narrowBowlVirtualWidth * 2 - weightX + transphoneGap, 0)
+      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth / 2 * 3 - thicknessX, mean / 2)
+      , partTransphone # translate ~^ (narrowBowlVirtualWidth * 2 - thicknessX + transphoneGap, 0)
       ]
 
 glyphAt :: Given Config => Glyph

@@ -10,12 +10,12 @@ module Ziphil.FontGen.Vekos.Param
   , ascent
   , overshoot
   , bearing
-  , weightX
-  , weightY
-  , acuteWeightX
-  , acuteWeightY
-  , circumflexWeightX
-  , circumflexWeightY
+  , thicknessX
+  , thicknessY
+  , acuteThicknessX
+  , acuteThicknessY
+  , circumflexThicknessX
+  , circumflexThicknessY
   , bowlWidth
   , transphoneGap
   , acuteWidth
@@ -58,23 +58,23 @@ overshoot = 10
 bearing :: Given Config => Double
 bearing = 30
 
-weightX :: Given Config => Double
-weightX = 100
+thicknessX :: Given Config => Double
+thicknessX = 100
 
-weightY :: Given Config => Double
-weightY = 75
+thicknessY :: Given Config => Double
+thicknessY = 75
 
-acuteWeightX :: Given Config => Double
-acuteWeightX = 75
+acuteThicknessX :: Given Config => Double
+acuteThicknessX = 75
 
-acuteWeightY :: Given Config => Double
-acuteWeightY = 60
+acuteThicknessY :: Given Config => Double
+acuteThicknessY = 60
 
-circumflexWeightX :: Given Config => Double
-circumflexWeightX = 70
+circumflexThicknessX :: Given Config => Double
+circumflexThicknessX = 70
 
-circumflexWeightY :: Given Config => Double
-circumflexWeightY = 55
+circumflexThicknessY :: Given Config => Double
+circumflexThicknessY = 55
 
 bowlWidth :: Given Config => Double
 bowlWidth = 450
