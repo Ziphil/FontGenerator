@@ -14,6 +14,7 @@ module Ziphil.FontGen.Vekos.Part
   , partUt
   , partTransphone
   , partAcute
+  , partCircumflex
   , tailBend
   , legBend
   , beakWidth
@@ -378,24 +379,24 @@ partTransphone = makePart trails # moveOriginBy ~^ (0, -mean)
 trailOuterAcute :: PartTrail
 trailOuterAcute = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
   where
-    width = diacriticWidth / 2
-    height = diacriticHeight
+    width = acuteWidth / 2
+    height = acuteHeight
     
 -- アキュートアクセントの丸い部分の内側の曲線の半分を、左下端から上端への向きで生成します。
 trailInnerAcute :: PartTrail
 trailInnerAcute = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
   where
-    width = diacriticWidth / 2 - diacriticWeightX
-    height = diacriticHeight - diacriticWeightY
+    width = acuteWidth / 2 - acuteWeightX
+    height = acuteHeight - acuteWeightY
 
 -- アキュートアクセントの下部にある水平に切られた部分を、左端から右端への向きで生成します。
 trailAcuteCut :: PartTrail
-trailAcuteCut = straight' ~^ (diacriticWeightX, 0)
+trailAcuteCut = straight' ~^ (acuteWeightX, 0)
 
 -- アキュートアクセントと同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partAcute :: Part
-partAcute = makePart trails # moveOriginBy ~^ (diacriticWidth / 2, diacriticHeight / 2)
+partAcute = makePart trails # moveOriginBy ~^ (acuteWidth / 2, acuteHeight / 2)
   where
     trails =
       [ trailAcuteCut
@@ -404,6 +405,42 @@ partAcute = makePart trails # moveOriginBy ~^ (diacriticWidth / 2, diacriticHeig
       , trailAcuteCut
       , trailOuterAcute # reflectX
       , trailOuterAcute # reverseTrail
+      ]
+
+-- サーカムフレックスアクセントの外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
+trailOuterCircumflex :: PartTrail
+trailOuterCircumflex = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
+  where
+    width = circumflexWidth / 2
+    height = circumflexWidth / 2
+
+-- サーカムフレックスアクセントの内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
+trailInnerCircumflex :: PartTrail
+trailInnerCircumflex = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
+  where
+    width = circumflexWidth / 2 - acuteWeightX
+    height = circumflexWidth / 2 - acuteWeightY
+
+-- サーカムフレックスアクセントと同じ形を生成します。
+-- 原点は全体の中央にあります。
+partCircumflex :: Part
+partCircumflex = mconcat parts # moveOriginBy ~^ (circumflexWidth / 2, 0)
+  where
+    outerTrails =
+      [ trailOuterCircumflex # reflectY
+      , trailOuterCircumflex # rotateHalfTurn # reverseTrail
+      , trailOuterCircumflex # reflectX
+      , trailOuterCircumflex # reverseTrail
+      ]
+    innerTrails =
+      [ trailInnerCircumflex # reflectY
+      , trailInnerCircumflex # rotateHalfTurn # reverseTrail
+      , trailInnerCircumflex # reflectX
+      , trailInnerCircumflex # reverseTrail
+      ]
+    parts =
+      [ makePart outerTrails
+      , makePart innerTrails # reversePath # translate ~^ (acuteWeightX, 0)
       ]
 
 makePart :: [PartTrail] -> Part
