@@ -159,15 +159,15 @@ glyphXal :: Given Config => Glyph
 glyphXal = makeGlyph' bearing bearing parts
   where
     parts = 
-      [ partXal # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
+      [ partXal # translate ~^ (xalWidth / 2, mean / 2)
       ]
 
 glyphJol :: Given Config => Glyph
 glyphJol = makeGlyph' bearing bearing parts
   where
     parts = 
-      [ partXal # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (narrowBowlVirtualWidth * 2 - thicknessX + transphoneGap, 0)
+      [ partXal # translate ~^ (xalWidth / 2, mean / 2)
+      , partTransphone # translate ~^ (xalWidth + transphoneGap, 0)
       ]
 
 glyphNes :: Given Config => Glyph

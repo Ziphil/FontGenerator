@@ -17,21 +17,10 @@ module Ziphil.FontGen.Vekos.Part
   , partTransphone
   , partAcute
   , partCircumflex
-  , tailBend
-  , legBend
   , beakWidth
-  , beakHeight
   , talWidth
-  , narrowBowlVirtualWidth
-  , narrowBowlWidth
+  , xalWidth
   , nesWidth
-  , itTailBend
-  , linkWidth
-  , linkUpperCorrection
-  , linkLowerCorrection
-  , utTailBend
-  , transphoneThicknessX
-  , transphoneBend
   )
 where
 
@@ -195,6 +184,9 @@ narrowBowlCorrection = thicknessX * 0.15
 narrowBowlWidth :: Given Config => Double
 narrowBowlWidth = narrowBowlVirtualWidth - narrowBowlCorrection
 
+xalWidth :: Given Config => Double
+xalWidth = narrowBowlVirtualWidth * 2 - thicknessX
+
 -- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterLeftNarrowBowl :: Given Config => PartTrail
 trailOuterLeftNarrowBowl = bezier3' ~^ (0, 25) ~^ (0, height + overshoot) ~^ (width, height + overshoot)
@@ -241,9 +233,9 @@ partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlVirtualWidth / 2, 0)
       ]
 
 -- x の文字と同じ形を生成します。
--- 原点は左の丸い部分の中央にあります。
+-- 原点は全体の中央にあります。
 partXal :: Given Config => Part
-partXal = mconcat parts
+partXal = mconcat parts # moveOriginBy ~^ (xalWidth / 2 - narrowBowlVirtualWidth / 2, 0)
   where
     parts =
       [ partNarrowBowl
