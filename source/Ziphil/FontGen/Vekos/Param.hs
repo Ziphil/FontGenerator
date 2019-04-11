@@ -10,11 +10,14 @@ module Ziphil.FontGen.Vekos.Param
   , weightY
   , acuteWeightX
   , acuteWeightY
+  , circumflexWeightX
+  , circumflexWeightY
   , bowlWidth
   , transphoneGap
   , acuteWidth
   , acuteHeight
   , circumflexWidth
+  , circumflexHeight
   , diacriticGap
   , spaceWidth
   )
@@ -48,6 +51,12 @@ acuteWeightX = 75
 acuteWeightY :: Double
 acuteWeightY = 60
 
+circumflexWeightX :: Double
+circumflexWeightX = 70
+
+circumflexWeightY :: Double
+circumflexWeightY = 55
+
 bowlWidth :: Double
 bowlWidth = 450
 
@@ -61,10 +70,13 @@ acuteHeight :: Double
 acuteHeight = 100
 
 circumflexWidth :: Double
-circumflexWidth = 200 
+circumflexWidth = 200
+
+circumflexHeight :: Double
+circumflexHeight = 180
 
 diacriticGap :: Double
-diacriticGap = 100
+diacriticGap = 50
 
 spaceWidth :: Double
 spaceWidth = 300

@@ -394,9 +394,9 @@ trailAcuteCut :: PartTrail
 trailAcuteCut = straight' ~^ (acuteWeightX, 0)
 
 -- アキュートアクセントと同じ形を生成します。
--- 原点は全体の中央にあるので、回転や反転で変化しません。
+-- 原点は下部中央にあります。
 partAcute :: Part
-partAcute = makePart trails # moveOriginBy ~^ (acuteWidth / 2, acuteHeight / 2)
+partAcute = makePart trails # moveOriginBy ~^ (acuteWidth / 2, 0)
   where
     trails =
       [ trailAcuteCut
@@ -412,19 +412,19 @@ trailOuterCircumflex :: PartTrail
 trailOuterCircumflex = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
   where
     width = circumflexWidth / 2
-    height = circumflexWidth / 2
+    height = circumflexHeight / 2
 
 -- サーカムフレックスアクセントの内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerCircumflex :: PartTrail
 trailInnerCircumflex = bezier3' ~^ (0, 10) ~^ (0, height) ~^ (width, height)
   where
-    width = circumflexWidth / 2 - acuteWeightX
-    height = circumflexWidth / 2 - acuteWeightY
+    width = circumflexWidth / 2 - circumflexWeightX
+    height = circumflexHeight / 2 - circumflexWeightY
 
 -- サーカムフレックスアクセントと同じ形を生成します。
--- 原点は全体の中央にあります。
+-- 原点は下部中央にあります。
 partCircumflex :: Part
-partCircumflex = mconcat parts # moveOriginBy ~^ (circumflexWidth / 2, 0)
+partCircumflex = mconcat parts # moveOriginBy ~^ (circumflexWidth / 2, -circumflexHeight / 2)
   where
     outerTrails =
       [ trailOuterCircumflex # reflectY
@@ -440,7 +440,7 @@ partCircumflex = mconcat parts # moveOriginBy ~^ (circumflexWidth / 2, 0)
       ]
     parts =
       [ makePart outerTrails
-      , makePart innerTrails # reversePath # translate ~^ (acuteWeightX, 0)
+      , makePart innerTrails # reversePath # translate ~^ (circumflexWeightX, 0)
       ]
 
 makePart :: [PartTrail] -> Part

@@ -191,7 +191,7 @@ glyphAtGrave = makeGlyph bearing bearing parts
   where
     parts = 
       [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
       ]
 
 glyphAtCircumflex :: Glyph
@@ -222,7 +222,7 @@ glyphItGrave = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
       ]
 
 glyphItCircumflex :: Glyph
@@ -245,7 +245,7 @@ glyphEtAcute = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (bowlWidth / 2, -diacriticGap)
+      , partAcute # reflectY # translate ~^ (beakWidth, -diacriticGap)
       ]
 
 glyphEtGrave :: Glyph
@@ -253,7 +253,7 @@ glyphEtGrave = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # translate ~^ (bowlWidth / 2, -diacriticGap)
+      , partAcute # translate ~^ (beakWidth, -acuteHeight - diacriticGap)
       ]
 
 glyphEtCircumflex :: Glyph
@@ -261,7 +261,7 @@ glyphEtCircumflex = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partCircumflex # translate ~^ (bowlWidth / 2, -diacriticGap)
+      , partCircumflex # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
       ]
 
 glyphUt :: Glyph
@@ -276,7 +276,7 @@ glyphUtGrave = makeGlyph bearing bearing parts
   where
     parts = 
       [ partUt # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
       ]
 
 glyphUtCircumflex :: Glyph
@@ -299,7 +299,7 @@ glyphOtGrave = makeGlyph bearing bearing parts
   where
     parts = 
       [ partUt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # translate ~^ (bowlWidth / 2, -diacriticGap)
+      , partAcute # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
       ]
 
 glyphOtCircumflex :: Glyph
@@ -307,7 +307,7 @@ glyphOtCircumflex = makeGlyph bearing bearing parts
   where
     parts = 
       [ partUt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partCircumflex # translate ~^ (bowlWidth / 2, -diacriticGap)
+      , partCircumflex # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
       ]
       
 glyphSpace :: Glyph
