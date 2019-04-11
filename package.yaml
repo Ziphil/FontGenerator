@@ -21,6 +21,7 @@ dependencies:
   - hspec
   - path
   - path-io
+  - reflection
 
 library:
   source-dirs: source

@@ -1,4 +1,4 @@
---
+{-# LANGUAGE FlexibleContexts #-}
 
 
 module Ziphil.FontGen.Vekos.Glyph
@@ -9,11 +9,12 @@ where
 import Data.FontGen
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Reflection
 import Ziphil.FontGen.Vekos.Param
 import Ziphil.FontGen.Vekos.Part
 
 
-glyphs :: Glyphs
+glyphs :: Given Config => Glyphs
 glyphs = Map.fromList list
   where
     list =
@@ -34,14 +35,14 @@ glyphs = Map.fromList list
       , (' ', glyphSpace)
       ]
 
-glyphLes :: Glyph
+glyphLes :: Given Config => Glyph
 glyphLes = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
-glyphRes :: Glyph
+glyphRes :: Given Config => Glyph
 glyphRes = makeGlyph bearing bearing parts
   where
     parts =
@@ -49,14 +50,14 @@ glyphRes = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
-glyphPal :: Glyph
+glyphPal :: Given Config => Glyph
 glyphPal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # rotateHalfTurn # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
-glyphBol :: Glyph
+glyphBol :: Given Config => Glyph
 glyphBol = makeGlyph bearing bearing parts
   where
     parts = 
@@ -64,14 +65,14 @@ glyphBol = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
-glyphCal :: Glyph
+glyphCal :: Given Config => Glyph
 glyphCal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # reflectX # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
-glyphQol :: Glyph
+glyphQol :: Given Config => Glyph
 glyphQol = makeGlyph bearing bearing parts
   where
     parts = 
@@ -79,14 +80,14 @@ glyphQol = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
-glyphKal :: Glyph
+glyphKal :: Given Config => Glyph
 glyphKal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partLes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
-glyphGol :: Glyph
+glyphGol :: Given Config => Glyph
 glyphGol = makeGlyph bearing bearing parts
   where
     parts = 
@@ -94,14 +95,14 @@ glyphGol = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
-glyphYes :: Glyph
+glyphYes :: Given Config => Glyph
 glyphYes = makeGlyph bearing bearing parts
   where
     parts = 
       [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
-glyphHes :: Glyph
+glyphHes :: Given Config => Glyph
 glyphHes = makeGlyph bearing bearing parts
   where
     parts = 
@@ -109,14 +110,14 @@ glyphHes = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
-glyphSal :: Glyph
+glyphSal :: Given Config => Glyph
 glyphSal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partYes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
-glyphZol :: Glyph
+glyphZol :: Given Config => Glyph
 glyphZol = makeGlyph bearing bearing parts
   where
     parts = 
@@ -124,14 +125,14 @@ glyphZol = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
       ]
 
-glyphTal :: Glyph
+glyphTal :: Given Config => Glyph
 glyphTal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partTal # translate ~^ (talWidth / 2, mean / 2)
       ]
 
-glyphDol :: Glyph
+glyphDol :: Given Config => Glyph
 glyphDol = makeGlyph bearing bearing parts
   where
     parts = 
@@ -139,14 +140,14 @@ glyphDol = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (talWidth + transphoneGap, 0)
       ]
 
-glyphFal :: Glyph
+glyphFal :: Given Config => Glyph
 glyphFal = makeGlyph bearing bearing parts
   where
     parts = 
       [ partTal # reflectX # translate ~^ (talWidth / 2, mean / 2)
       ]
 
-glyphVol :: Glyph
+glyphVol :: Given Config => Glyph
 glyphVol = makeGlyph bearing bearing parts
   where
     parts = 
@@ -154,7 +155,7 @@ glyphVol = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (talWidth + transphoneGap, 0)
       ]
   
-glyphXal :: Glyph
+glyphXal :: Given Config => Glyph
 glyphXal = makeGlyph bearing bearing parts
   where
     parts = 
@@ -162,7 +163,7 @@ glyphXal = makeGlyph bearing bearing parts
       , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth / 2 * 3 - weightX, mean / 2)
       ]
 
-glyphJol :: Glyph
+glyphJol :: Given Config => Glyph
 glyphJol = makeGlyph bearing bearing parts
   where
     parts = 
@@ -171,14 +172,14 @@ glyphJol = makeGlyph bearing bearing parts
       , partTransphone # translate ~^ (narrowBowlVirtualWidth * 2 - weightX + transphoneGap, 0)
       ]
 
-glyphAt :: Glyph
+glyphAt :: Given Config => Glyph
 glyphAt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
       ]
 
-glyphAtAcute :: Glyph
+glyphAtAcute :: Given Config => Glyph
 glyphAtAcute = makeGlyph bearing bearing parts
   where
     parts = 
@@ -186,7 +187,7 @@ glyphAtAcute = makeGlyph bearing bearing parts
       , partAcute # translate ~^ (bowlWidth / 2, mean + diacriticGap)
       ]
 
-glyphAtGrave :: Glyph
+glyphAtGrave :: Given Config => Glyph
 glyphAtGrave = makeGlyph bearing bearing parts
   where
     parts = 
@@ -194,7 +195,7 @@ glyphAtGrave = makeGlyph bearing bearing parts
       , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
       ]
 
-glyphAtCircumflex :: Glyph
+glyphAtCircumflex :: Given Config => Glyph
 glyphAtCircumflex = makeGlyph bearing bearing parts
   where
     parts = 
@@ -202,14 +203,14 @@ glyphAtCircumflex = makeGlyph bearing bearing parts
       , partCircumflex # translate ~^ (bowlWidth / 2, mean + diacriticGap)
       ]
 
-glyphIt :: Glyph
+glyphIt :: Given Config => Glyph
 glyphIt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # translate ~^ (talWidth / 2, mean / 2)
       ]
 
-glyphItAcute :: Glyph
+glyphItAcute :: Given Config => Glyph
 glyphItAcute = makeGlyph bearing bearing parts
   where
     parts = 
@@ -217,7 +218,7 @@ glyphItAcute = makeGlyph bearing bearing parts
       , partAcute # translate ~^ (bowlWidth / 2, mean + diacriticGap)
       ]
 
-glyphItGrave :: Glyph
+glyphItGrave :: Given Config => Glyph
 glyphItGrave = makeGlyph bearing bearing parts
   where
     parts = 
@@ -225,7 +226,7 @@ glyphItGrave = makeGlyph bearing bearing parts
       , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
       ]
 
-glyphItCircumflex :: Glyph
+glyphItCircumflex :: Given Config => Glyph
 glyphItCircumflex = makeGlyph bearing bearing parts
   where
     parts = 
@@ -233,14 +234,14 @@ glyphItCircumflex = makeGlyph bearing bearing parts
       , partCircumflex # translate ~^ (bowlWidth / 2, mean + diacriticGap)
       ]
 
-glyphEt :: Glyph
+glyphEt :: Given Config => Glyph
 glyphEt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
       ]
 
-glyphEtAcute :: Glyph
+glyphEtAcute :: Given Config => Glyph
 glyphEtAcute = makeGlyph bearing bearing parts
   where
     parts = 
@@ -248,7 +249,7 @@ glyphEtAcute = makeGlyph bearing bearing parts
       , partAcute # reflectY # translate ~^ (beakWidth, -diacriticGap)
       ]
 
-glyphEtGrave :: Glyph
+glyphEtGrave :: Given Config => Glyph
 glyphEtGrave = makeGlyph bearing bearing parts
   where
     parts = 
@@ -256,7 +257,7 @@ glyphEtGrave = makeGlyph bearing bearing parts
       , partAcute # translate ~^ (beakWidth, -acuteHeight - diacriticGap)
       ]
 
-glyphEtCircumflex :: Glyph
+glyphEtCircumflex :: Given Config => Glyph
 glyphEtCircumflex = makeGlyph bearing bearing parts
   where
     parts = 
@@ -264,14 +265,14 @@ glyphEtCircumflex = makeGlyph bearing bearing parts
       , partCircumflex # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
       ]
 
-glyphUt :: Glyph
+glyphUt :: Given Config => Glyph
 glyphUt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partUt # translate ~^ (talWidth / 2, mean / 2)
       ]
 
-glyphUtGrave :: Glyph
+glyphUtGrave :: Given Config => Glyph
 glyphUtGrave = makeGlyph bearing bearing parts
   where
     parts = 
@@ -279,7 +280,7 @@ glyphUtGrave = makeGlyph bearing bearing parts
       , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
       ]
 
-glyphUtCircumflex :: Glyph
+glyphUtCircumflex :: Given Config => Glyph
 glyphUtCircumflex = makeGlyph bearing bearing parts
   where
     parts = 
@@ -287,14 +288,14 @@ glyphUtCircumflex = makeGlyph bearing bearing parts
       , partCircumflex # translate ~^ (bowlWidth / 2, mean + diacriticGap)
       ]
 
-glyphOt :: Glyph
+glyphOt :: Given Config => Glyph
 glyphOt = makeGlyph bearing bearing parts
   where
     parts = 
       [ partUt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
       ]
 
-glyphOtGrave :: Glyph
+glyphOtGrave :: Given Config => Glyph
 glyphOtGrave = makeGlyph bearing bearing parts
   where
     parts = 
@@ -302,7 +303,7 @@ glyphOtGrave = makeGlyph bearing bearing parts
       , partAcute # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
       ]
 
-glyphOtCircumflex :: Glyph
+glyphOtCircumflex :: Given Config => Glyph
 glyphOtCircumflex = makeGlyph bearing bearing parts
   where
     parts = 
@@ -310,8 +311,8 @@ glyphOtCircumflex = makeGlyph bearing bearing parts
       , partCircumflex # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
       ]
       
-glyphSpace :: Glyph
+glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyph 0 spaceWidth []
 
-makeGlyph :: Double -> Double -> [Part] -> Glyph
+makeGlyph :: Given Config => Double -> Double -> [Part] -> Glyph
 makeGlyph left right = addBearing left right . fixVertical descent (mean + descent * 2) . strokePath . mconcat

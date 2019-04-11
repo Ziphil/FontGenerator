@@ -1,8 +1,11 @@
---
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 
 module Ziphil.FontGen.Vekos.Param
-  ( descent
+  ( Config (..)
+  , regularConfig
+  , descent
   , mean
   , overshoot
   , bearing
@@ -23,60 +26,71 @@ module Ziphil.FontGen.Vekos.Param
   )
 where
 
+import Data.FontGen.FontType (Weight (..))
+import Data.Reflection
+
+
+data Config = Config {weight :: Weight}
+  deriving (Eq, Show)
+
+regularConfig :: Config
+regularConfig = Config {weight}
+  where
+    weight = Regular
 
 -- ディセンダーラインの深さを表します。
 -- このフォントではディセンダー部分とアセンダー部分の高さが同じなので、アセンダーラインの高さとしても利用されます。
-descent :: Double
+descent :: Given Config => Double
 descent = 250
 
 -- ミーンラインの高さ (エックスハイト) を表します。
-mean :: Double
+mean :: Given Config => Double
 mean = 500
 
-overshoot :: Double
+overshoot :: Given Config => Double
 overshoot = 10
 
-bearing :: Double
+bearing :: Given Config => Double
 bearing = 30
 
-weightX :: Double
+weightX :: Given Config => Double
 weightX = 100
 
-weightY :: Double
+weightY :: Given Config => Double
 weightY = 75
 
-acuteWeightX :: Double
+acuteWeightX :: Given Config => Double
 acuteWeightX = 75
 
-acuteWeightY :: Double
+acuteWeightY :: Given Config => Double
 acuteWeightY = 60
 
-circumflexWeightX :: Double
+circumflexWeightX :: Given Config => Double
 circumflexWeightX = 70
 
-circumflexWeightY :: Double
+circumflexWeightY :: Given Config => Double
 circumflexWeightY = 55
 
-bowlWidth :: Double
+bowlWidth :: Given Config => Double
 bowlWidth = 450
 
-transphoneGap :: Double
+transphoneGap :: Given Config => Double
 transphoneGap = -10
 
-acuteWidth :: Double
+acuteWidth :: Given Config => Double
 acuteWidth = 250
 
-acuteHeight :: Double
+acuteHeight :: Given Config => Double
 acuteHeight = 100
 
-circumflexWidth :: Double
+circumflexWidth :: Given Config => Double
 circumflexWidth = 200
 
-circumflexHeight :: Double
+circumflexHeight :: Given Config => Double
 circumflexHeight = 180
 
-diacriticGap :: Double
+diacriticGap :: Given Config => Double
 diacriticGap = 50
 
-spaceWidth :: Double
+spaceWidth :: Given Config => Double
 spaceWidth = 300
