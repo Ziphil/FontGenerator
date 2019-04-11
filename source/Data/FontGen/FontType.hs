@@ -14,7 +14,7 @@ import qualified Data.Map as Map
 import Data.Version
 
 
-data FontMetrics = FontMetrics {em :: Double, ascent :: Double, descent :: Double}
+data FontMetrics = FontMetrics {metricEm :: Double, metricAscent :: Double, metricDescent :: Double}
   deriving (Eq, Show)
 
 data Weight = Thin | ExtraLight | Light | Regular | Medium | SemiBold | Bold | ExtraBold | Heavy

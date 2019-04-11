@@ -443,6 +443,3 @@ partCircumflex = mconcat parts # moveOriginBy ~^ (circumflexWidth / 2, -circumfl
       [ makePart outerTrails
       , makePart innerTrails # reversePath # translate ~^ (circumflexWeightX, 0)
       ]
-
-makePart :: [PartTrail] -> Part
-makePart = pathFromTrail . closeTrail . mconcat

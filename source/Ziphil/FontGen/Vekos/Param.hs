@@ -1,5 +1,4 @@
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE NamedFieldPuns #-}
 
 
 module Ziphil.FontGen.Vekos.Param
@@ -7,6 +6,8 @@ module Ziphil.FontGen.Vekos.Param
   , regularConfig
   , descent
   , mean
+  , em
+  , ascent
   , overshoot
   , bearing
   , weightX
@@ -26,17 +27,15 @@ module Ziphil.FontGen.Vekos.Param
   )
 where
 
-import Data.FontGen.FontType (Weight (..))
+import Data.FontGen.FontType
 import Data.Reflection
 
 
-data Config = Config {weight :: Weight}
+data Config = Config {localWeight :: Weight}
   deriving (Eq, Show)
 
 regularConfig :: Config
-regularConfig = Config {weight}
-  where
-    weight = Regular
+regularConfig = Config {localWeight = Regular}
 
 -- ディセンダーラインの深さを表します。
 -- このフォントではディセンダー部分とアセンダー部分の高さが同じなので、アセンダーラインの高さとしても利用されます。
@@ -46,6 +45,12 @@ descent = 250
 -- ミーンラインの高さ (エックスハイト) を表します。
 mean :: Given Config => Double
 mean = 500
+
+em :: Given Config => Double
+em = mean + descent * 2
+
+ascent :: Given Config => Double
+ascent = mean + descent
 
 overshoot :: Given Config => Double
 overshoot = 10

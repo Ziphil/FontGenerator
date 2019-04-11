@@ -1,4 +1,4 @@
---
+{-# LANGUAGE NamedFieldPuns #-}
 
 
 module Data.FontGen.GlyphType
@@ -7,14 +7,18 @@ module Data.FontGen.GlyphType
   , PartTrail
   , Glyph
   , Glyphs
+  , makePart
   , fixVertical
   , addBearing
+  , makeGlyph
   )
 where
 
 import Data.FontGen.Util
 import Data.Map (Map)
 import qualified Data.Map as Map
+import Data.Reflection
+import Data.Version
 import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
@@ -26,14 +30,24 @@ type PartTrail = Trail V2 Double
 type Glyph = Diagram B
 type Glyphs = Map Char Glyph
 
+-- トレイルのリストからパーツを生成します。
+-- 生成の際に自動的にパスを閉じるので、トレイルの始点と終点は同じ点であるようにしてください。
+makePart :: [PartTrail] -> Part
+makePart = pathFromTrail . closeTrail . mconcat
+
 -- 与えられたディセンダーの深さとボディの高さに従って、出力用にグリフのエンベロープを修正します。
 -- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
 fixVertical :: Double -> Double -> Glyph -> Glyph
-fixVertical descent height diagram = rectEnvelope ~. base ~^ size $ diagram
+fixVertical em descent diagram = rectEnvelope ~. base ~^ size $ diagram
   where
     base = (0, -descent)
-    size = (width diagram, height)
+    size = (width diagram, em)
 
 -- 左右に与えられた長さの分のスペースができるように、グリフのエンベロープを修正します。
 addBearing :: Double -> Double -> Glyph -> Glyph
 addBearing left right = extrudeLeft left . extrudeRight right
+
+-- パーツのリストからグリフを生成します。
+-- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
+makeGlyph :: Double -> Double -> Double -> Double -> [Part] -> Glyph
+makeGlyph em descent left right = addBearing left right . fixVertical em descent . strokePath . mconcat
