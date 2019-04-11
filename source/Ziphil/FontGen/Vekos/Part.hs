@@ -8,6 +8,7 @@ module Ziphil.FontGen.Vekos.Part
   , partYes
   , partTal
   , partNarrowBowl
+  , partXal
   , partIt
   , partUpperUt
   , partUtTail
@@ -235,6 +236,16 @@ partNarrowBowl = mconcat parts # moveOriginBy ~^ (narrowBowlVirtualWidth / 2, 0)
     parts =
       [ makePart outerTrails
       , makePart innerTrails # reversePath # translate ~^ (thicknessX, 0)
+      ]
+
+-- x の文字と同じ形を生成します。
+-- 原点は左の丸い部分の中央にあります。
+partXal :: Given Config => Part
+partXal = mconcat parts
+  where
+    parts =
+      [ partNarrowBowl
+      , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth - thicknessX, 0)
       ]
 
 itTailBend :: Given Config => Double
