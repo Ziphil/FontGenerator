@@ -310,6 +310,3 @@ glyphOtCircumflex = makeGlyph' bearing bearing parts
       
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyph' 0 spaceWidth []
-
-makeGlyph' :: Given Config => Double -> Double -> [Part] -> Glyph
-makeGlyph' = makeGlyph em descent
