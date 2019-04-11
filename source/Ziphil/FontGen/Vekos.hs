@@ -22,8 +22,8 @@ regularInfo = FontInfo {family, weight, version, metrics, glyphs}
     metrics = makeMetrics Param.regularConfig
     glyphs = give Param.regularConfig Glyph.glyphs
 
-makeMetrics :: Param.Config -> FontMetrics
-makeMetrics config = FontMetrics {metricEm, metricAscent, metricDescent}
+makeMetrics :: Param.Config -> Metrics
+makeMetrics config = Metrics {metricEm, metricAscent, metricDescent}
   where
     metricEm = give config Param.em
     metricAscent = give config Param.ascent
