@@ -7,6 +7,7 @@ module Ziphil.FontGen.Vekos
 where
 
 import Data.FontGen.FontType
+import Data.FontGen.GlyphType
 import qualified Ziphil.FontGen.Vekos.Glyph as Glyph
 import qualified Ziphil.FontGen.Vekos.Param as Param
 import Data.Reflection
@@ -19,12 +20,5 @@ regularInfo = FontInfo {family, weight, version, metrics, glyphs}
     family = "Vekos"
     weight = Regular
     version = makeVersion [0, 0, 0]
-    metrics = makeMetrics Param.regularConfig
+    metrics = give Param.regularConfig Param.metrics
     glyphs = give Param.regularConfig Glyph.glyphs
-
-makeMetrics :: Param.Config -> Metrics
-makeMetrics config = Metrics {metricEm, metricAscent, metricDescent}
-  where
-    metricEm = give config Param.em
-    metricAscent = give config Param.ascent
-    metricDescent = give config Param.descent

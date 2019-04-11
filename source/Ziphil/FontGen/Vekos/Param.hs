@@ -24,12 +24,12 @@ module Ziphil.FontGen.Vekos.Param
   , circumflexHeight
   , diacriticGap
   , spaceWidth
+  , metrics
   , makeGlyph'
   )
 where
 
 import Data.FontGen.GlyphType
-import Data.FontGen.FontType
 import Data.Reflection
 
 
@@ -101,6 +101,9 @@ diacriticGap = 50
 
 spaceWidth :: Given Config => Double
 spaceWidth = 300
+
+metrics :: Given Config => Metrics
+metrics = Metrics {metricEm = em, metricAscent = ascent, metricDescent = descent}
 
 -- パーツのリストからこのフォントの設定に合わせてグリフを生成します。
 makeGlyph' :: Given Config => Double -> Double -> [Part] -> Glyph

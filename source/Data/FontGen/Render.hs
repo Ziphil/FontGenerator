@@ -14,7 +14,6 @@ import Data.Char
 import Data.FontGen.FontType
 import Data.FontGen.GlyphType
 import Data.FontGen.Util
-import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Diagrams.Backend.SVG

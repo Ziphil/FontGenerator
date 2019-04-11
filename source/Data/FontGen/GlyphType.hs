@@ -11,6 +11,8 @@ module Data.FontGen.GlyphType
   , fixVertical
   , addBearing
   , makeGlyph
+  , Metrics (..)
+  , Weight (..)
   )
 where
 
@@ -51,3 +53,9 @@ addBearing left right = extrudeLeft left . extrudeRight right
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
 makeGlyph :: Double -> Double -> Double -> Double -> [Part] -> Glyph
 makeGlyph em descent left right = addBearing left right . fixVertical em descent . strokePath . mconcat
+
+data Metrics = Metrics {metricEm :: Double, metricAscent :: Double, metricDescent :: Double}
+  deriving (Eq, Show)
+
+data Weight = Thin | ExtraLight | Light | Regular | Medium | SemiBold | Bold | ExtraBold | Heavy
+  deriving (Eq, Show, Enum)
