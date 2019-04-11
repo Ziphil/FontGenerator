@@ -26,6 +26,7 @@ glyphs = Map.fromList list
       , ('t', glyphTal), ('d', glyphDol)
       , ('f', glyphFal), ('v', glyphVol)
       , ('x', glyphXal), ('j', glyphJol)
+      , ('n', glyphNes), ('m', glyphMes)
       , ('a', glyphAt), ('á', glyphAtAcute), ('à', glyphAtGrave), ('â', glyphAtCircumflex)
       , ('e', glyphEt), ('é', glyphEtAcute), ('è', glyphEtGrave), ('ê', glyphEtCircumflex)
       , ('i', glyphIt), ('í', glyphItAcute), ('ì', glyphItGrave), ('î', glyphItCircumflex)
@@ -167,6 +168,21 @@ glyphJol = makeGlyph' bearing bearing parts
     parts = 
       [ partXal # translate ~^ (narrowBowlVirtualWidth / 2, mean / 2)
       , partTransphone # translate ~^ (narrowBowlVirtualWidth * 2 - thicknessX + transphoneGap, 0)
+      ]
+
+glyphNes :: Given Config => Glyph
+glyphNes = makeGlyph' bearing bearing parts
+  where
+    parts = 
+      [ partNes # translate ~^ (nesWidth / 2, mean / 2)
+      ]
+
+glyphMes :: Given Config => Glyph
+glyphMes = makeGlyph' bearing bearing parts
+  where
+    parts = 
+      [ partNes # translate ~^ (nesWidth / 2, mean / 2)
+      , partTransphone # translate ~^ (nesWidth + transphoneGap, 0)
       ]
 
 glyphAt :: Given Config => Glyph

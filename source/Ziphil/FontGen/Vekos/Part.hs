@@ -9,6 +9,7 @@ module Ziphil.FontGen.Vekos.Part
   , partTal
   , partNarrowBowl
   , partXal
+  , partNes
   , partIt
   , partUpperUt
   , partUtTail
@@ -23,6 +24,7 @@ module Ziphil.FontGen.Vekos.Part
   , talWidth
   , narrowBowlVirtualWidth
   , narrowBowlWidth
+  , nesWidth
   , itTailBend
   , linkWidth
   , linkUpperCorrection
@@ -246,6 +248,50 @@ partXal = mconcat parts
     parts =
       [ partNarrowBowl
       , partNarrowBowl # reflectX # reversePath # translate ~^ (narrowBowlVirtualWidth - thicknessX, 0)
+      ]
+
+nesLegBend :: Given Config => Double
+nesLegBend = legBend
+
+spineWidth :: Given Config => Double
+spineWidth = bowlWidth * 0.5
+
+nesWidth :: Given Config => Double
+nesWidth = narrowBowlVirtualWidth + spineWidth
+
+-- n の文字の書き終わりの箇所にある曲線を、上端から下端への向きで生成します。
+trailNesLeg :: Given Config => PartTrail
+trailNesLeg = bezier3' ~^ (0, -150) ~^ (-nesLegBend, -height) ~^ (-legBend, -height)
+  where
+    height = mean / 2
+
+-- n の文字の中央部分の上側の曲線を、下端から上端への向きで生成します。
+trailSpine :: Given Config => PartTrail
+trailSpine = bezier3' ~^ (leftCont, 0) ~^ (width - rightCont, height + overshoot * 2) ~^ (width, height + overshoot * 2)
+  where
+    width = spineWidth
+    height = mean - thicknessY
+    leftCont = width * 0.9
+    rightCont = width * 0.4
+
+-- n の文字と同じ形を生成します。
+-- 原点は全体の中央にあります。
+partNes :: Given Config => Part
+partNes = makePart trails # moveOriginBy ~^ (nesWidth / 2, 0)
+  where
+    trails =
+      [ trailOuterLeftNarrowBowl # reflectY
+      , trailSpine
+      , trailInnerNarrowBowl # reflectX # reverseTrail
+      , trailNesLeg
+      , trailCut
+      , trailNesLeg # reverseTrail
+      , trailOuterLeftNarrowBowl # reflectX
+      , trailSpine # rotateHalfTurn
+      , trailInnerNarrowBowl # reflectY # reverseTrail
+      , trailNesLeg # rotateHalfTurn
+      , trailCut # reverseTrail
+      , trailNesLeg # rotateHalfTurn # reverseTrail
       ]
 
 itTailBend :: Given Config => Double
