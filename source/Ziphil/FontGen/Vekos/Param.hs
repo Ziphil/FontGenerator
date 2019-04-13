@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE NamedFieldPuns #-}
 
 
 module Ziphil.FontGen.Vekos.Param
@@ -25,7 +26,9 @@ module Ziphil.FontGen.Vekos.Param
   , diacriticGap
   , spaceWidth
   , metrics
+  , spacing
   , makeGlyph'
+  , makeGlyphWithSpacing'
   )
 where
 
@@ -33,11 +36,11 @@ import Data.FontGen.GlyphType
 import Data.Reflection
 
 
-data Config = Config {localWeight :: Weight}
+data Config = Config {weightConst :: Double}
   deriving (Eq, Show)
 
 regularConfig :: Config
-regularConfig = Config {localWeight = Regular}
+regularConfig = Config {weightConst = 1}
 
 -- ディセンダーラインの深さを表します。
 -- このフォントではディセンダー部分とアセンダー部分の高さが同じなので、アセンダーラインの高さとしても利用されます。
@@ -105,6 +108,15 @@ spaceWidth = 300
 metrics :: Given Config => Metrics
 metrics = Metrics {metricEm = em, metricAscent = ascent, metricDescent = descent}
 
--- パーツのリストからこのフォントの設定に合わせてグリフを生成します。
-makeGlyph' :: Given Config => Double -> Double -> [Part] -> Glyph
-makeGlyph' = makeGlyph em descent
+spacing :: Given Config => Spacing
+spacing = Spacing {leftBearing = bearing, rightBearing = bearing}
+
+-- パーツのリストからグリフを生成します。
+-- このとき、デフォルトのメトリクスとスペーシングの情報を自動的に使用します。
+makeGlyph' :: Given Config => [Part] -> Glyph
+makeGlyph' = makeGlyph metrics spacing
+
+-- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
+-- このとき、デフォルトのメトリクスの情報を自動的に使用します。
+makeGlyphWithSpacing' :: Given Config => Spacing -> [Part] -> Glyph
+makeGlyphWithSpacing' = makeGlyph metrics

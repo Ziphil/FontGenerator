@@ -8,19 +8,16 @@ module Data.FontGen.GlyphType
   , Glyph
   , Glyphs
   , makePart
+  , Metrics (..)
   , fixVertical
+  , Spacing (..)
   , addBearing
   , makeGlyph
-  , Metrics (..)
-  , Weight (..)
   )
 where
 
 import Data.FontGen.Util
 import Data.Map (Map)
-import qualified Data.Map as Map
-import Data.Reflection
-import Data.Version
 import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
@@ -37,25 +34,25 @@ type Glyphs = Map Char Glyph
 makePart :: [PartTrail] -> Part
 makePart = pathFromTrail . closeTrail . mconcat
 
--- 与えられたディセンダーの深さとボディの高さに従って、出力用にグリフのエンベロープを修正します。
--- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
-fixVertical :: Double -> Double -> Glyph -> Glyph
-fixVertical em descent diagram = rectEnvelope ~. base ~^ size $ diagram
-  where
-    base = (0, -descent)
-    size = (width diagram, em)
-
--- 左右に与えられた長さの分のスペースができるように、グリフのエンベロープを修正します。
-addBearing :: Double -> Double -> Glyph -> Glyph
-addBearing left right = extrudeLeft left . extrudeRight right
-
--- パーツのリストからグリフを生成します。
--- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
-makeGlyph :: Double -> Double -> Double -> Double -> [Part] -> Glyph
-makeGlyph em descent left right = addBearing left right . fixVertical em descent . strokePath . mconcat
-
 data Metrics = Metrics {metricEm :: Double, metricAscent :: Double, metricDescent :: Double}
   deriving (Eq, Show)
 
-data Weight = Thin | ExtraLight | Light | Regular | Medium | SemiBold | Bold | ExtraBold | Heavy
-  deriving (Eq, Show, Enum)
+-- 与えられたメトリクスの情報に従って、出力用にグリフのエンベロープを修正します。
+-- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
+fixVertical :: Metrics -> Glyph -> Glyph
+fixVertical metrics diagram = rectEnvelope ~. base ~^ size $ diagram
+  where
+    base = (0, 0 - metricDescent metrics)
+    size = (width diagram, metricEm metrics)
+
+data Spacing = Spacing {leftBearing :: Double, rightBearing :: Double}
+  deriving (Eq, Show)
+
+-- 与えられたスペーシングの情報に従って、グリフのエンベロープの左右に空白を追加します。
+addBearing :: Spacing -> Glyph -> Glyph
+addBearing spacing = extrudeLeft (leftBearing spacing) . extrudeRight (rightBearing spacing)
+
+-- パーツのリストからグリフを生成します。
+-- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
+makeGlyph :: Metrics -> Spacing -> [Part] -> Glyph
+makeGlyph metrics spacing = addBearing spacing . fixVertical metrics . strokePath . mconcat
