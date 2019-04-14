@@ -15,10 +15,10 @@ import Data.Version
 
 
 regularInfo :: FontInfo
-regularInfo = FontInfo {family, weight, version, metrics, glyphs}
+regularInfo = FontInfo {family, style, version, metrics, glyphs}
   where
     family = "Vekos"
-    weight = Regular
+    style = Style Regular Upright Normal
     version = makeVersion [0, 0, 0]
     metrics = give Param.regularConfig Param.metrics
     glyphs = give Param.regularConfig Glyph.glyphs
