@@ -40,10 +40,10 @@ data Metrics = Metrics {metricEm :: Double, metricAscent :: Double, metricDescen
 -- 与えられたメトリクスの情報に従って、出力用にグリフのエンベロープを修正します。
 -- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
 fixVertical :: Metrics -> Glyph -> Glyph
-fixVertical metrics diagram = rectEnvelope ~. base ~^ size $ diagram
+fixVertical metrics diagram = rectEnvelope base size diagram
   where
-    base = (0, 0 - metricDescent metrics)
-    size = (width diagram, metricEm metrics)
+    base = (0 &| 0 - metricDescent metrics)
+    size = (width diagram &| metricEm metrics)
 
 data Spacing = Spacing {leftBearing :: Double, rightBearing :: Double}
   deriving (Eq, Show)

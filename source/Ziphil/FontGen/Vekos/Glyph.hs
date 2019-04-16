@@ -39,289 +39,289 @@ glyphLes :: Given Config => Glyph
 glyphLes = makeGlyph' parts
   where
     parts = 
-      [ partLes # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphRes :: Given Config => Glyph
 glyphRes = makeGlyph' parts
   where
     parts =
-      [ partLes # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partLes # translate (bowlWidth / 2 &| mean / 2)
+      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
       ]
 
 glyphPal :: Given Config => Glyph
 glyphPal = makeGlyph' parts
   where
     parts = 
-      [ partLes # rotateHalfTurn # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # rotateHalfTurn # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphBol :: Given Config => Glyph
 glyphBol = makeGlyph' parts
   where
     parts = 
-      [ partLes # rotateHalfTurn # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partLes # rotateHalfTurn # translate (bowlWidth / 2 &| mean / 2)
+      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
       ]
 
 glyphCal :: Given Config => Glyph
 glyphCal = makeGlyph' parts
   where
     parts = 
-      [ partLes # reflectX # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # reflectX # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphQol :: Given Config => Glyph
 glyphQol = makeGlyph' parts
   where
     parts = 
-      [ partLes # reflectX # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partLes # reflectX # translate (bowlWidth / 2 &| mean / 2)
+      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
       ]
 
 glyphKal :: Given Config => Glyph
 glyphKal = makeGlyph' parts
   where
     parts = 
-      [ partLes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partLes # reflectY # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphGol :: Given Config => Glyph
 glyphGol = makeGlyph' parts
   where
     parts = 
-      [ partLes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partLes # reflectY # translate (bowlWidth / 2 &| mean / 2)
+      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
       ]
 
 glyphYes :: Given Config => Glyph
 glyphYes = makeGlyph' parts
   where
     parts = 
-      [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partYes # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphHes :: Given Config => Glyph
 glyphHes = makeGlyph' parts
   where
     parts = 
-      [ partYes # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partYes # translate (bowlWidth / 2 &| mean / 2)
+      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
       ]
 
 glyphSal :: Given Config => Glyph
 glyphSal = makeGlyph' parts
   where
     parts = 
-      [ partYes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partYes # reflectY # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphZol :: Given Config => Glyph
 glyphZol = makeGlyph' parts
   where
     parts = 
-      [ partYes # reflectY # translate ~^ (bowlWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (bowlWidth + transphoneGap, 0)
+      [ partYes # reflectY # translate (bowlWidth / 2 &| mean / 2)
+      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
       ]
 
 glyphTal :: Given Config => Glyph
 glyphTal = makeGlyph' parts
   where
     parts = 
-      [ partTal # translate ~^ (talWidth / 2, mean / 2)
+      [ partTal # translate (talWidth / 2 &| mean / 2)
       ]
 
 glyphDol :: Given Config => Glyph
 glyphDol = makeGlyph' parts
   where
     parts = 
-      [ partTal # translate ~^ (talWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (talWidth + transphoneGap, 0)
+      [ partTal # translate (talWidth / 2 &| mean / 2)
+      , partTransphone # translate (talWidth + transphoneGap &| 0)
       ]
 
 glyphFal :: Given Config => Glyph
 glyphFal = makeGlyph' parts
   where
     parts = 
-      [ partTal # reflectX # translate ~^ (talWidth / 2, mean / 2)
+      [ partTal # reflectX # translate (talWidth / 2 &| mean / 2)
       ]
 
 glyphVol :: Given Config => Glyph
 glyphVol = makeGlyph' parts
   where
     parts = 
-      [ partTal # reflectX # translate ~^ (talWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (talWidth + transphoneGap, 0)
+      [ partTal # reflectX # translate (talWidth / 2 &| mean / 2)
+      , partTransphone # translate (talWidth + transphoneGap &| 0)
       ]
   
 glyphXal :: Given Config => Glyph
 glyphXal = makeGlyph' parts
   where
     parts = 
-      [ partXal # translate ~^ (xalWidth / 2, mean / 2)
+      [ partXal # translate (xalWidth / 2 &| mean / 2)
       ]
 
 glyphJol :: Given Config => Glyph
 glyphJol = makeGlyph' parts
   where
     parts = 
-      [ partXal # translate ~^ (xalWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (xalWidth + transphoneGap, 0)
+      [ partXal # translate (xalWidth / 2 &| mean / 2)
+      , partTransphone # translate (xalWidth + transphoneGap &| 0)
       ]
 
 glyphNes :: Given Config => Glyph
 glyphNes = makeGlyph' parts
   where
     parts = 
-      [ partNes # translate ~^ (nesWidth / 2, mean / 2)
+      [ partNes # translate (nesWidth / 2 &| mean / 2)
       ]
 
 glyphMes :: Given Config => Glyph
 glyphMes = makeGlyph' parts
   where
     parts = 
-      [ partNes # translate ~^ (nesWidth / 2, mean / 2)
-      , partTransphone # translate ~^ (nesWidth + transphoneGap, 0)
+      [ partNes # translate (nesWidth / 2 &| mean / 2)
+      , partTransphone # translate (nesWidth + transphoneGap &| 0)
       ]
 
 glyphAt :: Given Config => Glyph
 glyphAt = makeGlyph' parts
   where
     parts = 
-      [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
+      [ partBowl # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphAtAcute :: Given Config => Glyph
 glyphAtAcute = makeGlyph' parts
   where
     parts = 
-      [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
-      , partAcute # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      [ partBowl # translate (bowlWidth / 2 &| mean / 2)
+      , partAcute # translate (bowlWidth / 2 &| mean + diacriticGap)
       ]
 
 glyphAtGrave :: Given Config => Glyph
 glyphAtGrave = makeGlyph' parts
   where
     parts = 
-      [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
+      [ partBowl # translate (bowlWidth / 2 &| mean / 2)
+      , partAcute # reflectY # translate (bowlWidth / 2 &| mean + acuteHeight + diacriticGap)
       ]
 
 glyphAtCircumflex :: Given Config => Glyph
 glyphAtCircumflex = makeGlyph' parts
   where
     parts = 
-      [ partBowl # translate ~^ (bowlWidth / 2, mean / 2)
-      , partCircumflex # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      [ partBowl # translate (bowlWidth / 2 &| mean / 2)
+      , partCircumflex # translate (bowlWidth / 2 &| mean + diacriticGap)
       ]
 
 glyphIt :: Given Config => Glyph
 glyphIt = makeGlyph' parts
   where
     parts = 
-      [ partIt # translate ~^ (talWidth / 2, mean / 2)
+      [ partIt # translate (talWidth / 2 &| mean / 2)
       ]
 
 glyphItAcute :: Given Config => Glyph
 glyphItAcute = makeGlyph' parts
   where
     parts = 
-      [ partIt # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      [ partIt # translate (talWidth / 2 &| mean / 2)
+      , partAcute # translate (bowlWidth / 2 &| mean + diacriticGap)
       ]
 
 glyphItGrave :: Given Config => Glyph
 glyphItGrave = makeGlyph' parts
   where
     parts = 
-      [ partIt # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
+      [ partIt # translate (talWidth / 2 &| mean / 2)
+      , partAcute # reflectY # translate (bowlWidth / 2 &| mean + acuteHeight + diacriticGap)
       ]
 
 glyphItCircumflex :: Given Config => Glyph
 glyphItCircumflex = makeGlyph' parts
   where
     parts = 
-      [ partIt # translate ~^ (talWidth / 2, mean / 2)
-      , partCircumflex # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      [ partIt # translate (talWidth / 2 &| mean / 2)
+      , partCircumflex # translate (bowlWidth / 2 &| mean + diacriticGap)
       ]
 
 glyphEt :: Given Config => Glyph
 glyphEt = makeGlyph' parts
   where
     parts = 
-      [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
+      [ partIt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
       ]
 
 glyphEtAcute :: Given Config => Glyph
 glyphEtAcute = makeGlyph' parts
   where
     parts = 
-      [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (beakWidth, -diacriticGap)
+      [ partIt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
+      , partAcute # reflectY # translate (beakWidth &| -diacriticGap)
       ]
 
 glyphEtGrave :: Given Config => Glyph
 glyphEtGrave = makeGlyph' parts
   where
     parts = 
-      [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # translate ~^ (beakWidth, -acuteHeight - diacriticGap)
+      [ partIt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
+      , partAcute # translate (beakWidth &| -acuteHeight - diacriticGap)
       ]
 
 glyphEtCircumflex :: Given Config => Glyph
 glyphEtCircumflex = makeGlyph' parts
   where
     parts = 
-      [ partIt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partCircumflex # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
+      [ partIt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
+      , partCircumflex # translate (beakWidth &| -circumflexHeight - diacriticGap)
       ]
 
 glyphUt :: Given Config => Glyph
 glyphUt = makeGlyph' parts
   where
     parts = 
-      [ partUt # translate ~^ (talWidth / 2, mean / 2)
+      [ partUt # translate (talWidth / 2 &| mean / 2)
       ]
 
 glyphUtGrave :: Given Config => Glyph
 glyphUtGrave = makeGlyph' parts
   where
     parts = 
-      [ partUt # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # reflectY # translate ~^ (bowlWidth / 2, mean + acuteHeight + diacriticGap)
+      [ partUt # translate (talWidth / 2 &| mean / 2)
+      , partAcute # reflectY # translate (bowlWidth / 2 &| mean + acuteHeight + diacriticGap)
       ]
 
 glyphUtCircumflex :: Given Config => Glyph
 glyphUtCircumflex = makeGlyph' parts
   where
     parts = 
-      [ partUt # translate ~^ (talWidth / 2, mean / 2)
-      , partCircumflex # translate ~^ (bowlWidth / 2, mean + diacriticGap)
+      [ partUt # translate (talWidth / 2 &| mean / 2)
+      , partCircumflex # translate (bowlWidth / 2 &| mean + diacriticGap)
       ]
 
 glyphOt :: Given Config => Glyph
 glyphOt = makeGlyph' parts
   where
     parts = 
-      [ partUt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
+      [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
       ]
 
 glyphOtGrave :: Given Config => Glyph
 glyphOtGrave = makeGlyph' parts
   where
     parts = 
-      [ partUt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partAcute # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
+      [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
+      , partAcute # translate (beakWidth &| -circumflexHeight - diacriticGap)
       ]
 
 glyphOtCircumflex :: Given Config => Glyph
 glyphOtCircumflex = makeGlyph' parts
   where
     parts = 
-      [ partUt # rotateHalfTurn # translate ~^ (talWidth / 2, mean / 2)
-      , partCircumflex # translate ~^ (beakWidth, -circumflexHeight - diacriticGap)
+      [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
+      , partCircumflex # translate (beakWidth &| -circumflexHeight - diacriticGap)
       ]
       
 glyphSpace :: Given Config => Glyph
