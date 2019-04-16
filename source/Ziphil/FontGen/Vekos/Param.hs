@@ -24,6 +24,8 @@ module Ziphil.FontGen.Vekos.Param
   , circumflexWidth
   , circumflexHeight
   , diacriticGap
+  , dotWidth
+  , dotGap
   , spaceWidth
   , metrics
   , spacing
@@ -101,6 +103,12 @@ circumflexHeight = 180
 
 diacriticGap :: Given Config => Double
 diacriticGap = 50
+
+dotWidth :: Given Config => Double
+dotWidth = thicknessX * 1.3
+
+dotGap :: Given Config => Double
+dotGap = dotWidth * 0.3
 
 spaceWidth :: Given Config => Double
 spaceWidth = 300

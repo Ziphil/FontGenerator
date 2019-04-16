@@ -32,6 +32,7 @@ glyphs = Map.fromList list
       , ('i', glyphIt), ('í', glyphItAcute), ('ì', glyphItGrave), ('î', glyphItCircumflex)
       , ('u', glyphUt), ('ù', glyphUtGrave), ('û', glyphUtCircumflex)
       , ('o', glyphOt), ('ò', glyphOtGrave), ('ô', glyphOtCircumflex)
+      , (',', glyphTadek), ('.', glyphDek)
       , (' ', glyphSpace)
       ]
 
@@ -322,6 +323,21 @@ glyphOtCircumflex = makeGlyph' parts
     parts = 
       [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
       , partCircumflex # translate (beakWidth &| -circumflexHeight - diacriticGap)
+      ]
+
+glyphTadek :: Given Config => Glyph
+glyphTadek = makeGlyph' parts
+  where
+    parts =
+      [ partDot
+      ]
+
+glyphDek :: Given Config => Glyph
+glyphDek = makeGlyph' parts
+  where
+    parts =
+      [ partDot
+      , partDot # translate (dotWidth + dotGap &| 0)
       ]
       
 glyphSpace :: Given Config => Glyph

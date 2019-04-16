@@ -17,6 +17,7 @@ module Ziphil.FontGen.Vekos.Part
   , partTransphone
   , partAcute
   , partCircumflex
+  , partDot
   , beakWidth
   , talWidth
   , xalWidth
@@ -491,4 +492,19 @@ partCircumflex = mconcat parts # moveOriginBy (circumflexWidth / 2 &| -circumfle
     parts =
       [ makePart outerTrails
       , makePart innerTrails # reversePath # translate (circumflexThicknessX &| 0)
+      ]
+
+-- デックやパデックなどに含まれる円の曲線を、左端から時計回りに生成します。
+trailDot :: Given Config => PartTrail
+trailDot = circle radius # rotateHalfTurn
+  where
+    radius = dotWidth / 2
+
+-- デックやパデックなどに含まれる円を生成します。
+-- 原点は円に外接する矩形の左下の角からオーバーシュート分だけ上に移動した位置にあります。
+partDot :: Given Config => Part
+partDot = makePart trails # moveOriginBy (0 &| -dotWidth / 2 + overshoot)
+  where
+    trails =
+      [ trailDot
       ]
