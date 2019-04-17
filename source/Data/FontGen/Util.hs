@@ -2,7 +2,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TypeFamilies #-}
-{-# LANGUAGE UndecidableInstances #-}
 
 
 module Data.FontGen.Util
@@ -17,6 +16,7 @@ module Data.FontGen.Util
   )
 where
 
+import Control.Applicative
 import Diagrams.Prelude hiding ((<~), (~~))
 
 
@@ -71,8 +71,14 @@ class (Metric (V s), OrderedField (N s)) => SegmentLike s where
 instance (Metric v, OrderedField n) => SegmentLike (Segment Closed v n) where
   segmentLike = unLoc
 
-instance TrailLike t => SegmentLike t where
+instance (Metric v, OrderedField n) => SegmentLike (FixedSegment v n) where
+  segmentLike = mkFixedSeg
+
+instance (Metric v, OrderedField n) => SegmentLike (Trail v n) where
   segmentLike = trailLike . (mapLoc $ fromSegments . (: []))
+
+instance SegmentLike t => SegmentLike (Located t) where
+  segmentLike = liftA2 at segmentLike loc
 
 -- 始点側と終点側それぞれの端点と制御点の情報から、3 次ベジエ曲線を生成します。
 -- 生成される値が原点をもつ場合、その原点は始点に設定されます。
