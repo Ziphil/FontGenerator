@@ -10,17 +10,18 @@ module Data.FontGen.Util
   , (@|)
   , rotateHalfTurn
   , rotateQuarterTurn
-  , straight'
-  , bezier3'
-  , bezier2'
+  , (~>)
+  , (<~)
+  , (~:~)
+  , (~~)
   )
 where
 
-import Diagrams.Prelude
+import Diagrams.Prelude hiding ((<~), (~~))
 
 
 -- 直交座標系で表されたデータからベクトルや点を生成します。
-infixl 1 &|
+infixl 4 &|
 (&|) :: Coordinates c => PrevDim c -> FinalCoord c -> c
 prev &| final = pr prev final
 
@@ -40,7 +41,7 @@ instance PolarCoordinates (v n) => PolarCoordinates (Point v n) where
   polar prev theta = P (polar prev theta)
 
 -- 極座標系で表されたデータからベクトルや点を生成します。
-infixl 1 @|
+infixl 4 @|
 (@|) :: PolarCoordinates c => PrevPolarDim c -> FinalTheta c -> c
 prev @| theta = polar prev theta
 
@@ -52,23 +53,41 @@ rotateHalfTurn = rotate halfTurn
 rotateQuarterTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
 rotateQuarterTurn = rotate quarterTurn
 
+data EndPoint s = EndPoint (Point (V s) (N s)) (V s (N s))
+
+-- 3 次ベジエ曲線の始点側の端点と制御点を生成します。
+infix 1 ~>
+(~>) :: (V s ~ v, N s ~ n) => Point v n -> v n -> EndPoint s
+point ~> cont = EndPoint point cont
+
+-- 3 次ベジエ曲線の終点側の端点と制御点を生成します。
+infix 1 <~
+(<~) :: (V s ~ v, N s ~ n) => v n -> Point v n -> EndPoint s
+cont <~ point = EndPoint point cont
+
 class (Metric (V s), OrderedField (N s)) => SegmentLike s where
-  segmentLike :: Segment Closed (V s) (N s) -> s
+  segmentLike :: Located (Segment Closed (V s) (N s)) -> s
 
 instance (Metric v, OrderedField n) => SegmentLike (Segment Closed v n) where
-  segmentLike = id
+  segmentLike = unLoc
 
 instance TrailLike t => SegmentLike t where
-  segmentLike = fromSegments . (: [])
+  segmentLike = trailLike . (mapLoc $ fromSegments . (: []))
 
-straight' :: SegmentLike s => Vn s -> s
-straight' = segmentLike . straight
-
-bezier3' :: SegmentLike s => Vn s -> Vn s -> Vn s -> s
-bezier3' = ((segmentLike .) .) . bezier3
-
-bezier2' :: SegmentLike s => Vn s -> Vn s -> s
-bezier2' cont end = bezier3' fstCont sndCont end
+-- 始点側と終点側それぞれの端点と制御点の情報から、3 次ベジエ曲線を生成します。
+-- 生成される値が原点をもつ場合、その原点は始点に設定されます。
+infix 0 ~:~
+(~:~) :: (InSpace v n s, SegmentLike s) => EndPoint s -> EndPoint s -> s
+(EndPoint initPoint initCont) ~:~ (EndPoint termPoint termCont) = segmentLike $ at segment initPoint
   where
-    fstCont = cont ^* (2 / 3)
-    sndCont = cont ^* (2 / 3) ^+^ end ^* (1 / 3)
+    segment = bezier3 fstCont sndCont termVec
+    fstCont = initCont
+    sndCont = termVec ^+^ termCont
+    termVec = termPoint .-. initPoint
+
+infix 0 ~~
+(~~) :: (InSpace v n s, SegmentLike s) => Point v n -> Point v n -> s
+initPoint ~~ termPoint = segmentLike $ at segment initPoint
+  where
+    segment = straight termVec
+    termVec = termPoint .-. initPoint

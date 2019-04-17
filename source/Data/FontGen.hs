@@ -10,4 +10,4 @@ where
 
 import Data.FontGen.GlyphType
 import Data.FontGen.Util
-import Diagrams.Prelude
+import Diagrams.Prelude hiding ((<~), (~~))
