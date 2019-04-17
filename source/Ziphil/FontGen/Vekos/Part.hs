@@ -26,6 +26,8 @@ module Ziphil.FontGen.Vekos.Part
 where
 
 import Data.FontGen
+import Data.Ord
+import Data.List
 import Data.Reflection
 import Ziphil.FontGen.Vekos.Param
 
@@ -66,19 +68,54 @@ partBowl = mconcat parts # moveOriginBy (bowlWidth / 2 &| 0)
       , makePart innerTrails # reversePath # translate (thicknessX &| 0)
       ]
 
+idealDistance :: Given Config => Angle Double -> Double
+idealDistance angle =
+  if angle <= quarterTurn
+    then (coeffX * thicknessX + coeffY * thicknessY) / 2
+    else 1 / 0
+  where
+    coeffX = 1 - angleRatio angle quarterTurn
+    coeffY = angleRatio angle quarterTurn
+
+calcTailError :: Given Config => Double -> Double -> Double -> Double -> Double
+calcTailError bend height innerCont outerCont = abs (distance point base - idealDistance angle)
+  where
+    angle = angleBetween (point .-. base) (-1 &| 0)
+    point = head $ closestPoint segment base
+    base = (thicknessX / 2 - bend / 2 &| -height / 2)
+    segment = origin ~> (0 &| -innerCont) ~:~ (0 &| outerCont) <~ (-bend &| -height)
+
+searchTailInnerCont :: Given Config => Double -> Double -> Double -> Double
+searchTailInnerCont bend height outerCont = minimumBy (comparing calcTailError') list
+  where
+    calcTailError' innerCont = calcTailError bend height innerCont outerCont
+    list = [0, interval .. height]
+    interval = 0.5
+
+searchTailOuterCont :: Given Config => Double -> Double -> Double -> Double
+searchTailOuterCont bend height innerCont = minimumBy (comparing calcTailError') list
+  where
+    calcTailError' outerCont = calcTailError bend height innerCont outerCont
+    list = [0, interval .. height]
+    interval = 0.5
+
 -- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
 trailRightTail :: Given Config => PartTrail
-trailRightTail = origin ~> (0 &| -250) ~:~ (0 &| 200) <~ (-bend &| -height)
+trailRightTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
     bend = tailBend
     height = mean / 2 + descent
+    topCont = 270
+    bottomCont = searchTailInnerCont bend height topCont
 
 -- l の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
 trailLeftTail :: Given Config => PartTrail
-trailLeftTail = origin ~> (0 &| -250) ~:~ (0 &| 200) <~ (-bend &| -height)
+trailLeftTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
     bend = tailBend
     height = mean / 2 + descent
+    topCont = searchTailInnerCont bend height bottomCont
+    bottomCont = 270
 
 -- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左端から右端への向きで生成します。
 trailCut :: Given Config => PartTrail
@@ -271,17 +308,21 @@ partNes = makePart trails # moveOriginBy (nesWidth / 2 &| 0)
 
 -- i の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
 trailLeftItTail :: Given Config => PartTrail
-trailLeftItTail = origin ~> (0 &| -250) ~:~ (0 &| 300) <~ (bend &| -height)
+trailLeftItTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (bend &| -height)
   where
     bend = itTailBend
     height = mean / 2 + descent
+    topCont = 300
+    bottomCont = searchTailInnerCont bend height topCont
 
 -- i の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
 trailRightItTail :: Given Config => PartTrail
-trailRightItTail = origin ~> (0 &| -210) ~:~ (0 &| 325) <~ (bend &| -height)
+trailRightItTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (bend &| -height)
   where
     bend = itTailBend
     height = mean / 2 + descent
+    topCont = searchTailInnerCont bend height bottomCont
+    bottomCont = 300
 
 -- i の文字と同じ形を生成します。
 -- 原点は上部の丸い部分の中央にあるので、回転や反転で変化しません。
