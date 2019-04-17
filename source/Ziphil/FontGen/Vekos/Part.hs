@@ -68,17 +68,17 @@ partBowl = mconcat parts # moveOriginBy (bowlWidth / 2 &| 0)
       , makePart innerTrails # reversePath # translate (thicknessX &| 0)
       ]
 
-idealDistance :: Given Config => Angle Double -> Double
-idealDistance angle =
+idealThickness :: Given Config => Angle Double -> Double
+idealThickness angle =
   if angle <= quarterTurn
-    then (coeffX * thicknessX + coeffY * thicknessY) / 2
+    then coeffX * thicknessX + coeffY * thicknessY
     else 1 / 0
   where
     coeffX = 1 - angleRatio angle quarterTurn
     coeffY = angleRatio angle quarterTurn
 
 calcTailError :: Given Config => Double -> Double -> Double -> Double -> Double
-calcTailError bend height innerCont outerCont = abs (distance point base - idealDistance angle)
+calcTailError bend height innerCont outerCont = abs (distance point base - idealThickness angle / 2)
   where
     angle = angleBetween (point .-. base) (-1 &| 0)
     point = head $ closestPoint segment base
