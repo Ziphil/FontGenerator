@@ -72,7 +72,7 @@ thicknessX :: Given Config => Double
 thicknessX = 100
 
 thicknessY :: Given Config => Double
-thicknessY = 75
+thicknessY = thicknessX * 0.75
 
 bowlWidth :: Given Config => Double
 bowlWidth = 450
@@ -133,31 +133,31 @@ transphoneGap :: Given Config => Double
 transphoneGap = -10
 
 acuteThicknessX :: Given Config => Double
-acuteThicknessX = 75
+acuteThicknessX = thicknessX * 0.75
 
 acuteThicknessY :: Given Config => Double
-acuteThicknessY = 60
+acuteThicknessY = acuteThicknessX * 0.8
 
 acuteWidth :: Given Config => Double
-acuteWidth = 250
+acuteWidth = bowlWidth * 0.55
 
 acuteHeight :: Given Config => Double
-acuteHeight = 100
+acuteHeight = acuteWidth * 0.45
 
 circumflexThicknessX :: Given Config => Double
-circumflexThicknessX = 70
+circumflexThicknessX = thicknessX * 0.7
 
 circumflexThicknessY :: Given Config => Double
-circumflexThicknessY = 55
+circumflexThicknessY = circumflexThicknessX * 0.8
 
 circumflexWidth :: Given Config => Double
-circumflexWidth = 200
+circumflexWidth = bowlWidth * 0.45
 
 circumflexHeight :: Given Config => Double
-circumflexHeight = 180
+circumflexHeight = circumflexWidth * 0.9
 
 diacriticGap :: Given Config => Double
-diacriticGap = 50
+diacriticGap = 60
 
 dotWidth :: Given Config => Double
 dotWidth = thicknessX * 1.3
