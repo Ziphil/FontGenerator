@@ -342,24 +342,22 @@ glyphDek = makeGlyph' parts
       ]
 
 glyphBadek :: Given Config => Glyph
-glyphBadek = makeGlyphWithSpacing' spacing parts
+glyphBadek = makeGlyphWithSpacing' badekSpacing parts
   where
     parts =
       [ partDot
       , partDot # translate (dotWidth + dotGap &| 0)
       , partBadekStem # translate ((dotWidth - thicknessX) / 2 &| dotWidth + badekGap - overshoot)
       ]
-    spacing = Spacing {leftBearing = badekBearing, rightBearing = badekBearing}
 
 glyphPadek :: Given Config => Glyph
-glyphPadek = makeGlyphWithSpacing' spacing parts
+glyphPadek = makeGlyphWithSpacing' badekSpacing parts
   where
     parts =
       [ partDot
       , partDot # translate (dotWidth + dotGap &| 0)
       , partPadekStem # translate ((dotWidth - thicknessX) / 2 &| dotWidth + badekGap - overshoot)
       ]
-    spacing = Spacing {leftBearing = badekBearing, rightBearing = badekBearing}
       
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing []

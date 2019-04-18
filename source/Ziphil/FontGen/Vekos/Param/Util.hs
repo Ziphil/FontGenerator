@@ -4,6 +4,7 @@
 module Ziphil.FontGen.Vekos.Param.Util
   ( metrics
   , spacing
+  , badekSpacing
   , makeGlyph'
   , makeGlyphWithSpacing'
   )
@@ -20,6 +21,9 @@ metrics = Metrics {metricEm = em, metricAscent = ascent, metricDescent = descent
 
 spacing :: Given Config => Spacing
 spacing = Spacing {leftBearing = bearing, rightBearing = bearing}
+
+badekSpacing :: Given Config => Spacing
+badekSpacing = Spacing {leftBearing = badekBearing, rightBearing = badekBearing}
 
 -- パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスとスペーシングの情報を自動的に使用します。
