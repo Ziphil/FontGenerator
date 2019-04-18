@@ -272,6 +272,21 @@ partXal = mconcat parts # moveOriginBy (xalWidth / 2 - narrowBowlVirtualWidth / 
 nesWidth :: Given Config => Double
 nesWidth = narrowBowlVirtualWidth + spineWidth
 
+calcSpineError :: Given Config => Double -> Double -> Double -> Double -> Double
+calcSpineError bend width innerCont outerCont = abs (distance point base - idealThickness angle / 2)
+  where
+    angle = angleBetween (point .-. base) (1 &| 0) ^-^ quarterTurn
+    point = head $ closestPoint segment base
+    base = (width / 2 &| bend / 2 - thicknessY / 2)
+    segment = origin ~> (innerCont &| 0) ~:~ (-outerCont &| 0) <~ (width &| bend)
+
+searchSpineInnerCont :: Given Config => Double -> Double -> Double -> Double
+searchSpineInnerCont bend width outerCont = minimumBy (comparing calcSpineError') list
+  where
+    calcSpineError' innerCont = calcSpineError bend width innerCont outerCont
+    list = [0, interval .. width]
+    interval = 0.5
+
 -- n の文字の書き終わりの箇所にある曲線を、上端から下端への向きで生成します。
 trailNesLeg :: Given Config => PartTrail
 trailNesLeg = origin ~> (0 &| -150) ~:~ zero <~ (-bend &| -height)
@@ -280,13 +295,22 @@ trailNesLeg = origin ~> (0 &| -150) ~:~ zero <~ (-bend &| -height)
     height = mean / 2
 
 -- n の文字の中央部分の上側の曲線を、下端から上端への向きで生成します。
-trailSpine :: Given Config => PartTrail
-trailSpine = origin ~> (leftCont &| 0) ~:~ (-rightCont &| 0) <~ (width &| height + overshoot * 2)
+trailTopSpine :: Given Config => PartTrail
+trailTopSpine = origin ~> (leftCont &| 0) ~:~ (-rightCont &| 0) <~ (width &| bend)
   where
     width = spineWidth
-    height = mean - thicknessY
-    leftCont = width * 0.9
-    rightCont = width * 0.4
+    bend = mean - thicknessY + overshoot * 2
+    leftCont = searchSpineInnerCont bend width rightCont
+    rightCont = width
+
+-- n の文字の中央部分の下側の曲線を、下端から上端への向きで生成します。
+trailBottomSpine :: Given Config => PartTrail
+trailBottomSpine = origin ~> (leftCont &| 0) ~:~ (-rightCont &| 0) <~ (width &| bend)
+  where
+    width = spineWidth
+    bend = mean - thicknessY + overshoot * 2
+    leftCont = width
+    rightCont = searchSpineInnerCont bend width leftCont
 
 -- n の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
@@ -295,13 +319,13 @@ partNes = makePart trails # moveOriginBy (nesWidth / 2 &| 0)
   where
     trails =
       [ trailOuterLeftNarrowBowl # reflectY
-      , trailSpine
+      , trailBottomSpine
       , trailInnerNarrowBowl # reflectX # reverseTrail
       , trailNesLeg
       , trailCut
       , trailNesLeg # reverseTrail
       , trailOuterLeftNarrowBowl # reflectX
-      , trailSpine # rotateHalfTurn
+      , trailTopSpine # reverseTrail
       , trailInnerNarrowBowl # reflectY # reverseTrail
       , trailNesLeg # rotateHalfTurn
       , trailCut # reverseTrail
