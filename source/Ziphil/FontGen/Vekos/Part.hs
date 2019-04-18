@@ -72,7 +72,7 @@ partBowl = mconcat parts # moveOriginBy (bowlWidth / 2 &| 0)
 
 idealThickness :: Given Config => Angle Double -> Double
 idealThickness angle =
-  if angle <= quarterTurn
+  if angle >= zero && angle <= quarterTurn
     then coeffX * thicknessX + coeffY * thicknessY
     else 1 / 0
   where
