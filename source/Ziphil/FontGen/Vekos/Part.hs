@@ -84,7 +84,7 @@ calcTailError bend height innerCont outerCont = abs (distance point base - ideal
   where
     angle = angleBetween (point .-. base) (1 &| 0) ^-^ quarterTurn
     point = head $ closestPoint segment base
-    base = (thicknessX / 2 - bend / 2 &| -height / 2)
+    base = (-bend / 2 + thicknessX / 2 &| -height / 2)
     segment = origin ~> (0 &| -innerCont) ~:~ (0 &| outerCont) <~ (-bend &| -height)
 
 searchTailInnerCont :: Given Config => Double -> Double -> Double -> Double
