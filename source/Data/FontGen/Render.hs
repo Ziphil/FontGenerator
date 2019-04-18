@@ -4,6 +4,7 @@
 module Data.FontGen.Render
   ( createOutputDir
   , renderGlyphs
+  , RenderOption (..)
   , renderString
   , renderStrings
   )
@@ -51,16 +52,19 @@ renderGlyph info char glyph = join $ renderDiagram <$> path <*> return (styleGly
 renderGlyphs :: FontInfo -> IO ()
 renderGlyphs info = Map.traverseWithKey (renderGlyph info) (glyphs info) >> return ()
 
-renderString :: FontInfo -> String -> IO ()
-renderString info string = join $ renderDiagram <$> path <*> return diagram
+data RenderOption = RenderOption {fileName :: String, lineGap :: Double, scaleRate :: Double}
+  deriving (Eq, Show)
+
+renderString :: RenderOption -> FontInfo -> String -> IO ()
+renderString option info string = join $ renderDiagram <$> path <*> return diagram
   where
-    path = toFilePath <$> outputFile info "test"
-    diagram = scale 0.15 $ hcat $ mapMaybe make string
+    path = toFilePath <$> outputFile info (fileName option)
+    diagram = scale (scaleRate option) $ hcat $ mapMaybe make string
     make char = styleGlyph <$> Map.lookup char (glyphs info)
 
-renderStrings :: FontInfo -> [String] -> IO ()
-renderStrings info strings = join $ renderDiagram <$> path <*> return diagram
+renderStrings :: RenderOption -> FontInfo -> [String] -> IO ()
+renderStrings option info strings = join $ renderDiagram <$> path <*> return diagram
   where
-    path = toFilePath <$> outputFile info "test"
-    diagram = scale 0.15 $ vsep 200 $ map (hcat . mapMaybe make) strings
+    path = toFilePath <$> outputFile info (fileName option)
+    diagram = scale (scaleRate option) $ vsep (lineGap option) $ map (hcat . mapMaybe make) strings
     make char = styleGlyph <$> Map.lookup char (glyphs info)
