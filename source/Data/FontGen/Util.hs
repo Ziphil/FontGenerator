@@ -83,7 +83,7 @@ instance SegmentLike t => SegmentLike (Located t) where
 -- 始点側と終点側それぞれの端点と制御点の情報から、3 次ベジエ曲線を生成します。
 -- 生成される値が原点をもつ場合、その原点は始点に設定されます。
 infix 0 ~:~
-(~:~) :: (InSpace v n s, SegmentLike s) => EndPoint s -> EndPoint s -> s
+(~:~) :: SegmentLike s => EndPoint s -> EndPoint s -> s
 (EndPoint initPoint initCont) ~:~ (EndPoint termPoint termCont) = segmentLike $ at segment initPoint
   where
     segment = bezier3 fstCont sndCont termVec
@@ -92,7 +92,7 @@ infix 0 ~:~
     termVec = termPoint .-. initPoint
 
 infix 0 ~~
-(~~) :: (InSpace v n s, SegmentLike s) => Point v n -> Point v n -> s
+(~~) :: (V s ~ v, N s ~ n, SegmentLike s) => Point v n -> Point v n -> s
 initPoint ~~ termPoint = segmentLike $ at segment initPoint
   where
     segment = straight termVec
