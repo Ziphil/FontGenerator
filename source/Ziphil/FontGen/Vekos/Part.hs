@@ -36,17 +36,17 @@ import Ziphil.FontGen.Vekos.Param
 
 -- k, p, c, l, a などの文字に共通する丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterBowl :: Given Config => PartTrail
-trailOuterBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height + overshoot)
+trailOuterBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
   where
     width = bowlWidth / 2
-    height = mean / 2
+    height = mean / 2 + overshoot
 
 -- k, p, c, l, a などの文字に共通する丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerBowl :: Given Config => PartTrail
-trailInnerBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height + overshoot)
+trailInnerBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
   where
     width = bowlWidth / 2 - thicknessX
-    height = mean / 2 - thicknessY
+    height = mean / 2 - thicknessY + overshoot
 
 -- k, p, c, l, a などの文字に共通する丸い部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
@@ -171,17 +171,17 @@ talWidth = bowlWidth / 2 + beakWidth
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
 trailOuterBeak :: Given Config => PartTrail
-trailOuterBeak = origin ~> (0 &| 10) ~:~ (width &| 0) <~ (-width &| height + overshoot)
+trailOuterBeak = origin ~> (0 &| 10) ~:~ (width &| 0) <~ (-width &| height)
   where
     width = beakWidth
-    height = beakHeight
+    height = beakHeight + overshoot
 
 -- t の文字の右上にある部分の内側の曲線を、右端から上端への向きで生成します。
 trailInnerBeak :: Given Config => PartTrail
-trailInnerBeak = origin ~> (0 &| 10) ~:~ (width &| 0) <~ (-width &| height + overshoot)
+trailInnerBeak = origin ~> (0 &| 10) ~:~ (width &| 0) <~ (-width &| height)
   where
     width = beakWidth - thicknessX
-    height = beakHeight - thicknessY
+    height = beakHeight - thicknessY + overshoot
 
 -- t の文字と同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
@@ -209,25 +209,25 @@ xalWidth = narrowBowlVirtualWidth * 2 - thicknessX
 
 -- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterLeftNarrowBowl :: Given Config => PartTrail
-trailOuterLeftNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height + overshoot)
+trailOuterLeftNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2
-    height = mean / 2
+    height = mean / 2 + overshoot
 
 -- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、右端から上端への向きで生成します。
 -- ただし、他のトレイルと使い方を揃えるため、左右反転してあります。
 trailOuterRightNarrowBowl :: Given Config => PartTrail
-trailOuterRightNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height + overshoot)
+trailOuterRightNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2 - narrowBowlCorrection
-    height = mean / 2
+    height = mean / 2 + overshoot
 
 -- x, j の文字に共通する細い丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerNarrowBowl :: Given Config => PartTrail
-trailInnerNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height + overshoot)
+trailInnerNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2 - thicknessX
-    height = mean / 2 - thicknessY
+    height = mean / 2 - thicknessY + overshoot
 
 -- x, j の文字に共通する細い丸い部分を生成します。
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
