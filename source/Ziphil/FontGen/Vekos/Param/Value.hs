@@ -132,7 +132,7 @@ transphoneBend :: Given Config => Double
 transphoneBend = bowlWidth * 0.15
 
 transphoneGap :: Given Config => Double
-transphoneGap = 60
+transphoneGap = 80
 
 acuteThicknessX :: Given Config => Double
 acuteThicknessX = thicknessX * 0.75

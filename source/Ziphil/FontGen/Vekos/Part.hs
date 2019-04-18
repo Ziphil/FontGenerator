@@ -294,7 +294,7 @@ trailTopSpine = origin ~> (leftCont &| 0) ~:~ (-rightCont &| 0) <~ (width &| ben
     width = spineWidth
     bend = mean - thicknessY + overshoot * 2
     leftCont = searchSpineInnerCont bend width rightCont
-    rightCont = width
+    rightCont = width * 1.05
 
 -- n の文字の中央部分の下側の曲線を、下端から上端への向きで生成します。
 trailBottomSpine :: Given Config => PartTrail
@@ -302,7 +302,7 @@ trailBottomSpine = origin ~> (leftCont &| 0) ~:~ (-rightCont &| 0) <~ (width &| 
   where
     width = spineWidth
     bend = mean - thicknessY + overshoot * 2
-    leftCont = width
+    leftCont = width * 1.05
     rightCont = searchSpineInnerCont bend width leftCont
 
 -- n の文字と同じ形を生成します。
