@@ -94,13 +94,6 @@ searchTailInnerCont bend height outerCont = minimumBy (comparing calcTailError')
     list = [0, interval .. height]
     interval = 0.5
 
-searchTailOuterCont :: Given Config => Double -> Double -> Double -> Double
-searchTailOuterCont bend height innerCont = minimumBy (comparing calcTailError') list
-  where
-    calcTailError' outerCont = calcTailError bend height innerCont outerCont
-    list = [0, interval .. height]
-    interval = 0.5
-
 -- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
 trailRightTail :: Given Config => PartTrail
 trailRightTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
