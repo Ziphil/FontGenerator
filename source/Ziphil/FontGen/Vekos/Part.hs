@@ -76,13 +76,13 @@ idealThickness angle =
     then coeffX * thicknessX + coeffY * thicknessY
     else 1 / 0
   where
-    coeffX = 1 - angleRatio angle quarterTurn
-    coeffY = angleRatio angle quarterTurn
+    coeffX = angleRatio angle quarterTurn
+    coeffY = 1 - angleRatio angle quarterTurn
 
 calcTailError :: Given Config => Double -> Double -> Double -> Double -> Double
 calcTailError bend height innerCont outerCont = abs (distance point base - idealThickness angle / 2)
   where
-    angle = angleBetween (point .-. base) (-1 &| 0)
+    angle = angleBetween (point .-. base) (1 &| 0) ^-^ quarterTurn
     point = head $ closestPoint segment base
     base = (thicknessX / 2 - bend / 2 &| -height / 2)
     segment = origin ~> (0 &| -innerCont) ~:~ (0 &| outerCont) <~ (-bend &| -height)
