@@ -94,23 +94,23 @@ searchTailInnerCont bend height outerCont = minimumBy (comparing calcTailError')
     list = [0, interval .. height]
     interval = 0.5
 
--- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
-trailRightTail :: Given Config => PartTrail
-trailRightTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
-  where
-    bend = tailBend
-    height = mean / 2 + descent
-    topCont = 270
-    bottomCont = searchTailInnerCont bend height topCont
-
 -- l の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
-trailLeftTail :: Given Config => PartTrail
-trailLeftTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
+trailLeftLesTail :: Given Config => PartTrail
+trailLeftLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
-    bend = tailBend
+    bend = lesTailBend
     height = mean / 2 + descent
     topCont = searchTailInnerCont bend height bottomCont
     bottomCont = 270
+
+-- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
+trailRightLesTail :: Given Config => PartTrail
+trailRightLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
+  where
+    bend = lesTailBend
+    height = mean / 2 + descent
+    topCont = 270
+    bottomCont = searchTailInnerCont bend height topCont
 
 -- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左端から右端への向きで生成します。
 trailCut :: Given Config => PartTrail
@@ -125,9 +125,9 @@ partTail :: Given Config => Part
 partTail = makePart trails
   where
     trails =
-      [ trailLeftTail
+      [ trailLeftLesTail
       , trailCut
-      , trailRightTail # reverseTrail
+      , trailRightLesTail # reverseTrail
       , trailCut # reverseTrail
       ]
 
