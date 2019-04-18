@@ -441,9 +441,9 @@ trailTransphoneCut = origin ~~ (width &| 0)
     width = transphoneThicknessX
 
 -- 変音符と同じ形を生成します。
--- 原点は左下の角にあります。
+-- 原点は右に飛び出る部分の左中央にあります。
 partTransphone :: Given Config => Part
-partTransphone = makePart trails # moveOriginBy (0 &| -mean)
+partTransphone = makePart trails # moveOriginBy (transphoneBend &| -mean / 2)
   where
     trails = 
       [ trailTransphone

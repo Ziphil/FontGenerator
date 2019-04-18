@@ -49,7 +49,7 @@ glyphRes = makeGlyph' parts
   where
     parts =
       [ partLes # translate (bowlWidth / 2 &| mean / 2)
-      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
+      , partTransphone # translate (bowlWidth + transphoneGap &| mean / 2)
       ]
 
 glyphPal :: Given Config => Glyph
@@ -64,7 +64,7 @@ glyphBol = makeGlyph' parts
   where
     parts = 
       [ partLes # rotateHalfTurn # translate (bowlWidth / 2 &| mean / 2)
-      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
+      , partTransphone # translate (bowlWidth + transphoneGap &| mean / 2)
       ]
 
 glyphCal :: Given Config => Glyph
@@ -79,7 +79,7 @@ glyphQol = makeGlyph' parts
   where
     parts = 
       [ partLes # reflectX # translate (bowlWidth / 2 &| mean / 2)
-      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
+      , partTransphone # translate (bowlWidth + transphoneGap &| mean / 2)
       ]
 
 glyphKal :: Given Config => Glyph
@@ -94,7 +94,7 @@ glyphGol = makeGlyph' parts
   where
     parts = 
       [ partLes # reflectY # translate (bowlWidth / 2 &| mean / 2)
-      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
+      , partTransphone # translate (bowlWidth + transphoneGap &| mean / 2)
       ]
 
 glyphYes :: Given Config => Glyph
@@ -109,7 +109,7 @@ glyphHes = makeGlyph' parts
   where
     parts = 
       [ partYes # translate (bowlWidth / 2 &| mean / 2)
-      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
+      , partTransphone # translate (bowlWidth + transphoneGap &| mean / 2)
       ]
 
 glyphSal :: Given Config => Glyph
@@ -124,7 +124,7 @@ glyphZol = makeGlyph' parts
   where
     parts = 
       [ partYes # reflectY # translate (bowlWidth / 2 &| mean / 2)
-      , partTransphone # translate (bowlWidth + transphoneGap &| 0)
+      , partTransphone # translate (bowlWidth + transphoneGap &| mean / 2)
       ]
 
 glyphTal :: Given Config => Glyph
@@ -139,7 +139,7 @@ glyphDol = makeGlyph' parts
   where
     parts = 
       [ partTal # translate (talWidth / 2 &| mean / 2)
-      , partTransphone # translate (talWidth + transphoneGap &| 0)
+      , partTransphone # translate (talWidth + transphoneGap &| mean / 2)
       ]
 
 glyphFal :: Given Config => Glyph
@@ -154,7 +154,7 @@ glyphVol = makeGlyph' parts
   where
     parts = 
       [ partTal # reflectX # translate (talWidth / 2 &| mean / 2)
-      , partTransphone # translate (talWidth + transphoneGap &| 0)
+      , partTransphone # translate (talWidth + transphoneGap &| mean / 2)
       ]
   
 glyphXal :: Given Config => Glyph
@@ -169,7 +169,7 @@ glyphJol = makeGlyph' parts
   where
     parts = 
       [ partXal # translate (xalWidth / 2 &| mean / 2)
-      , partTransphone # translate (xalWidth + transphoneGap &| 0)
+      , partTransphone # translate (xalWidth + transphoneGap &| mean / 2)
       ]
 
 glyphNes :: Given Config => Glyph
@@ -184,7 +184,7 @@ glyphMes = makeGlyph' parts
   where
     parts = 
       [ partNes # translate (nesWidth / 2 &| mean / 2)
-      , partTransphone # translate (nesWidth + transphoneGap &| 0)
+      , partTransphone # translate (nesWidth + transphoneGap &| mean / 2)
       ]
 
 glyphAt :: Given Config => Glyph
