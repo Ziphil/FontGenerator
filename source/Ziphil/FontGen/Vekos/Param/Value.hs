@@ -38,6 +38,8 @@ module Ziphil.FontGen.Vekos.Param.Value
   , diacriticGap
   , dotWidth
   , dotGap
+  , badekBearing
+  , badekGap
   , spaceWidth
   )
 where
@@ -164,6 +166,12 @@ dotWidth = thicknessX * 1.3
 
 dotGap :: Given Config => Double
 dotGap = dotWidth * 0.3
+
+badekBearing :: Given Config => Double
+badekBearing = bearing * 1.8
+
+badekGap :: Given Config => Double
+badekGap = 100
 
 spaceWidth :: Given Config => Double
 spaceWidth = 300
