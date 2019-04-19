@@ -34,6 +34,7 @@ glyphs = Map.fromList list
       , ('o', glyphOt), ('ò', glyphOtGrave), ('ô', glyphOtCircumflex)
       , (',', glyphTadek), ('.', glyphDek)
       , ('!', glyphBadek), ('?', glyphPadek)
+      , ('\'', glyphNok)
       , (' ', glyphSpace)
       ]
 
@@ -357,6 +358,13 @@ glyphPadek = makeGlyphWithSpacing' badekSpacing parts
       [ partDot
       , partDot # translate (dotWidth + dotGap &| 0)
       , partPadekStem # translate ((dotWidth - thicknessX) / 2 &| dotWidth + badekGap - overshoot)
+      ]
+
+glyphNok :: Given Config => Glyph
+glyphNok = makeGlyph' parts
+  where
+    parts =
+      [ partNok # translate (0 &| ascent)
       ]
       
 glyphSpace :: Given Config => Glyph

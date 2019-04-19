@@ -20,6 +20,7 @@ module Ziphil.FontGen.Vekos.Part
   , partDot
   , partBadekStem
   , partPadekStem
+  , partNok
   , talWidth
   , narrowBowlWidth
   , xalWidth
@@ -585,4 +586,22 @@ partPadekStem = makePart trails
       , trailRightPadekStem # backward
       , trailCut # backward
       , trailLeftPadekStem
+      ]
+
+-- ノークの文字の棒状の部分の縦の曲線を、上端から下端への向きで生成します。
+trailNokStem :: Given Config => PartTrail
+trailNokStem = origin ~~ (0 &| -height)
+  where
+    height = nokHeight
+
+-- ノークと同じ形を生成します。
+-- 原点は左上の角にあります。
+partNok :: Given Config => Part
+partNok = makePart trails
+  where
+    trails =
+      [ trailNokStem
+      , trailCut
+      , trailNokStem # backward
+      , trailCut # backward
       ]

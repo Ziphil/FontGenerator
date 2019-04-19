@@ -40,6 +40,7 @@ module Ziphil.FontGen.Vekos.Param.Value
   , dotGap
   , badekBearing
   , badekGap
+  , nokHeight
   , spaceWidth
   )
 where
@@ -172,6 +173,9 @@ badekBearing = bearing * 1.8
 
 badekGap :: Given Config => Double
 badekGap = 100
+
+nokHeight :: Given Config => Double
+nokHeight = ascent * 0.3
 
 spaceWidth :: Given Config => Double
 spaceWidth = 300
