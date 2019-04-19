@@ -21,5 +21,8 @@ outputGlyphs info = createOutputDir info >> renderGlyphs info
 outputStrings :: FontInfo -> IO ()
 outputStrings info = renderStrings option info strings
   where
-    option = RenderOption {fileName = "test", lineGap = 200, scaleRate = 0.05}
     strings = ["gûbumes e tel a kin,", "pariqez a vahax,", "li fay cali jodog."]
+    option = with &~ do
+      fileName .= "test"
+      lineGap .= 200
+      scaleRate .= 0.05

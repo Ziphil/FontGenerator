@@ -10,20 +10,27 @@ module Ziphil.FontGen.Vekos.Param.Util
   )
 where
 
-import Data.FontGen.GlyphType
+import Data.FontGen
 import Data.Reflection
 import Ziphil.FontGen.Vekos.Param.Config
 import Ziphil.FontGen.Vekos.Param.Value
 
 
 metrics :: Given Config => Metrics
-metrics = Metrics {metricEm = em, metricAscent = ascent, metricDescent = descent}
+metrics = with &~ do
+  metricEm .= em
+  metricAscent .= ascent
+  metricDescent .= descent
 
 spacing :: Given Config => Spacing
-spacing = Spacing {leftBearing = bearing, rightBearing = bearing}
+spacing = with &~ do
+  leftBearing .= bearing
+  rightBearing .= bearing
 
 badekSpacing :: Given Config => Spacing
-badekSpacing = Spacing {leftBearing = badekBearing, rightBearing = badekBearing}
+badekSpacing = with &~ do
+  leftBearing .= badekBearing
+  rightBearing .= badekBearing
 
 -- パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスとスペーシングの情報を自動的に使用します。

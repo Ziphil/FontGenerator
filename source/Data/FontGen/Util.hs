@@ -13,11 +13,13 @@ module Data.FontGen.Util
   , (<~)
   , (~:~)
   , (~~)
+  , (&~)
   )
 where
 
 import Control.Applicative
-import Diagrams.Prelude hiding ((<~), (~~))
+import Control.Monad.State
+import Diagrams.Prelude hiding ((<~), (~~), (&~))
 
 
 -- 直交座標系で表されたデータからベクトルや点を生成します。
@@ -97,3 +99,9 @@ initPoint ~~ termPoint = segmentLike $ at segment initPoint
   where
     segment = straight termVec
     termVec = termPoint .-. initPoint
+
+-- レンズを用いた操作を行うためのユーティリティ演算子です。
+-- 代入系の演算子と一緒に用いられるよう、lens パッケージで定義されているものより優先度が高く設定してあります。
+infixl 8 &~
+(&~) :: s -> State s a -> s
+val &~ state = execState state val

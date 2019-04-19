@@ -12,6 +12,7 @@ dependencies:
   - base >= 4.7 && < 5
   - array
   - containers
+  - data-default-class
   - deepseq
   - diagrams
   - diagrams-contrib
@@ -19,6 +20,8 @@ dependencies:
   - diagrams-svg
   - filepath
   - hspec
+  - lens
+  - mtl
   - path
   - path-io
   - reflection

@@ -362,4 +362,4 @@ glyphPadek = makeGlyphWithSpacing' badekSpacing parts
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing []
   where
-    spacing = Spacing {leftBearing = spaceWidth, rightBearing = 0}
+    spacing = with & leftBearing .~ spaceWidth & rightBearing .~ 0
