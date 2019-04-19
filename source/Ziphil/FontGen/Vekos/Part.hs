@@ -540,13 +540,13 @@ partDot = makePart trails # moveOriginBy (0 &| -dotWidth / 2 + overshoot)
       [ trailDot
       ]
 
--- ! の文字の棒状の部分の直線を、上端から下端への向きで生成します。
+-- バデックの文字の棒状の部分の直線を、上端から下端への向きで生成します。
 trailBadekStem :: Given Config => PartTrail
 trailBadekStem = origin ~~ (0 &| -height)
   where
     height = ascent - dotWidth - badekGap + overshoot
 
--- ! の文字の棒状の部分を生成します。
+-- バデックの文字の棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partBadekStem :: Given Config => Part
 partBadekStem = makePart trails
@@ -558,7 +558,7 @@ partBadekStem = makePart trails
       , trailBadekStem
       ]
 
--- ? の文字の棒状の部分の左側の曲線を、上端から下端への向きで生成します。
+-- パデックの文字の棒状の部分の左側の曲線を、上端から下端への向きで生成します。
 trailLeftPadekStem :: Given Config => PartTrail
 trailLeftPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
@@ -567,7 +567,7 @@ trailLeftPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &
     topCont = searchTailInnerCont bend height bottomCont
     bottomCont = 300
 
--- ? の文字の棒状の部分の右側の曲線を、上端から下端への向きで生成します。
+-- パデックの文字の棒状の部分の右側の曲線を、上端から下端への向きで生成します。
 trailRightPadekStem :: Given Config => PartTrail
 trailRightPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
@@ -576,7 +576,7 @@ trailRightPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend 
     topCont = 300
     bottomCont = searchTailInnerCont bend height topCont
 
--- ? の文字の棒状の部分を生成します。
+-- パデックの文字の棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partPadekStem :: Given Config => Part
 partPadekStem = makePart trails
