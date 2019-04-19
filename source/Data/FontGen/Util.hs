@@ -34,8 +34,8 @@ class PolarCoordinates c where
 
 instance Floating n => PolarCoordinates (V2 n) where
   type PrevPolarDim (V2 n) = n
-  type FinalTheta (V2 n) = n
-  polar dist theta = angleV (theta @@ deg) ^* dist
+  type FinalTheta (V2 n) = Angle n
+  polar dist theta = angleV theta ^* dist
 
 instance PolarCoordinates (v n) => PolarCoordinates (Point v n) where
   type PrevPolarDim (Point v n) = PrevPolarDim (v n)
