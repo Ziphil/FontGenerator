@@ -55,19 +55,19 @@ partBowl = concatPath paths # moveOriginBy (bowlWidth / 2 &| 0)
   where
     outerTrails =
       [ trailOuterBowl # reflectY
-      , trailOuterBowl # rotateHalfTurn # reverseTrail
+      , trailOuterBowl # rotateHalfTurn # backward
       , trailOuterBowl # reflectX
-      , trailOuterBowl # reverseTrail
+      , trailOuterBowl # backward
       ]
     innerTrails =
       [ trailInnerBowl # reflectY
-      , trailInnerBowl # rotateHalfTurn # reverseTrail
+      , trailInnerBowl # rotateHalfTurn # backward
       , trailInnerBowl # reflectX
-      , trailInnerBowl # reverseTrail
+      , trailInnerBowl # backward
       ]
     paths =
       [ makePath outerTrails
-      , makePath innerTrails # reversePath # translate (thicknessX &| 0)
+      , makePath innerTrails # backward # translate (thicknessX &| 0)
       ]
 
 idealThickness :: Given Config => Angle Double -> Double
@@ -127,8 +127,8 @@ partTail = makePart trails
     trails =
       [ trailLeftLesTail
       , trailCut
-      , trailRightLesTail # reverseTrail
-      , trailCut # reverseTrail
+      , trailRightLesTail # backward
+      , trailCut # backward
       ]
 
 -- l の文字と同じ形を生成します。
@@ -156,14 +156,14 @@ partYes = makePart trails # moveOriginBy (bowlWidth / 2 &| 0)
     trails =
       [ trailLeg
       , trailCut
-      , trailLeg # reverseTrail
+      , trailLeg # backward
       , trailInnerBowl
-      , trailInnerBowl # reflectX # reverseTrail
+      , trailInnerBowl # reflectX # backward
       , trailLeg # reflectX
       , trailCut
-      , trailLeg # reflectX # reverseTrail
+      , trailLeg # reflectX # backward
       , trailOuterBowl # reflectX
-      , trailOuterBowl # reverseTrail
+      , trailOuterBowl # backward
       ]
 
 talWidth :: Given Config => Double
@@ -190,15 +190,15 @@ partTal = makePart trails # moveOriginBy (talWidth / 2 &| 0)
   where
     trails =
       [ trailOuterBowl # reflectY
-      , trailOuterBeak # reflectY # reverseTrail
-      , trailCut # reverseTrail
+      , trailOuterBeak # reflectY # backward
+      , trailCut # backward
       , trailInnerBeak # reflectY
-      , trailInnerBowl # reflectY # reverseTrail
+      , trailInnerBowl # reflectY # backward
       , trailInnerBowl
-      , trailInnerBeak # reverseTrail
+      , trailInnerBeak # backward
       , trailCut
       , trailOuterBeak
-      , trailOuterBowl # reverseTrail
+      , trailOuterBowl # backward
       ]
 
 narrowBowlWidth :: Given Config => Double
@@ -237,19 +237,19 @@ partNarrowBowl = concatPath paths # moveOriginBy (narrowBowlVirtualWidth / 2 &| 
   where
     outerTrails =
       [ trailOuterLeftNarrowBowl # reflectY
-      , trailOuterRightNarrowBowl # rotateHalfTurn # reverseTrail
+      , trailOuterRightNarrowBowl # rotateHalfTurn # backward
       , trailOuterRightNarrowBowl # reflectX
-      , trailOuterLeftNarrowBowl # reverseTrail
+      , trailOuterLeftNarrowBowl # backward
       ]
     innerTrails =
       [ trailInnerNarrowBowl # reflectY
-      , trailInnerNarrowBowl # rotateHalfTurn # reverseTrail
+      , trailInnerNarrowBowl # rotateHalfTurn # backward
       , trailInnerNarrowBowl # reflectX
-      , trailInnerNarrowBowl # reverseTrail
+      , trailInnerNarrowBowl # backward
       ]
     paths =
       [ makePath outerTrails
-      , makePath innerTrails # reversePath # translate (thicknessX &| 0)
+      , makePath innerTrails # backward # translate (thicknessX &| 0)
       ]
 
 -- x の文字と同じ形を生成します。
@@ -313,16 +313,16 @@ partNes = makePart trails # moveOriginBy (nesWidth / 2 &| 0)
     trails =
       [ trailOuterLeftNarrowBowl # reflectY
       , trailBottomSpine
-      , trailInnerNarrowBowl # reflectX # reverseTrail
+      , trailInnerNarrowBowl # reflectX # backward
       , trailNesLeg
       , trailCut
-      , trailNesLeg # reverseTrail
+      , trailNesLeg # backward
       , trailOuterLeftNarrowBowl # reflectX
-      , trailTopSpine # reverseTrail
-      , trailInnerNarrowBowl # reflectY # reverseTrail
+      , trailTopSpine # backward
+      , trailInnerNarrowBowl # reflectY # backward
       , trailNesLeg # rotateHalfTurn
-      , trailCut # reverseTrail
-      , trailNesLeg # rotateHalfTurn # reverseTrail
+      , trailCut # backward
+      , trailNesLeg # rotateHalfTurn # backward
       ]
 
 -- i の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
@@ -351,12 +351,12 @@ partIt = makePart trails # moveOriginBy (talWidth / 2 &| 0)
     trails =
       [ trailLeftItTail
       , trailCut
-      , trailRightItTail # reverseTrail
+      , trailRightItTail # backward
       , trailInnerBowl
-      , trailInnerBeak # reverseTrail
+      , trailInnerBeak # backward
       , trailCut
       , trailOuterBeak
-      , trailOuterBowl # reverseTrail
+      , trailOuterBowl # backward
       ]
 
 -- u の文字のディセンダーと接続する部分の外側の曲線を、上端から下端への向きで生成します。
@@ -396,12 +396,12 @@ partUpperUt = makePart trails # moveOriginBy (talWidth / 2 &| 0)
     trails =
       [ trailOuterLink
       , origin ~~ (0 &| thicknessY - linkLowerCorrection)
-      , trailInnerLink # reverseTrail
+      , trailInnerLink # backward
       , trailInnerBowl
-      , trailInnerBeak # reverseTrail
+      , trailInnerBeak # backward
       , trailCut
       , trailOuterBeak
-      , trailOuterBowl # reverseTrail
+      , trailOuterBowl # backward
       ]
 
 -- u の文字のディセンダーを生成します。
@@ -411,7 +411,7 @@ partUtTail :: Given Config => Part
 partUtTail = makePart trails
   where
     trails =
-      [ trailLeftUtTail # reverseTrail
+      [ trailLeftUtTail # backward
       , trailCut
       , trailRightUtTail
       , origin ~~ (0 &| thicknessY - linkUpperCorrection)
@@ -447,11 +447,11 @@ partTransphone = makePart trails # moveOriginBy (transphoneBend &| -mean / 2)
   where
     trails = 
       [ trailTransphone
-      , trailTransphone # reflectY # reverseTrail
+      , trailTransphone # reflectY # backward
       , trailTransphoneCut
       , trailTransphone # reflectY
-      , trailTransphone # reverseTrail
-      , trailTransphoneCut # reverseTrail
+      , trailTransphone # backward
+      , trailTransphoneCut # backward
       ]
   
 -- アキュートアクセントの丸い部分の外側の曲線の半分を、左下端から上端への向きで生成します。
@@ -482,10 +482,10 @@ partAcute = makePart trails # moveOriginBy (acuteWidth / 2 &| 0)
     trails =
       [ trailAcuteCut
       , trailInnerAcute
-      , trailInnerAcute # reflectX # reverseTrail
+      , trailInnerAcute # reflectX # backward
       , trailAcuteCut
       , trailOuterAcute # reflectX
-      , trailOuterAcute # reverseTrail
+      , trailOuterAcute # backward
       ]
 
 -- サーカムフレックスアクセントの外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
@@ -509,19 +509,19 @@ partCircumflex = concatPath paths # moveOriginBy (circumflexWidth / 2 &| -circum
   where
     outerTrails =
       [ trailOuterCircumflex # reflectY
-      , trailOuterCircumflex # rotateHalfTurn # reverseTrail
+      , trailOuterCircumflex # rotateHalfTurn # backward
       , trailOuterCircumflex # reflectX
-      , trailOuterCircumflex # reverseTrail
+      , trailOuterCircumflex # backward
       ]
     innerTrails =
       [ trailInnerCircumflex # reflectY
-      , trailInnerCircumflex # rotateHalfTurn # reverseTrail
+      , trailInnerCircumflex # rotateHalfTurn # backward
       , trailInnerCircumflex # reflectX
-      , trailInnerCircumflex # reverseTrail
+      , trailInnerCircumflex # backward
       ]
     paths =
       [ makePath outerTrails
-      , makePath innerTrails # reversePath # translate (circumflexThicknessX &| 0)
+      , makePath innerTrails # backward # translate (circumflexThicknessX &| 0)
       ]
 
 -- デックやパデックなどに含まれる円の曲線を、左端から時計回りに生成します。
@@ -552,8 +552,8 @@ partBadekStem = makePart trails
   where
     trails =
       [ trailCut
-      , trailBadekStem # reverseTrail
-      , trailCut # reverseTrail
+      , trailBadekStem # backward
+      , trailCut # backward
       , trailBadekStem
       ]
 
@@ -582,7 +582,7 @@ partPadekStem = makePart trails
   where
     trails =
       [ trailCut
-      , trailRightPadekStem # reverseTrail
-      , trailCut # reverseTrail
+      , trailRightPadekStem # backward
+      , trailCut # backward
       , trailLeftPadekStem
       ]

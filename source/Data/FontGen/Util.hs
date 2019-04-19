@@ -9,6 +9,7 @@ module Data.FontGen.Util
   , (@|)
   , rotateHalfTurn
   , rotateQuarterTurn
+  , Backwardable (..)
   , (~>)
   , (<~)
   , (~:~)
@@ -54,6 +55,21 @@ rotateHalfTurn = rotate halfTurn
 -- 与えられた図形を 90° 回転します。
 rotateQuarterTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
 rotateQuarterTurn = rotate quarterTurn
+
+class Backwardable a where
+  backward :: a -> a
+
+instance (Num n, Additive v) => Backwardable (Segment Closed v n) where
+  backward = reverseSegment
+
+instance (Metric v, OrderedField n) => Backwardable (Trail v n) where
+  backward = reverseTrail
+
+instance (Metric v, OrderedField n) => Backwardable (Path v n) where
+  backward = reversePath
+
+instance Backwardable a => Backwardable [a] where
+  backward = map backward . reverse
 
 data EndPoint s = EndPoint (Point (V s) (N s)) (V s (N s))
 
