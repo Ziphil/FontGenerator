@@ -51,7 +51,7 @@ trailInnerBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
 -- k, p, c, l, a などの文字に共通する丸い部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partBowl :: Given Config => Part
-partBowl = mconcat parts # moveOriginBy (bowlWidth / 2 &| 0)
+partBowl = concatPath paths # moveOriginBy (bowlWidth / 2 &| 0)
   where
     outerTrails =
       [ trailOuterBowl # reflectY
@@ -65,9 +65,9 @@ partBowl = mconcat parts # moveOriginBy (bowlWidth / 2 &| 0)
       , trailInnerBowl # reflectX
       , trailInnerBowl # reverseTrail
       ]
-    parts =
-      [ makePart outerTrails
-      , makePart innerTrails # reversePath # translate (thicknessX &| 0)
+    paths =
+      [ makePath outerTrails
+      , makePath innerTrails # reversePath # translate (thicknessX &| 0)
       ]
 
 idealThickness :: Given Config => Angle Double -> Double
@@ -134,7 +134,7 @@ partTail = makePart trails
 -- l の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partLes :: Given Config => Part
-partLes = mconcat parts
+partLes = concat parts
   where
     parts =
       [ partBowl
@@ -233,7 +233,7 @@ trailInnerNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
 -- 原点は全体の中央にあります。
 partNarrowBowl :: Given Config => Part
-partNarrowBowl = mconcat parts # moveOriginBy (narrowBowlVirtualWidth / 2 &| 0)
+partNarrowBowl = concatPath paths # moveOriginBy (narrowBowlVirtualWidth / 2 &| 0)
   where
     outerTrails =
       [ trailOuterLeftNarrowBowl # reflectY
@@ -247,19 +247,19 @@ partNarrowBowl = mconcat parts # moveOriginBy (narrowBowlVirtualWidth / 2 &| 0)
       , trailInnerNarrowBowl # reflectX
       , trailInnerNarrowBowl # reverseTrail
       ]
-    parts =
-      [ makePart outerTrails
-      , makePart innerTrails # reversePath # translate (thicknessX &| 0)
+    paths =
+      [ makePath outerTrails
+      , makePath innerTrails # reversePath # translate (thicknessX &| 0)
       ]
 
 -- x の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partXal :: Given Config => Part
-partXal = mconcat parts # moveOriginBy (xalWidth / 2 - narrowBowlVirtualWidth / 2 &| 0)
+partXal = concat parts # moveOriginBy (xalWidth / 2 - narrowBowlVirtualWidth / 2 &| 0)
   where
     parts =
       [ partNarrowBowl
-      , partNarrowBowl # reflectX # reversePath # translate (narrowBowlVirtualWidth - thicknessX &| 0)
+      , partNarrowBowl # reflectX # translate (narrowBowlVirtualWidth - thicknessX &| 0)
       ]
 
 nesWidth :: Given Config => Double
@@ -420,7 +420,7 @@ partUtTail = makePart trails
 -- u の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partUt :: Given Config => Part
-partUt = mconcat parts
+partUt = concat parts
   where
     parts =
       [ partUpperUt
@@ -505,7 +505,7 @@ trailInnerCircumflex = origin ~> (0 &| 10) ~:~ (-width &| 0) <~ (width &| height
 -- サーカムフレックスアクセントと同じ形を生成します。
 -- 原点は下部中央にあります。
 partCircumflex :: Given Config => Part
-partCircumflex = mconcat parts # moveOriginBy (circumflexWidth / 2 &| -circumflexHeight / 2)
+partCircumflex = concatPath paths # moveOriginBy (circumflexWidth / 2 &| -circumflexHeight / 2)
   where
     outerTrails =
       [ trailOuterCircumflex # reflectY
@@ -519,9 +519,9 @@ partCircumflex = mconcat parts # moveOriginBy (circumflexWidth / 2 &| -circumfle
       , trailInnerCircumflex # reflectX
       , trailInnerCircumflex # reverseTrail
       ]
-    parts =
-      [ makePart outerTrails
-      , makePart innerTrails # reversePath # translate (circumflexThicknessX &| 0)
+    paths =
+      [ makePath outerTrails
+      , makePath innerTrails # reversePath # translate (circumflexThicknessX &| 0)
       ]
 
 -- デックやパデックなどに含まれる円の曲線を、左端から時計回りに生成します。
