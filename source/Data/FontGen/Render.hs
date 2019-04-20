@@ -12,6 +12,7 @@ module Data.FontGen.Render
   , renderString
   , renderStrings
   , writeCode
+  , generateFont
   )
 where
 
@@ -32,6 +33,8 @@ import Diagrams.Backend.SVG
 import Diagrams.Prelude hiding (Path, (&~))
 import Path
 import Path.IO
+import System.Exit
+import System.Process
 
 
 styleGlyph :: Glyph -> Diagram B
@@ -116,3 +119,9 @@ writeCode info = flip Text.writeFile code =<< path
   where
     path = toFilePath <$> outputFile info "generate" "py"
     code = makeCode info
+
+generateFont :: FontInfo -> IO ExitCode
+generateFont info = system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
+  where
+    pythonCommand = "ffpython generate.py"
+    cdCommand = ("cd " ++) . toFilePath <$> outputDir info
