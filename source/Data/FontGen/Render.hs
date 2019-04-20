@@ -132,5 +132,6 @@ writeCode option info = flip Text.writeFile code =<< path
 generateFont :: GenerateOption -> FontInfo -> IO ExitCode
 generateFont option info = system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
   where
-    pythonCommand = (option ^. command) ++ " " ++ (option ^. codeFileName) ++ ".py"
+    pythonCommand = option ^. command ++ " " ++ path
     cdCommand = ("cd " ++) . toFilePath <$> outputDir info
+    path = option ^. codeFileName ++ ".py"
