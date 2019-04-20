@@ -44,7 +44,7 @@ outputDir :: FontInfo -> IO (Path Rel Dir)
 outputDir info = (root </>) <$> dir
   where
     root = $(mkRelDir "out")
-    dir = parseRelDir $ dirName info
+    dir = parseRelDir $ info ^. dirName
 
 outputFile :: FontInfo -> String -> String -> IO (Path Rel File)
 outputFile info name ext = (</>) <$> outputDir info <*> file
@@ -111,10 +111,10 @@ sub needle = sets sub'
 makeCode :: FontInfo -> Text
 makeCode info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__familyname__" .= info ^. family
-  sub "__fontname__" .= fullName info
-  sub "__fullname__" .= fullName info
-  sub "__weight__" .= info ^. style . weight # showWeight
-  sub "__version__" .= info ^. version # showVersion
+  sub "__fontname__" .= info ^. fullName
+  sub "__fullname__" .= info ^. fullName
+  sub "__weight__" .= info ^. style . weight . to showWeight
+  sub "__version__" .= info ^. version . to showVersion
   sub "__em__" .= info ^. metrics . metricEm
   sub "__ascent__" .= info ^. metrics . metricAscent
   sub "__descent__" .= info ^. metrics . metricDescent

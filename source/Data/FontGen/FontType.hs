@@ -75,8 +75,12 @@ modifiers info = filter (not . null) [familyString, weightString, slopeString, s
     slopeString = showSlope $ info ^. style . slope
     stretchString = showStretch $ info ^. style . stretch
 
-fullName :: FontInfo -> String
-fullName info = intercalate " " $ modifiers info
+fullName :: Getter FontInfo String
+fullName = to fullName'
+  where
+    fullName' info = intercalate " " $ modifiers info
 
-dirName :: FontInfo -> String
-dirName info = map toLower $ intercalate "-" $ modifiers info
+dirName :: Getter FontInfo String
+dirName = to dirName'
+  where
+    dirName' info = map toLower $ intercalate "-" $ modifiers info
