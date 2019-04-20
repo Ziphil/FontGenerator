@@ -12,7 +12,7 @@ module Ziphil.FontGen.Vekos.Param.Value
   , thicknessY
   , bowlWidth
   , lesTailBend
-  , legBend
+  , yesLegBend
   , beakWidth
   , beakHeight
   , narrowBowlVirtualWidth
@@ -85,8 +85,8 @@ lesTailBend :: Given Config => Double
 lesTailBend = bowlWidth * 0.5
 
 -- y の文字の下半分が内側に曲がる距離を表します。
-legBend :: Given Config => Double
-legBend = bowlWidth * 0.15
+yesLegBend :: Given Config => Double
+yesLegBend = bowlWidth * 0.15
 
 beakWidth :: Given Config => Double
 beakWidth = bowlWidth / 2 * 0.95
@@ -104,7 +104,7 @@ narrowBowlCorrection = thicknessX * 0.15
 
 -- n の文字の書き終わりと書き始めの箇所が内側に曲がる距離を表します。
 nesLegBend :: Given Config => Double
-nesLegBend = legBend
+nesLegBend = yesLegBend
 
 spineWidth :: Given Config => Double
 spineWidth = bowlWidth * 0.5

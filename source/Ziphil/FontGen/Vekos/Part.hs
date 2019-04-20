@@ -150,7 +150,7 @@ partLes = concat parts
 trailLeg :: Given Config => PartTrail
 trailLeg = origin ~> (0 &| -leftCont) ~:~ zero <~ (bend &| -height)
   where
-    bend = legBend
+    bend = yesLegBend
     height = mean / 2
     leftCont = height * 0.6
 
