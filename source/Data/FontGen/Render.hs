@@ -96,6 +96,14 @@ renderStrings option info strings = flip renderDiagram diagram =<< path
     path = outputFile info (option ^. fileName) "svg"
     diagram = scale (option ^. scaleRate) $ makeStringsDiagram option info strings
 
+data GenerateOption = GenerateOption {_fontFileName :: String, _codeFileName :: String, _command :: String}
+  deriving (Eq, Show)
+
+makeFieldsNoPrefix ''GenerateOption
+
+instance Default GenerateOption where
+  def = GenerateOption "font" "generate" "ffpython"
+
 -- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
 sub :: Show a => String -> Setter Text Text String a
 sub needle = sets sub'
@@ -103,8 +111,8 @@ sub needle = sets sub'
     sub' func = Text.replace (Text.pack needle) (Text.pack $ show $ func needle)
 
 -- テンプレートコード中のメタ変数を変換して、フォント生成用の Python コードを生成します。
-makeCode :: FontInfo -> Text
-makeCode info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
+makeCode :: GenerateOption -> FontInfo -> Text
+makeCode option info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__familyname__" .= info ^. family
   sub "__fontname__" .= info ^. fullName
   sub "__fullname__" .= info ^. fullName
@@ -113,15 +121,16 @@ makeCode info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__em__" .= info ^. metrics . metricEm # truncate
   sub "__ascent__" .= info ^. metrics . metricAscent # truncate
   sub "__descent__" .= info ^. metrics . metricDescent # truncate
+  sub "__fontfilename__" .= option ^. fontFileName ++ ".ttf"
 
-writeCode :: FontInfo -> IO ()
-writeCode info = flip Text.writeFile code =<< path
+writeCode :: GenerateOption -> FontInfo -> IO ()
+writeCode option info = flip Text.writeFile code =<< path
   where
-    path = toFilePath <$> outputFile info "generate" "py"
-    code = makeCode info
+    path = toFilePath <$> outputFile info (option ^. codeFileName) "py"
+    code = makeCode option info
 
-generateFont :: FontInfo -> IO ExitCode
-generateFont info = system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
+generateFont :: GenerateOption -> FontInfo -> IO ExitCode
+generateFont option info = system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
   where
-    pythonCommand = "ffpython generate.py"
+    pythonCommand = (option ^. command) ++ " " ++ (option ^. codeFileName) ++ ".py"
     cdCommand = ("cd " ++) . toFilePath <$> outputDir info

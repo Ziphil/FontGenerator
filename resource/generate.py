@@ -36,5 +36,5 @@ for file in os.listdir("."):
     print("Glyph imported @ %d" % codepoint)
     sys.stdout.flush()
 
-font.generate("font.ttf")
+font.generate(__fontfilename__)
 font.close()
