@@ -69,7 +69,7 @@ overshoot :: Given Config => Double
 overshoot = 10
 
 bearing :: Given Config => Double
-bearing = 30
+bearing = 40
 
 thicknessX :: Given Config => Double
 thicknessX = 100
@@ -133,7 +133,7 @@ transphoneBend :: Given Config => Double
 transphoneBend = bowlWidth * 0.15
 
 transphoneGap :: Given Config => Double
-transphoneGap = 80
+transphoneGap = bowlWidth * 0.18
 
 acuteThicknessX :: Given Config => Double
 acuteThicknessX = thicknessX * 0.75
@@ -160,7 +160,7 @@ circumflexHeight :: Given Config => Double
 circumflexHeight = circumflexWidth * 0.9
 
 diacriticGap :: Given Config => Double
-diacriticGap = 60
+diacriticGap = descent * 0.25
 
 dotWidth :: Given Config => Double
 dotWidth = thicknessX * 1.3
@@ -172,10 +172,10 @@ badekBearing :: Given Config => Double
 badekBearing = bearing * 1.8
 
 badekGap :: Given Config => Double
-badekGap = 100
+badekGap = ascent * 0.13
 
 nokHeight :: Given Config => Double
 nokHeight = ascent * 0.3
 
 spaceWidth :: Given Config => Double
-spaceWidth = 300
+spaceWidth = 250

@@ -37,17 +37,21 @@ import Ziphil.FontGen.Vekos.Param
 
 -- k, p, c, l, a などの文字に共通する丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterBowl :: Given Config => PartTrail
-trailOuterBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
+trailOuterBowl = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = bowlWidth / 2
     height = mean / 2 + overshoot
+    leftCont = height * 0.1
+    topCont = width
 
 -- k, p, c, l, a などの文字に共通する丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerBowl :: Given Config => PartTrail
-trailInnerBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
+trailInnerBowl = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = bowlWidth / 2 - thicknessX
     height = mean / 2 - thicknessY + overshoot
+    leftCont = height * 0.1
+    topCont = width
 
 -- k, p, c, l, a などの文字に共通する丸い部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
@@ -102,7 +106,7 @@ trailLeftLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| 
     bend = lesTailBend
     height = mean / 2 + descent
     topCont = searchTailInnerCont bend height bottomCont
-    bottomCont = 270
+    bottomCont = descent * 1.08
 
 -- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
 trailRightLesTail :: Given Config => PartTrail
@@ -110,7 +114,7 @@ trailRightLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &|
   where
     bend = lesTailBend
     height = mean / 2 + descent
-    topCont = 270
+    topCont = descent * 1.08
     bottomCont = searchTailInnerCont bend height topCont
 
 -- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左端から右端への向きで生成します。
@@ -144,10 +148,11 @@ partLes = concat parts
 
 -- y の文字の下半分にある曲線を、上端から下端への向きで生成します。
 trailLeg :: Given Config => PartTrail
-trailLeg = origin ~> (0 &| -150) ~:~ zero <~ (bend &| -height)
+trailLeg = origin ~> (0 &| -leftCont) ~:~ zero <~ (bend &| -height)
   where
     bend = legBend
     height = mean / 2
+    leftCont = height * 0.6
 
 -- y の文字と同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
@@ -172,17 +177,21 @@ talWidth = bowlWidth / 2 + beakWidth
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
 trailOuterBeak :: Given Config => PartTrail
-trailOuterBeak = origin ~> (0 &| 10) ~:~ (width &| 0) <~ (-width &| height)
+trailOuterBeak = origin ~> (0 &| rightCont) ~:~ (topCont &| 0) <~ (-width &| height)
   where
     width = beakWidth
     height = beakHeight + overshoot
+    rightCont = height * 0.05
+    topCont = width
 
 -- t の文字の右上にある部分の内側の曲線を、右端から上端への向きで生成します。
 trailInnerBeak :: Given Config => PartTrail
-trailInnerBeak = origin ~> (0 &| 10) ~:~ (width &| 0) <~ (-width &| height)
+trailInnerBeak = origin ~> (0 &| rightCont) ~:~ (topCont &| 0) <~ (-width &| height)
   where
     width = beakWidth - thicknessX
     height = beakHeight - thicknessY + overshoot
+    rightCont = height * 0.05
+    topCont = width
 
 -- t の文字と同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
@@ -210,25 +219,31 @@ xalWidth = narrowBowlVirtualWidth * 2 - thicknessX
 
 -- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterLeftNarrowBowl :: Given Config => PartTrail
-trailOuterLeftNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
+trailOuterLeftNarrowBowl = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2
     height = mean / 2 + overshoot
+    leftCont = height * 0.1
+    topCont = width
 
 -- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、右端から上端への向きで生成します。
 -- ただし、他のトレイルと使い方を揃えるため、左右反転してあります。
 trailOuterRightNarrowBowl :: Given Config => PartTrail
-trailOuterRightNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
+trailOuterRightNarrowBowl = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2 - narrowBowlCorrection
     height = mean / 2 + overshoot
+    leftCont = height * 0.1
+    topCont = width
 
 -- x, j の文字に共通する細い丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerNarrowBowl :: Given Config => PartTrail
-trailInnerNarrowBowl = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| height)
+trailInnerNarrowBowl = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2 - thicknessX
     height = mean / 2 - thicknessY + overshoot
+    leftCont = height * 0.1
+    topCont = width
 
 -- x, j の文字に共通する細い丸い部分を生成します。
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
@@ -283,10 +298,11 @@ searchSpineInnerCont bend width outerCont = minimumBy (comparing calcSpineError'
 
 -- n の文字の書き終わりの箇所にある曲線を、上端から下端への向きで生成します。
 trailNesLeg :: Given Config => PartTrail
-trailNesLeg = origin ~> (0 &| -150) ~:~ zero <~ (-bend &| -height)
+trailNesLeg = origin ~> (0 &| -rightCont) ~:~ zero <~ (-bend &| -height)
   where
     bend = nesLegBend
     height = mean / 2
+    rightCont = height * 0.6
 
 -- n の文字の中央部分の上側の曲線を、下端から上端への向きで生成します。
 trailTopSpine :: Given Config => PartTrail
@@ -332,7 +348,7 @@ trailLeftItTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (bend &| -h
   where
     bend = itTailBend
     height = mean / 2 + descent
-    topCont = 300
+    topCont = descent * 1.2
     bottomCont = searchTailInnerCont bend height topCont
 
 -- i の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
@@ -342,7 +358,7 @@ trailRightItTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (bend &| -
     bend = itTailBend
     height = mean / 2 + descent
     topCont = searchTailInnerCont bend height bottomCont
-    bottomCont = 300
+    bottomCont = descent * 1.2
 
 -- i の文字と同じ形を生成します。
 -- 原点は上部の丸い部分の中央にあるので、回転や反転で変化しません。
@@ -362,31 +378,39 @@ partIt = makePart trails # moveOriginBy (talWidth / 2 &| 0)
 
 -- u の文字のディセンダーと接続する部分の外側の曲線を、上端から下端への向きで生成します。
 trailOuterLink :: Given Config => PartTrail
-trailOuterLink = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| -height)
+trailOuterLink = origin ~> (0 &| -leftCont) ~:~ (-bottomCont &| 0) <~ (width &| -height)
   where
     width = linkWidth
     height = mean / 2 - linkLowerCorrection
+    leftCont = height * 0.02
+    bottomCont = width
 
 -- u の文字のディセンダーと接続する部分の内側の曲線を、上端から下端への向きで生成します。
 trailInnerLink :: Given Config => PartTrail
-trailInnerLink = origin ~> (0 &| 25) ~:~ (-width &| 0) <~ (width &| -height)
+trailInnerLink = origin ~> (0 &| -leftCont) ~:~ (-bottomCont &| 0) <~ (width &| -height)
   where
     width = linkWidth - thicknessX
     height = mean / 2 - thicknessY
+    leftCont = height * 0.02
+    bottomCont = width
 
--- u の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
+-- u の文字のディセンダーの左側の曲線を、下端から上端への向きで生成します。
 trailLeftUtTail :: Given Config => PartTrail
-trailLeftUtTail = origin ~> (0 &| 25) ~:~ (-bend &| 0) <~ (bend &| height)
+trailLeftUtTail = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (bend &| height)
   where
     bend = utTailBend
     height = descent + thicknessY - linkUpperCorrection
+    leftCont = height * 0.1
+    topCont = bend
 
--- u の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
+-- u の文字のディセンダーの右側の曲線を、下端から上端への向きで生成します。
 trailRightUtTail :: Given Config => PartTrail
-trailRightUtTail = origin ~> (0 &| 25) ~:~ (-bend &| 0) <~ (bend &| height)
+trailRightUtTail = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (bend &| height)
   where
     bend = utTailBend - thicknessX
     height = descent
+    leftCont = height * 0.1
+    topCont = bend
 
 -- u の文字のベースラインより上にある丸い部分を生成します。
 -- ディセンダーと重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
@@ -428,12 +452,13 @@ partUt = concat parts
       , partUtTail # translate (-talWidth / 2 + linkWidth &| -mean / 2 + thicknessY - linkUpperCorrection)
       ]
 
--- 変音符の右に飛び出るように曲がる曲線の上半分を、上端から下端への向きで生成します。
+-- 変音符の右に飛び出るように曲がる曲線の上半分を、下端から上端への向きで生成します。
 trailTransphone :: Given Config => PartTrail
-trailTransphone = origin ~> zero ~:~ (0 &| 150) <~ (bend &| -height)
+trailTransphone = origin ~> zero ~:~ (0 &| rightCont) <~ (bend &| -height)
   where
     bend = transphoneBend
     height = mean / 2
+    rightCont = height * 0.6
 
 -- 変音符の上下にある水平に切られた部分を、左端から右端への向きで生成します。
 trailTransphoneCut :: Given Config => PartTrail
@@ -457,17 +482,21 @@ partTransphone = makePart trails # moveOriginBy (transphoneBend &| -mean / 2)
   
 -- アキュートアクセントの丸い部分の外側の曲線の半分を、左下端から上端への向きで生成します。
 trailOuterAcute :: Given Config => PartTrail
-trailOuterAcute = origin ~> (0 &| 10) ~:~ (-width &| 0) <~ (width &| height)
+trailOuterAcute = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = acuteWidth / 2
     height = acuteHeight
+    leftCont = height * 0.1
+    topCont = width
     
 -- アキュートアクセントの丸い部分の内側の曲線の半分を、左下端から上端への向きで生成します。
 trailInnerAcute :: Given Config => PartTrail
-trailInnerAcute = origin ~> (0 &| 10) ~:~ (-width &| 0) <~ (width &| height)
+trailInnerAcute = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = acuteWidth / 2 - acuteThicknessX
     height = acuteHeight - acuteThicknessY
+    leftCont = height * 0.1
+    topCont = width
 
 -- アキュートアクセントの下部にある水平に切られた部分を、左端から右端への向きで生成します。
 trailAcuteCut :: Given Config => PartTrail
@@ -491,17 +520,21 @@ partAcute = makePart trails # moveOriginBy (acuteWidth / 2 &| 0)
 
 -- サーカムフレックスアクセントの外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailOuterCircumflex :: Given Config => PartTrail
-trailOuterCircumflex = origin ~> (0 &| 10) ~:~ (-width &| 0) <~ (width &| height)
+trailOuterCircumflex = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = circumflexWidth / 2
     height = circumflexHeight / 2
+    leftCont = height * 0.1
+    topCont = width
 
 -- サーカムフレックスアクセントの内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
 trailInnerCircumflex :: Given Config => PartTrail
-trailInnerCircumflex = origin ~> (0 &| 10) ~:~ (-width &| 0) <~ (width &| height)
+trailInnerCircumflex = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (width &| height)
   where
     width = circumflexWidth / 2 - circumflexThicknessX
     height = circumflexHeight / 2 - circumflexThicknessY
+    leftCont = height * 0.1
+    topCont = width
 
 -- サーカムフレックスアクセントと同じ形を生成します。
 -- 原点は下部中央にあります。
@@ -565,7 +598,7 @@ trailLeftPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &
     bend = dotWidth + dotGap
     height = ascent - dotWidth - badekGap + overshoot
     topCont = searchTailInnerCont bend height bottomCont
-    bottomCont = 300
+    bottomCont = height * 0.55
 
 -- パデックの文字の棒状の部分の右側の曲線を、上端から下端への向きで生成します。
 trailRightPadekStem :: Given Config => PartTrail
@@ -573,7 +606,7 @@ trailRightPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend 
   where
     bend = dotWidth + dotGap
     height = ascent - dotWidth - badekGap + overshoot
-    topCont = 300
+    topCont = height * 0.55
     bottomCont = searchTailInnerCont bend height topCont
 
 -- パデックの文字の棒状の部分を生成します。
