@@ -15,6 +15,7 @@ module Data.FontGen.FontType
   , showStretch
   , Style, weight, slope, stretch
   , FontInfo, family, copyright, version, style, metrics, glyphs
+  , extendedFamily
   , fullName
   , dirName
   )
@@ -68,12 +69,23 @@ instance Default FontInfo where
   def = FontInfo "Undefined" "None" def def def Map.empty
 
 modifiers :: FontInfo -> [String]
-modifiers info = filter (not . null) [familyString, weightString, slopeString, stretchString]
+modifiers info = filter (not . null) [familyString, stretchString, weightString, slopeString]
   where
     familyString = info ^. family
     weightString = showWeight $ info ^. style . weight
     slopeString = showSlope $ info ^. style . slope
     stretchString = showStretch $ info ^. style . stretch
+
+stretchModifiers :: FontInfo -> [String]
+stretchModifiers info = filter (not . null) [familyString, stretchString]
+  where
+    familyString = info ^. family
+    stretchString = showStretch $ info ^. style . stretch
+
+extendedFamily :: Getter FontInfo String
+extendedFamily = to extendedFamily'
+  where
+    extendedFamily' info = intercalate " " $ stretchModifiers info
 
 fullName :: Getter FontInfo String
 fullName = to fullName'

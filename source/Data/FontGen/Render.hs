@@ -115,7 +115,7 @@ sub needle = sets sub'
 -- テンプレートコード中のメタ変数を変換して、フォント生成用の Python コードを生成します。
 makeCode :: GenerateOption -> FontInfo -> Text
 makeCode option info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
-  sub "__familyname__" .= info ^. family
+  sub "__familyname__" .= info ^. extendedFamily
   sub "__fontname__" .= info ^. fullName
   sub "__fullname__" .= info ^. fullName
   sub "__weight__" .= info ^. style . weight # showWeight
