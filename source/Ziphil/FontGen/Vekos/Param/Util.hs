@@ -18,9 +18,9 @@ import Ziphil.FontGen.Vekos.Param.Value
 
 metrics :: Given Config => Metrics
 metrics = with &~ do
-  metricEm .= em
-  metricAscent .= ascent
-  metricDescent .= descent
+  metricEm .= actualEm
+  metricAscent .= actualAscent
+  metricDescent .= actualDescent
 
 spacing :: Given Config => Spacing
 spacing = with &~ do

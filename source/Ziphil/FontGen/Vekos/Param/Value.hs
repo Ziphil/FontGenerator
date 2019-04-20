@@ -4,8 +4,11 @@
 module Ziphil.FontGen.Vekos.Param.Value
   ( descent
   , mean
-  , em
   , ascent
+  , em
+  , actualDescent
+  , actualAscent
+  , actualEm
   , overshoot
   , bearing
   , thicknessX
@@ -59,11 +62,20 @@ descent = 250
 mean :: Given Config => Double
 mean = 500
 
-em :: Given Config => Double
-em = mean + descent * 2
-
 ascent :: Given Config => Double
 ascent = mean + descent
+
+em :: Given Config => Double
+em = ascent + descent
+
+actualDescent :: Given Config => Double
+actualDescent = descent + 40
+
+actualAscent :: Given Config => Double
+actualAscent = ascent + 10
+
+actualEm :: Given Config => Double
+actualEm = actualDescent + actualAscent
 
 overshoot :: Given Config => Double
 overshoot = 10
