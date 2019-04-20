@@ -83,16 +83,10 @@ stretchModifiers info = filter (not . null) [familyString, stretchString]
     stretchString = showStretch $ info ^. style . stretch
 
 extendedFamily :: Getter FontInfo String
-extendedFamily = to extendedFamily'
-  where
-    extendedFamily' info = intercalate " " $ stretchModifiers info
+extendedFamily = to $ intercalate " " . stretchModifiers
 
 fullName :: Getter FontInfo String
-fullName = to fullName'
-  where
-    fullName' info = intercalate " " $ modifiers info
+fullName = to $ intercalate " " . modifiers
 
 dirName :: Getter FontInfo String
-dirName = to dirName'
-  where
-    dirName' info = map toLower $ intercalate "-" $ modifiers info
+dirName = to $ map toLower . intercalate "-" . modifiers
