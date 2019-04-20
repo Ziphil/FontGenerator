@@ -316,7 +316,7 @@ glyphOtGrave = makeGlyph' parts
   where
     parts = 
       [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
-      , partAcute # translate (beakWidth &| -circumflexHeight - diacriticGap)
+      , partAcute # translate (beakWidth &| -acuteHeight - diacriticGap)
       ]
 
 glyphOtCircumflex :: Given Config => Glyph
