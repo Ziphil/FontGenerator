@@ -11,8 +11,10 @@ module Data.FontGen.Render
   , RenderOption, fileName, lineGap, scaleRate
   , renderString
   , renderStrings
+  , GenerateOption, fontFileName, codeFileName, command
   , writeCode
   , generateFont
+  , generateAll
   )
 where
 
@@ -123,15 +125,27 @@ makeCode option info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__descent__" .= info ^. metrics . metricDescent # truncate
   sub "__fontfilename__" .= option ^. fontFileName ++ ".ttf"
 
+-- フォント生成用 Python コードを生成し、ファイルに書き出します。
 writeCode :: GenerateOption -> FontInfo -> IO ()
 writeCode option info = flip Text.writeFile code =<< path
   where
     path = toFilePath <$> outputFile info (option ^. codeFileName) "py"
     code = makeCode option info
 
+-- フォント生成用 Python コードを実行して、フォントを生成します。
+-- あらかじめ生成用のコードを用意しておいてください。
 generateFont :: GenerateOption -> FontInfo -> IO ExitCode
 generateFont option info = system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
   where
     pythonCommand = option ^. command ++ " " ++ path
     cdCommand = ("cd " ++) . toFilePath <$> outputDir info
     path = option ^. codeFileName ++ ".py"
+
+-- グリフ生成からフォント生成までの一連の処理を全て行います。
+generateAll :: GenerateOption -> FontInfo -> IO ()
+generateAll option info = do
+  createOutputDir info
+  renderGlyphs info
+  writeCode option info
+  generateFont option info
+  return ()
