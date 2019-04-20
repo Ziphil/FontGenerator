@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 
@@ -14,7 +15,6 @@ module Data.FontGen.Render
   )
 where
 
-import Control.Lens
 import Control.Monad
 import Data.Char
 import Data.FontGen.FontType
@@ -27,8 +27,9 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import Data.Text.Encoding
+import Data.Version
 import Diagrams.Backend.SVG
-import Diagrams.Prelude hiding (Path)
+import Diagrams.Prelude hiding (Path, (&~))
 import Path
 import Path.IO
 
@@ -100,13 +101,26 @@ renderStrings option info strings = flip renderDiagram diagram =<< path
     path = outputFile info (option ^. fileName) "svg"
     diagram = makeStringsDiagram option info strings
 
-makeCode :: FontInfo -> Text
-makeCode info = template
+-- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
+sub :: Show a => String -> Setter Text Text String a
+sub needle = sets sub'
   where
-    template = decodeUtf8 $(embedFile "resource/generate.py")
+    sub' func = Text.replace (Text.pack needle) (Text.pack $ show $ func needle)
+
+-- テンプレートコード中のメタ変数を変換して、フォント生成用の Python コードを生成します。
+makeCode :: FontInfo -> Text
+makeCode info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
+  sub "__familyname__" .= info ^. family
+  sub "__fontname__" .= fullName info
+  sub "__fullname__" .= fullName info
+  sub "__weight__" .= info ^. style . weight # showWeight
+  sub "__version__" .= info ^. version # showVersion
+  sub "__em__" .= info ^. metrics . metricEm
+  sub "__ascent__" .= info ^. metrics . metricAscent
+  sub "__descent__" .= info ^. metrics . metricDescent
 
 writeCode :: FontInfo -> IO ()
-writeCode info = join $ Text.writeFile <$> path <*> return code
+writeCode info = flip Text.writeFile code =<< path
   where
     path = toFilePath <$> outputFile info "generate" "py"
     code = makeCode info

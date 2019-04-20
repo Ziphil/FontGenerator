@@ -10,6 +10,9 @@ module Data.FontGen.FontType
   ( Weight (..)
   , Slope (..)
   , Stretch (..)
+  , showWeight
+  , showSlope
+  , showStretch
   , Style, weight, slope, stretch
   , FontInfo, family, style, version, metrics, glyphs
   , fullName
