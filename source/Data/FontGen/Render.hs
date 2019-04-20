@@ -43,7 +43,7 @@ styleGlyph :: Glyph -> Diagram B
 styleGlyph = lineWidth (global 0) . fillColor black
 
 renderDiagram :: Path Rel File -> Diagram B -> IO ()
-renderDiagram path diagram = renderPretty (toFilePath path) absolute diagram
+renderDiagram path = renderPretty (toFilePath path) absolute
 
 outputDir :: FontInfo -> IO (Path Rel Dir)
 outputDir info = (root </>) <$> dir
@@ -63,7 +63,7 @@ renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
 renderGlyph info char glyph = flip renderDiagram diagram =<< path
   where
     path = outputFile info name "svg"
-    name = show (ord char)
+    name = show $ ord char
     diagram = styleGlyph glyph
 
 renderGlyphs :: FontInfo -> IO ()
@@ -81,7 +81,7 @@ makeCharDiagram :: FontInfo -> Char -> Diagram B
 makeCharDiagram info char = styleGlyph $ fromMaybe mempty $ Map.lookup char (info ^. glyphs)
 
 makeStringDiagram :: RenderOption -> FontInfo -> String -> Diagram B
-makeStringDiagram option info string = hcat $ map (makeCharDiagram info) string
+makeStringDiagram option info = hcat . map (makeCharDiagram info)
 
 renderString :: RenderOption -> FontInfo -> String -> IO ()
 renderString option info string = flip renderDiagram diagram =<< path
@@ -90,7 +90,7 @@ renderString option info string = flip renderDiagram diagram =<< path
     diagram = scale (option ^. scaleRate) $ makeStringDiagram option info string
 
 makeStringsDiagram :: RenderOption -> FontInfo -> [String] -> Diagram B
-makeStringsDiagram option info strings = vsep (option ^. lineGap) $ map (makeStringDiagram option info) strings
+makeStringsDiagram option info = vsep (option ^. lineGap) . map (makeStringDiagram option info)
 
 renderStrings :: RenderOption -> FontInfo -> [String] -> IO ()
 renderStrings option info strings = flip renderDiagram diagram =<< path
