@@ -18,10 +18,11 @@ import Data.Version
 regularInfo :: FontInfo
 regularInfo = with &~ do
   family .= "Vekos"
+  copyright .= "Copyright 2019 Ziphil"
+  version .= makeVersion [0, 0, 0]
   style .= with &~ do
     weight .= Regular
     stretch .= Normal
-  version .= makeVersion [0, 0, 0]
   metrics .= give regularConfig Param.metrics
   glyphs .= give regularConfig Glyph.glyphs
 

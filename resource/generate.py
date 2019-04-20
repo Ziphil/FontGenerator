@@ -15,7 +15,7 @@ font.fontname = __fontname__
 font.fullname = __fullname__
 font.weight = __weight__
 font.version = __version__
-font.copyright = "Copyright 2019 ???"
+font.copyright = __copyright__
 
 font.encoding = "UnicodeFull"
 

@@ -14,7 +14,7 @@ module Data.FontGen.FontType
   , showSlope
   , showStretch
   , Style, weight, slope, stretch
-  , FontInfo, family, style, version, metrics, glyphs
+  , FontInfo, family, copyright, version, style, metrics, glyphs
   , fullName
   , dirName
   )
@@ -57,7 +57,7 @@ makeFieldsNoPrefix ''Style
 instance Default Style where
   def = Style Regular Upright Normal
 
-data FontInfo = FontInfo {_family :: String, _style :: Style, _version :: Version, _metrics :: Metrics, _glyphs :: Glyphs}
+data FontInfo = FontInfo {_family :: String, _copyright :: String, _version :: Version, _style :: Style, _metrics :: Metrics, _glyphs :: Glyphs}
 
 makeFieldsNoPrefix ''FontInfo
 
@@ -65,7 +65,7 @@ instance Default Version where
   def = makeVersion [0, 0, 0]
 
 instance Default FontInfo where
-  def = FontInfo "Undefined" def def def Map.empty
+  def = FontInfo "Undefined" "None" def def def Map.empty
 
 modifiers :: FontInfo -> [String]
 modifiers info = filter (not . null) [familyString, weightString, slopeString, stretchString]

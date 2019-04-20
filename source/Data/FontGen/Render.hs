@@ -120,6 +120,7 @@ makeCode option info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__fullname__" .= info ^. fullName
   sub "__weight__" .= info ^. style . weight # showWeight
   sub "__version__" .= info ^. version # showVersion
+  sub "__copyright__" .= info ^. copyright
   sub "__em__" .= info ^. metrics . metricEm # truncate
   sub "__ascent__" .= info ^. metrics . metricAscent # truncate
   sub "__descent__" .= info ^. metrics . metricDescent # truncate
