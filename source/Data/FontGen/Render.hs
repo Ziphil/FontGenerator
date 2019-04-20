@@ -108,11 +108,11 @@ makeCode info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__familyname__" .= info ^. family
   sub "__fontname__" .= info ^. fullName
   sub "__fullname__" .= info ^. fullName
-  sub "__weight__" .= info ^. style . weight . to showWeight
-  sub "__version__" .= info ^. version . to showVersion
-  sub "__em__" .= info ^. metrics . metricEm
-  sub "__ascent__" .= info ^. metrics . metricAscent
-  sub "__descent__" .= info ^. metrics . metricDescent
+  sub "__weight__" .= info ^. style . weight # showWeight
+  sub "__version__" .= info ^. version # showVersion
+  sub "__em__" .= info ^. metrics . metricEm # truncate
+  sub "__ascent__" .= info ^. metrics . metricAscent # truncate
+  sub "__descent__" .= info ^. metrics . metricDescent # truncate
 
 writeCode :: FontInfo -> IO ()
 writeCode info = flip Text.writeFile code =<< path
