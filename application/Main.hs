@@ -14,6 +14,7 @@ main :: IO ()
 main = do
   outputGlyphs Vekos.regularInfo
   outputStrings Vekos.regularInfo
+  writeCode Vekos.regularInfo
 
 outputGlyphs :: FontInfo -> IO ()
 outputGlyphs info = createOutputDir info >> renderGlyphs info
