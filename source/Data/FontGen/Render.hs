@@ -73,33 +73,25 @@ instance Default RenderOption where
   def = RenderOption "test" 200 0.1
 
 makeCharDiagram :: FontInfo -> Char -> Diagram B
-makeCharDiagram info char = styleGlyph $ fromMaybe mempty glyph
-  where
-    glyph = Map.lookup char (info ^. glyphs)
+makeCharDiagram info char = styleGlyph $ fromMaybe mempty $ Map.lookup char (info ^. glyphs)
 
 makeStringDiagram :: RenderOption -> FontInfo -> String -> Diagram B
-makeStringDiagram option info string = diagram
-  where
-    diagram = scale (option ^. scaleRate) rawDiagram
-    rawDiagram = hcat $ map (makeCharDiagram info) string
+makeStringDiagram option info string = hcat $ map (makeCharDiagram info) string
 
 renderString :: RenderOption -> FontInfo -> String -> IO ()
 renderString option info string = flip renderDiagram diagram =<< path
   where
     path = outputFile info (option ^. fileName) "svg"
-    diagram = makeStringDiagram option info string
+    diagram = scale (option ^. scaleRate) $ makeStringDiagram option info string
 
 makeStringsDiagram :: RenderOption -> FontInfo -> [String] -> Diagram B
-makeStringsDiagram option info strings = diagram
-  where
-    diagram = scale (option ^. scaleRate) rawDiagram
-    rawDiagram = vsep (option ^. lineGap) $ map (makeStringDiagram option info) strings
+makeStringsDiagram option info strings = vsep (option ^. lineGap) $ map (makeStringDiagram option info) strings
 
 renderStrings :: RenderOption -> FontInfo -> [String] -> IO ()
 renderStrings option info strings = flip renderDiagram diagram =<< path
   where
     path = outputFile info (option ^. fileName) "svg"
-    diagram = makeStringsDiagram option info strings
+    diagram = scale (option ^. scaleRate) $ makeStringsDiagram option info strings
 
 -- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
 sub :: Show a => String -> Setter Text Text String a
