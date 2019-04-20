@@ -33,8 +33,6 @@ for file in os.listdir("."):
     glyph.importOutlines("%d.svg" % codepoint)
     glyph.autoHint()
     glyph.width = width
-    print("Glyph imported @ %d" % codepoint)
-    sys.stdout.flush()
 
 font.generate(__fontfilename__)
 font.close()
