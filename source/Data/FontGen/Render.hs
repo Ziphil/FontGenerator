@@ -36,8 +36,8 @@ import Path.IO
 styleGlyph :: Glyph -> Diagram B
 styleGlyph = lineWidth (global 0) . fillColor black
 
-renderDiagram :: FilePath -> Diagram B -> IO ()
-renderDiagram path diagram = renderPretty path absolute diagram
+renderDiagram :: Path Rel File -> Diagram B -> IO ()
+renderDiagram path diagram = renderPretty (toFilePath path) absolute diagram
 
 outputDir :: FontInfo -> IO (Path Rel Dir)
 outputDir info = (root </>) <$> dir
@@ -54,10 +54,11 @@ createOutputDir :: FontInfo -> IO ()
 createOutputDir info = createDirIfMissing True =<< outputDir info
 
 renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
-renderGlyph info char glyph = join $ renderDiagram <$> path <*> return (styleGlyph glyph)
+renderGlyph info char glyph = flip renderDiagram diagram =<< path
   where
-    path = toFilePath <$> outputFile info name "svg"
+    path = outputFile info name "svg"
     name = show (ord char)
+    diagram = styleGlyph glyph
 
 renderGlyphs :: FontInfo -> IO ()
 renderGlyphs info = Map.traverseWithKey (renderGlyph info) (info ^. glyphs) >> return ()
@@ -70,21 +71,34 @@ makeFieldsNoPrefix ''RenderOption
 instance Default RenderOption where
   def = RenderOption "test" 200 0.1
 
-renderString :: RenderOption -> FontInfo -> String -> IO ()
-renderString option info string = join $ renderDiagram <$> path <*> return scaledDiagram
+makeCharDiagram :: FontInfo -> Char -> Diagram B
+makeCharDiagram info char = styleGlyph $ fromMaybe mempty glyph
   where
-    path = toFilePath <$> outputFile info (option ^. fileName) "svg"
-    scaledDiagram = scale (option ^. scaleRate) $ diagram
-    diagram = hcat $ mapMaybe make string
-    make char = styleGlyph <$> Map.lookup char (info ^. glyphs)
+    glyph = Map.lookup char (info ^. glyphs)
+
+makeStringDiagram :: RenderOption -> FontInfo -> String -> Diagram B
+makeStringDiagram option info string = diagram
+  where
+    diagram = scale (option ^. scaleRate) rawDiagram
+    rawDiagram = hcat $ map (makeCharDiagram info) string
+
+renderString :: RenderOption -> FontInfo -> String -> IO ()
+renderString option info string = flip renderDiagram diagram =<< path
+  where
+    path = outputFile info (option ^. fileName) "svg"
+    diagram = makeStringDiagram option info string
+
+makeStringsDiagram :: RenderOption -> FontInfo -> [String] -> Diagram B
+makeStringsDiagram option info strings = diagram
+  where
+    diagram = scale (option ^. scaleRate) rawDiagram
+    rawDiagram = vsep (option ^. lineGap) $ map (makeStringDiagram option info) strings
 
 renderStrings :: RenderOption -> FontInfo -> [String] -> IO ()
-renderStrings option info strings = join $ renderDiagram <$> path <*> return scaledDiagram
+renderStrings option info strings = flip renderDiagram diagram =<< path
   where
-    path = toFilePath <$> outputFile info (option ^. fileName) "svg"
-    scaledDiagram = scale (option ^. scaleRate) $ vsep (option ^. lineGap) $ diagram
-    diagram = map (hcat . mapMaybe make) strings
-    make char = styleGlyph <$> Map.lookup char (info ^. glyphs)
+    path = outputFile info (option ^. fileName) "svg"
+    diagram = makeStringsDiagram option info strings
 
 makeCode :: FontInfo -> Text
 makeCode info = template
