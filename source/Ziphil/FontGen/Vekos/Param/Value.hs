@@ -156,7 +156,7 @@ transphoneGap :: Given Config => Double
 transphoneGap = bowlWidth * 0.18
 
 acuteThicknessX :: Given Config => Double
-acuteThicknessX = weightConst' * 30 + 45
+acuteThicknessX = weightConst' * 40 + 35
   where
     weightConst' = given @Config ^. weightConst
 
@@ -167,10 +167,10 @@ acuteWidth :: Given Config => Double
 acuteWidth = bowlWidth * 0.6
 
 acuteHeight :: Given Config => Double
-acuteHeight = acuteWidth * 0.45
+acuteHeight = acuteWidth * 0.5
 
 circumflexThicknessX :: Given Config => Double
-circumflexThicknessX = weightConst' * 30 + 40
+circumflexThicknessX = weightConst' * 40 + 30
   where
     weightConst' = given @Config ^. weightConst
 
@@ -187,10 +187,10 @@ diacriticGap :: Given Config => Double
 diacriticGap = descent * 0.25
 
 dotWidth :: Given Config => Double
-dotWidth = thicknessX * 1.3
+dotWidth = thicknessX * 1.2
 
 dotGap :: Given Config => Double
-dotGap = dotWidth * 0.3
+dotGap = dotWidth * 0.2
 
 badekBearing :: Given Config => Double
 badekBearing = bearing * 1.8
@@ -199,7 +199,7 @@ badekGap :: Given Config => Double
 badekGap = ascent * 0.13
 
 padekBend :: Given Config => Double
-padekBend = bowlWidth * 0.35
+padekBend = bowlWidth * 0.3
 
 nokHeight :: Given Config => Double
 nokHeight = ascent * 0.3
