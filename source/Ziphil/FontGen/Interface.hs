@@ -29,12 +29,12 @@ start generateOption renderOption strings = do
 generateAll' :: GenerateOption -> FontInfo -> IO ()
 generateAll' option info = do
   generateAll option info
-  flushStrLn $ colorMessage $ "@ Generating: " ++ info ^. fullName
+  flushStrLn $ colorMessage $ "@ Generating: " <> info ^. fullName
 
 renderStrings' :: RenderOption -> FontInfo -> [String] -> IO ()
 renderStrings' option info strings = do
   renderStrings option info strings 
-  flushStrLn $ colorMessage $ "@ Rendering: " ++ info ^. fullName
+  flushStrLn $ colorMessage $ "@ Rendering: " <> info ^. fullName
 
 flushStr :: String -> IO ()
 flushStr string = putStr string >> hFlush stdout
@@ -51,7 +51,7 @@ colorInput = color Yellow
 parseInfos :: String -> [FontInfo]
 parseInfos string = Map.elems $ Map.filterWithKey check wholeInfos
   where
-    check key info = key =~ ("^" ++ string ++ "$")
+    check key info = key =~ ("^" <> string <> "$")
 
 wholeInfos :: Map String FontInfo
 wholeInfos = Map.fromList list

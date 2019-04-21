@@ -138,7 +138,7 @@ makeCode option info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__em__" .= info ^. metrics . metricEm
   sub "__ascent__" .= info ^. metrics . metricAscent
   sub "__descent__" .= info ^. metrics . metricDescent
-  sub "__fontfilename__" .= "../" ++ info ^. dirName ++ ".ttf"
+  sub "__fontfilename__" .= "../" <> info ^. dirName <> ".ttf"
 
 -- フォント生成用 Python コードを生成し、ファイルに書き出します。
 writeCode :: GenerateOption -> FontInfo -> IO ()
@@ -150,11 +150,11 @@ writeCode option info = flip Text.writeFile code =<< path
 -- フォント生成用 Python コードを実行して、フォントを生成します。
 -- あらかじめ生成用のコードを用意しておいてください。
 generateFont :: GenerateOption -> FontInfo -> IO ()
-generateFont option info = void . system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
+generateFont option info = void . system =<< (<> (" & " <> pythonCommand)) <$> cdCommand
   where
-    pythonCommand = option ^. command ++ " " ++ path
-    cdCommand = ("cd " ++) . toFilePath <$> outputDir info
-    path = option ^. codeFileName ++ ".py"
+    pythonCommand = option ^. command <> " " <> path
+    cdCommand = ("cd " <>) . toFilePath <$> outputDir info
+    path = option ^. codeFileName <> ".py"
 
 -- グリフ生成からフォント生成までの一連の処理を全て行います。
 generateAll :: GenerateOption -> FontInfo -> IO ()
