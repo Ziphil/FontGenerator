@@ -42,7 +42,7 @@ module Ziphil.FontGen.Vekos.Param.Value
   , diacriticGap
   , dotWidth
   , dotGap
-  , badekBearing
+  , badekLeftBearing
   , badekGap
   , padekBend
   , nokHeight
@@ -199,8 +199,8 @@ dotWidth = thicknessX * 1.2
 dotGap :: Given Config => Double
 dotGap = dotWidth * 0.2
 
-badekBearing :: Given Config => Double
-badekBearing = bearing * 1.8
+badekLeftBearing :: Given Config => Double
+badekLeftBearing = bearing * 1.8
 
 badekGap :: Given Config => Double
 badekGap = ascent * 0.13
