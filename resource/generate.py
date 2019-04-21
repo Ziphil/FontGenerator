@@ -29,12 +29,12 @@ for file in os.listdir("."):
     codepoint = int(result.group(1))
     tree = ElementTree.parse(file)
     root = tree.getroot()
-    width = float(root.attrib["width"])
+    width = float(root.attrib["glyph-width"])
     glyph = font.createMappedChar(codepoint)
-    glyph.width = width
     if root.find("{http://www.w3.org/2000/svg}g") is not None:
       glyph.importOutlines("%d.svg" % codepoint)
       glyph.autoHint()
+    glyph.width = width
 
 font.generate(__fontfilename__)
 font.close()

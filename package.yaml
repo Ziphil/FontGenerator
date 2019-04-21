@@ -27,6 +27,7 @@ dependencies:
   - path-io
   - process
   - reflection
+  - svg-builder
   - text
 
 library:

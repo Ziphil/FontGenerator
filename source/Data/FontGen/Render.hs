@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -33,6 +34,7 @@ import Data.Text.Encoding
 import Data.Version
 import Diagrams.Backend.SVG
 import Diagrams.Prelude hiding (Path, (&~))
+import Graphics.Svg.Core
 import Path
 import Path.IO
 import System.Exit
@@ -42,8 +44,20 @@ import System.Process
 styleGlyph :: Glyph -> Diagram B
 styleGlyph = lineWidth (global 0) . fillColor black
 
+adjustWidth :: FontInfo -> Diagram B -> Diagram B
+adjustWidth info = rectEnvelope base size
+  where
+    base = (0 &| 0 - info ^. metrics . metricDescent)
+    size = (info ^. metrics . metricEm &| info ^. metrics . metricEm)
+
 renderDiagram :: Path Rel File -> Diagram B -> IO ()
 renderDiagram path = renderPretty (toFilePath path) absolute
+
+renderDiagram' :: Path Rel File -> Double -> Diagram B -> IO ()
+renderDiagram' path glyphWidth = renderPretty' (toFilePath path) option
+  where
+    option = SVGOptions absolute Nothing "" [extraAttribute] True
+    extraAttribute = makeAttribute "glyph-width" (Text.pack $ show glyphWidth)
 
 outputDir :: FontInfo -> IO (Path Rel Dir)
 outputDir info = (root </>) <$> dir
@@ -60,11 +74,11 @@ createOutputDir :: FontInfo -> IO ()
 createOutputDir info = createDirIfMissing True =<< outputDir info
 
 renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
-renderGlyph info char glyph = flip renderDiagram diagram =<< path
+renderGlyph info char glyph = (\path -> renderDiagram' path (width glyph) diagram) =<< path
   where
     path = outputFile info name "svg"
     name = show $ ord char
-    diagram = styleGlyph glyph
+    diagram = adjustWidth info $ styleGlyph glyph
 
 renderGlyphs :: FontInfo -> IO ()
 renderGlyphs info = void $ Map.traverseWithKey (renderGlyph info) (info ^. glyphs)
