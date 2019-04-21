@@ -148,8 +148,8 @@ partLes = concat parts
       ]
 
 -- y の文字の下半分にある曲線を、上端から下端への向きで生成します。
-trailLeg :: Given Config => PartTrail
-trailLeg = origin ~> (0 &| -leftCont) ~:~ zero <~ (bend &| -height)
+trailYesLeg :: Given Config => PartTrail
+trailYesLeg = origin ~> (0 &| -leftCont) ~:~ zero <~ (bend &| -height)
   where
     bend = yesLegBend
     height = mean / 2
@@ -161,14 +161,14 @@ partYes :: Given Config => Part
 partYes = makePart trails # moveOriginBy (bowlWidth / 2 &| 0)
   where
     trails =
-      [ trailLeg
+      [ trailYesLeg
       , trailCut
-      , trailLeg # backward
+      , trailYesLeg # backward
       , trailInnerBowl
       , trailInnerBowl # reflectX # backward
-      , trailLeg # reflectX
+      , trailYesLeg # reflectX
       , trailCut
-      , trailLeg # reflectX # backward
+      , trailYesLeg # reflectX # backward
       , trailOuterBowl # reflectX
       , trailOuterBowl # backward
       ]
