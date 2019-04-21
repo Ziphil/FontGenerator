@@ -49,6 +49,8 @@ module Ziphil.FontGen.Vekos.Param.Value
   , dikakRightBearing
   , dikakBend
   , dikakHeight
+  , rakutWidth
+  , rakutHeight
   , spaceWidth
   )
 where
@@ -215,6 +217,12 @@ dikakBend = bowlWidth * 0.15
 
 dikakHeight :: Given Config => Double
 dikakHeight = ascent * 0.3
+
+rakutWidth :: Given Config => Double
+rakutWidth = bowlWidth * 0.55
+
+rakutHeight :: Given Config => Double
+rakutHeight = ascent * 0.6
 
 spaceWidth :: Given Config => Double
 spaceWidth = 250

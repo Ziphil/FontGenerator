@@ -35,6 +35,7 @@ glyphs = Map.fromList list
       , (',', glyphTadek), ('.', glyphDek)
       , ('!', glyphBadek), ('?', glyphPadek)
       , ('\'', glyphNok), ('ʻ', glyphDikak)
+      , ('[', glyphOpeningRakut), (']', glyphClosingRakut), ('«', glyphOpeningRakut), ('»', glyphClosingRakut)
       , (' ', glyphSpace)
       ]
 
@@ -382,6 +383,20 @@ glyphDikak = makeGlyphWithSpacing' spacing parts
     spacing = with &~ do
       leftBearing .= bearing
       rightBearing .= dikakRightBearing
+
+glyphOpeningRakut :: Given Config => Glyph
+glyphOpeningRakut = makeGlyph' parts
+  where
+    parts =
+      [ partOpeningRakut # translate (0 &| ascent)
+      ]
+
+glyphClosingRakut :: Given Config => Glyph
+glyphClosingRakut = makeGlyph' parts
+  where
+    parts =
+      [ partOpeningRakut # reflectX # translate (rakutWidth &| ascent)
+      ]
       
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing []
