@@ -49,6 +49,8 @@ module Ziphil.FontGen.Vekos.Param.Value
   , dikakRightBearing
   , dikakBend
   , dikakHeight
+  , fekAltitude
+  , fekWidth
   , rakutWidth
   , rakutHeight
   , spaceWidth
@@ -217,6 +219,13 @@ dikakBend = bowlWidth * 0.15
 
 dikakHeight :: Given Config => Double
 dikakHeight = ascent * 0.3
+
+-- フェークの垂直方向中央とベースラインの間の距離を表します。
+fekAltitude :: Given Config => Double
+fekAltitude = mean / 2
+
+fekWidth :: Given Config => Double
+fekWidth = bowlWidth * 0.6
 
 rakutWidth :: Given Config => Double
 rakutWidth = bowlWidth * 0.55

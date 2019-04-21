@@ -22,6 +22,7 @@ module Ziphil.FontGen.Vekos.Part
   , partPadekStem
   , partNok
   , partDikak
+  , partFek
   , partOpeningRakut
   , talWidth
   , narrowBowlWidth
@@ -661,23 +662,39 @@ partDikak = makePart trails
       , trailCut # backward
       ]
 
--- ラクットの縦向きの棒状の部分の曲線を、上端から下端への向きで生成します。
-trailRakutVertical :: Given Config => PartTrail
-trailRakutVertical = origin ~~ (0 &| -height)
+-- フェークの直線を、左端から右端への向きで生成します。
+trailFekHorizontal :: Given Config => PartTrail
+trailFekHorizontal = origin ~~ (width &| 0)
   where
-    height = rakutHeight
-
--- ラクットの横向きの棒状の部分の曲線を、左端から右端への向きで生成します。
-trailRakutHorizontal :: Given Config => PartTrail
-trailRakutHorizontal = origin ~~ (width &| 0)
-  where
-    width = rakutWidth
+    width = fekWidth
 
 -- 文字の書き始めや書き終わりの位置にある垂直に切られた部分を、上端から下端への向きで生成します。
 trailVerticalCut :: Given Config => PartTrail
 trailVerticalCut = origin ~~ (0 &| -height)
   where
     height = thicknessY
+
+partFek :: Given Config => Part
+partFek = makePart trails
+  where
+    trails =
+      [ trailVerticalCut
+      , trailFekHorizontal
+      , trailVerticalCut # backward
+      , trailFekHorizontal # backward
+      ]
+
+-- ラクットの縦向きの棒状の部分の直線を、上端から下端への向きで生成します。
+trailRakutVertical :: Given Config => PartTrail
+trailRakutVertical = origin ~~ (0 &| -height)
+  where
+    height = rakutHeight
+
+-- ラクットの横向きの棒状の部分の直線を、左端から右端への向きで生成します。
+trailRakutHorizontal :: Given Config => PartTrail
+trailRakutHorizontal = origin ~~ (width &| 0)
+  where
+    width = rakutWidth
 
 -- ラクットの縦向きの棒状の部分を生成します。
 -- 原点は左上の角にあります。
