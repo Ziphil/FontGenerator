@@ -19,20 +19,22 @@ font.copyright = __copyright__
 
 font.encoding = "UnicodeFull"
 
-font.em = __em__
-font.ascent = __ascent__
-font.descent = __descent__
+font.em = int(__em__)
+font.ascent = int(__ascent__)
+font.descent = int(__descent__)
 
 for file in os.listdir("."):
   result = re.match(r"(\d+)\.svg", file)
   if result:
     codepoint = int(result.group(1))
-    root = ElementTree.parse(file).getroot()
+    tree = ElementTree.parse(file)
+    root = tree.getroot()
     width = float(root.attrib["width"])
     glyph = font.createMappedChar(codepoint)
-    glyph.importOutlines("%d.svg" % codepoint)
-    glyph.autoHint()
     glyph.width = width
+    if root.find("{http://www.w3.org/2000/svg}g") is not None:
+      glyph.importOutlines("%d.svg" % codepoint)
+      glyph.autoHint()
 
 font.generate(__fontfilename__)
 font.close()
