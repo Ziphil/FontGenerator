@@ -178,7 +178,7 @@ acuteWidth :: Given Config => Double
 acuteWidth = bowlWidth * 0.6
 
 acuteHeight :: Given Config => Double
-acuteHeight = acuteWidth * 0.5
+acuteHeight = descent * 0.55
 
 circumflexThicknessX :: Given Config => Double
 circumflexThicknessX = weightConst' * 40 + 30
@@ -192,7 +192,7 @@ circumflexWidth :: Given Config => Double
 circumflexWidth = bowlWidth * 0.5
 
 circumflexHeight :: Given Config => Double
-circumflexHeight = circumflexWidth * 0.85
+circumflexHeight = descent * 0.75
 
 diacriticGap :: Given Config => Double
 diacriticGap = descent * 0.25
