@@ -350,7 +350,7 @@ glyphBadek = makeGlyphWithSpacing' spacing parts
     parts =
       [ partDot
       , partDot # translate (dotWidth + dotGap &| 0)
-      , partBadekStem # translate ((dotWidth - thicknessX) / 2 &| dotWidth + badekGap - overshoot)
+      , partBadekStem # translate (dotWidth / 2 - thicknessX / 2 &| dotWidth + badekGap - overshoot)
       ]
     spacing = with &~ do
       leftBearing .= badekLeftBearing
@@ -362,7 +362,7 @@ glyphPadek = makeGlyphWithSpacing' spacing parts
     parts =
       [ partDot
       , partDot # translate (dotWidth + dotGap &| 0)
-      , partPadekStem # translate ((dotWidth - thicknessX) / 2 &| dotWidth + badekGap - overshoot)
+      , partPadekStem # translate (dotWidth / 2 - thicknessX / 2 &| dotWidth + badekGap - overshoot)
       ]
     spacing = with &~ do
       leftBearing .= badekLeftBearing
