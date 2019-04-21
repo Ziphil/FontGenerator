@@ -92,7 +92,7 @@ overshoot :: Given Config => Double
 overshoot = 10
 
 bearing :: Given Config => Double
-bearing = 40
+bearing = bowlWidth * 0.09
 
 thicknessX :: Given Config => Double
 thicknessX = weightConst' * 100
@@ -240,4 +240,4 @@ rakutHeight :: Given Config => Double
 rakutHeight = ascent * 0.6
 
 spaceWidth :: Given Config => Double
-spaceWidth = 250
+spaceWidth = bowlWidth * 0.55
