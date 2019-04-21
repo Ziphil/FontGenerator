@@ -34,7 +34,7 @@ glyphs = Map.fromList list
       , ('o', glyphOt), ('ò', glyphOtGrave), ('ô', glyphOtCircumflex)
       , (',', glyphTadek), ('.', glyphDek)
       , ('!', glyphBadek), ('?', glyphPadek)
-      , ('\'', glyphNok)
+      , ('\'', glyphNok), ('ʻ', glyphDikak)
       , (' ', glyphSpace)
       ]
 
@@ -343,22 +343,28 @@ glyphDek = makeGlyph' parts
       ]
 
 glyphBadek :: Given Config => Glyph
-glyphBadek = makeGlyphWithSpacing' badekSpacing parts
+glyphBadek = makeGlyphWithSpacing' spacing parts
   where
     parts =
       [ partDot
       , partDot # translate (dotWidth + dotGap &| 0)
       , partBadekStem # translate ((dotWidth - thicknessX) / 2 &| dotWidth + badekGap - overshoot)
       ]
+    spacing = with &~ do
+      leftBearing .= badekBearing
+      rightBearing .= badekBearing
 
 glyphPadek :: Given Config => Glyph
-glyphPadek = makeGlyphWithSpacing' badekSpacing parts
+glyphPadek = makeGlyphWithSpacing' spacing parts
   where
     parts =
       [ partDot
       , partDot # translate (dotWidth + dotGap &| 0)
       , partPadekStem # translate ((dotWidth - thicknessX) / 2 &| dotWidth + badekGap - overshoot)
       ]
+    spacing = with &~ do
+      leftBearing .= badekBearing
+      rightBearing .= badekBearing
 
 glyphNok :: Given Config => Glyph
 glyphNok = makeGlyph' parts
@@ -366,8 +372,20 @@ glyphNok = makeGlyph' parts
     parts =
       [ partNok # translate (0 &| ascent)
       ]
+
+glyphDikak :: Given Config => Glyph
+glyphDikak = makeGlyphWithSpacing' spacing parts
+  where
+    parts =
+      [ partDikak # translate (dikakBend &| ascent)
+      ]
+    spacing = with &~ do
+      leftBearing .= bearing
+      rightBearing .= dikakRightBearing
       
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing []
   where
-    spacing = with & leftBearing .~ spaceWidth & rightBearing .~ 0
+    spacing = with &~ do
+      leftBearing .= spaceWidth
+      rightBearing .= 0

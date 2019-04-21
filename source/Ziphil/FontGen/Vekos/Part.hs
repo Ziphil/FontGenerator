@@ -21,6 +21,7 @@ module Ziphil.FontGen.Vekos.Part
   , partBadekStem
   , partPadekStem
   , partNok
+  , partDikak
   , talWidth
   , narrowBowlWidth
   , xalWidth
@@ -573,13 +574,13 @@ partDot = makePart trails # moveOriginBy (0 &| -dotWidth / 2 + overshoot)
       [ trailDot
       ]
 
--- バデックの文字の棒状の部分の直線を、上端から下端への向きで生成します。
+-- バデックの棒状の部分の直線を、上端から下端への向きで生成します。
 trailBadekStem :: Given Config => PartTrail
 trailBadekStem = origin ~~ (0 &| -height)
   where
     height = ascent - dotWidth - badekGap + overshoot
 
--- バデックの文字の棒状の部分を生成します。
+-- バデックの棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partBadekStem :: Given Config => Part
 partBadekStem = makePart trails
@@ -591,7 +592,7 @@ partBadekStem = makePart trails
       , trailBadekStem
       ]
 
--- パデックの文字の棒状の部分の左側の曲線を、上端から下端への向きで生成します。
+-- パデックの棒状の部分の左側の曲線を、上端から下端への向きで生成します。
 trailLeftPadekStem :: Given Config => PartTrail
 trailLeftPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
@@ -600,7 +601,7 @@ trailLeftPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &
     topCont = searchTailInnerCont bend height bottomCont
     bottomCont = height * 0.55
 
--- パデックの文字の棒状の部分の右側の曲線を、上端から下端への向きで生成します。
+-- パデックの棒状の部分の右側の曲線を、上端から下端への向きで生成します。
 trailRightPadekStem :: Given Config => PartTrail
 trailRightPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
@@ -609,7 +610,7 @@ trailRightPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend 
     topCont = height * 0.55
     bottomCont = searchTailInnerCont bend height topCont
 
--- パデックの文字の棒状の部分を生成します。
+-- パデックの棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partPadekStem :: Given Config => Part
 partPadekStem = makePart trails
@@ -621,7 +622,7 @@ partPadekStem = makePart trails
       , trailLeftPadekStem
       ]
 
--- ノークの文字の棒状の部分の縦の曲線を、上端から下端への向きで生成します。
+-- ノークの棒状の部分の縦の曲線を、上端から下端への向きで生成します。
 trailNokStem :: Given Config => PartTrail
 trailNokStem = origin ~~ (0 &| -height)
   where
@@ -636,5 +637,25 @@ partNok = makePart trails
       [ trailNokStem
       , trailCut
       , trailNokStem # backward
+      , trailCut # backward
+      ]
+
+-- ディカックの棒状の部分の曲線を、上端から下端への向きで生成します。
+trailDikakStem :: Given Config => PartTrail
+trailDikakStem = origin ~> zero ~:~ (0 &| leftCont) <~ (-bend &| -height)
+  where
+    bend = dikakBend
+    height = dikakHeight
+    leftCont = height * 0.6
+
+-- ディカックと同じ形を生成します。
+-- 原点は左上の角にあります。
+partDikak :: Given Config => Part
+partDikak = makePart trails
+  where
+    trails =
+      [ trailDikakStem
+      , trailCut
+      , trailDikakStem # backward
       , trailCut # backward
       ]
