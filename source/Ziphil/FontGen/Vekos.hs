@@ -4,8 +4,10 @@
 module Ziphil.FontGen.Vekos
   ( regularInfo
   , boldInfo
+  , thinInfo
   , regularCondensedInfo
   , boldCondensedInfo
+  , thinCondensedInfo
   )
 where
 
@@ -49,6 +51,18 @@ boldConfig = with &~ do
   weightConst .= 1.5
   stretchConst .= 1
 
+thinInfo :: FontInfo
+thinInfo = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Thin
+  metrics .= give thinConfig Param.metrics
+  glyphs .= give thinConfig Glyph.glyphs
+
+thinConfig :: Config
+thinConfig = with &~ do
+  weightConst .= 0.5
+  stretchConst .= 1
+
 regularCondensedInfo :: FontInfo
 regularCondensedInfo = with &~ commonState &~ do
   style .= with &~ do
@@ -73,4 +87,17 @@ boldCondensedInfo = with &~ commonState &~ do
 boldCondensedConfig :: Config
 boldCondensedConfig = with &~ do
   weightConst .= 1.5
+  stretchConst .= 0.85
+
+thinCondensedInfo :: FontInfo
+thinCondensedInfo = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Thin
+    stretch .= Condensed
+  metrics .= give thinCondensedConfig Param.metrics
+  glyphs .= give thinCondensedConfig Glyph.glyphs
+
+thinCondensedConfig :: Config
+thinCondensedConfig = with &~ do
+  weightConst .= 0.5
   stretchConst .= 0.85
