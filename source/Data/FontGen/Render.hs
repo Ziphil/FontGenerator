@@ -11,7 +11,7 @@ module Data.FontGen.Render
   , RenderOption, fileName, lineGap, scaleRate
   , renderString
   , renderStrings
-  , GenerateOption, fontFileName, codeFileName, command
+  , GenerateOption, codeFileName, command
   , writeCode
   , generateFont
   , generateAll
@@ -98,13 +98,13 @@ renderStrings option info strings = flip renderDiagram diagram =<< path
     path = outputFile info (option ^. fileName) "svg"
     diagram = scale (option ^. scaleRate) $ makeStringsDiagram option info strings
 
-data GenerateOption = GenerateOption {_fontFileName :: String, _codeFileName :: String, _command :: String}
+data GenerateOption = GenerateOption {_codeFileName :: String, _command :: String}
   deriving (Eq, Show)
 
 makeFieldsNoPrefix ''GenerateOption
 
 instance Default GenerateOption where
-  def = GenerateOption "font" "generate" "ffpython"
+  def = GenerateOption "generate" "ffpython"
 
 -- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
 sub :: Show a => String -> Setter Text Text String a
@@ -135,8 +135,8 @@ writeCode option info = flip Text.writeFile code =<< path
 
 -- フォント生成用 Python コードを実行して、フォントを生成します。
 -- あらかじめ生成用のコードを用意しておいてください。
-generateFont :: GenerateOption -> FontInfo -> IO ExitCode
-generateFont option info = system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
+generateFont :: GenerateOption -> FontInfo -> IO ()
+generateFont option info = void . system =<< (++ (" & " ++ pythonCommand)) <$> cdCommand
   where
     pythonCommand = option ^. command ++ " " ++ path
     cdCommand = ("cd " ++) . toFilePath <$> outputDir info
@@ -149,4 +149,3 @@ generateAll option info = do
   renderGlyphs info
   writeCode option info
   generateFont option info
-  return ()
