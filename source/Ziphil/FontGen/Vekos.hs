@@ -34,7 +34,7 @@ commonState :: State FontInfo ()
 commonState = do
   family .= "Vekos"
   copyright .= "Copyright 2019 Ziphil"
-  version .= makeVersion [0, 0, 0]
+  version .= makeVersion [1, 0, 0]
 
 regularInfo :: FontInfo
 regularInfo = with &~ commonState &~ do
