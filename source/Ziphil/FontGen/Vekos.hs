@@ -8,6 +8,9 @@ module Ziphil.FontGen.Vekos
   , regularCondensedInfo
   , boldCondensedInfo
   , thinCondensedInfo
+  , regularExtendedInfo
+  , boldExtendedInfo
+  , thinExtendedInfo
   )
 where
 
@@ -101,3 +104,42 @@ thinCondensedConfig :: Config
 thinCondensedConfig = with &~ do
   weightConst .= 0.5
   stretchConst .= 0.85
+
+regularExtendedInfo :: FontInfo
+regularExtendedInfo = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Regular
+    stretch .= Extended
+  metrics .= give regularExtendedConfig Param.metrics
+  glyphs .= give regularExtendedConfig Glyph.glyphs
+
+regularExtendedConfig :: Config
+regularExtendedConfig = with &~ do
+  weightConst .= 1
+  stretchConst .= 1.25
+
+boldExtendedInfo :: FontInfo
+boldExtendedInfo = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Bold
+    stretch .= Extended
+  metrics .= give boldExtendedConfig Param.metrics
+  glyphs .= give boldExtendedConfig Glyph.glyphs
+
+boldExtendedConfig :: Config
+boldExtendedConfig = with &~ do
+  weightConst .= 1.5
+  stretchConst .= 1.25
+
+thinExtendedInfo :: FontInfo
+thinExtendedInfo = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Thin
+    stretch .= Extended
+  metrics .= give thinExtendedConfig Param.metrics
+  glyphs .= give thinExtendedConfig Glyph.glyphs
+
+thinExtendedConfig :: Config
+thinExtendedConfig = with &~ do
+  weightConst .= 0.5
+  stretchConst .= 1.25
