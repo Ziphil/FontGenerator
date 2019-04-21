@@ -16,6 +16,7 @@ module Ziphil.FontGen.Vekos.Param.Value
   , thicknessY
   , bowlWidth
   , lesTailBend
+  , lesTailCorrection
   , yesLegBend
   , beakWidth
   , beakHeight
@@ -110,6 +111,9 @@ bowlWidth = (weightConst' * 80 + 370) * stretchConst'
 -- l の文字のディセンダー部分が左に曲がる距離を表します。
 lesTailBend :: Given Config => Double
 lesTailBend = bowlWidth * 0.5
+
+lesTailCorrection :: Given Config => Double
+lesTailCorrection = thicknessX * 0.3
 
 -- y の文字の下半分が内側に曲がる距離を表します。
 yesLegBend :: Given Config => Double

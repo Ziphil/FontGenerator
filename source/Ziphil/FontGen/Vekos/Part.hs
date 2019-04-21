@@ -106,9 +106,10 @@ searchTailInnerCont bend height outerCont = minimumBy (comparing calcTailError')
 trailLeftLesTail :: Given Config => PartTrail
 trailLeftLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
-    bend = lesTailBend
+    bend = lesTailBend + lesTailCorrection
+    virtualBend = lesTailBend
     height = mean / 2 + descent
-    topCont = searchTailInnerCont bend height bottomCont
+    topCont = searchTailInnerCont virtualBend height bottomCont
     bottomCont = descent * 1.08
 
 -- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
@@ -128,15 +129,16 @@ trailCut = origin ~~ (width &| 0)
 
 -- l の文字のディセンダーを生成します。
 -- 反転や回転を施すことで、c などの文字のディセンダーや k, p などの文字のアセンダーとしても使えます。
--- 原点は左上の角にあります。
+-- 丸い部分と重ねたときに重なった部分が太く見えすぎないように、左側を少し細く補正してあります。
+-- 原点は補正がないとしたときの左上の角にあります。
 partTail :: Given Config => Part
-partTail = makePart trails
+partTail = makePart trails # moveOriginBy (-lesTailCorrection &| 0)
   where
     trails =
       [ trailLeftLesTail
       , trailCut
       , trailRightLesTail # backward
-      , trailCut # backward
+      , origin ~~ (-thicknessX + lesTailCorrection &| 0)
       ]
 
 -- l の文字と同じ形を生成します。
