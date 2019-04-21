@@ -67,7 +67,7 @@ renderGlyph info char glyph = flip renderDiagram diagram =<< path
     diagram = styleGlyph glyph
 
 renderGlyphs :: FontInfo -> IO ()
-renderGlyphs info = Map.traverseWithKey (renderGlyph info) (info ^. glyphs) >> return ()
+renderGlyphs info = void $ Map.traverseWithKey (renderGlyph info) (info ^. glyphs)
 
 data RenderOption = RenderOption {_fileName :: String, _lineGap :: Double, _scaleRate :: Double}
   deriving (Eq, Show)
