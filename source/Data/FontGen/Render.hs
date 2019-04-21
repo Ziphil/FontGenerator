@@ -124,7 +124,7 @@ makeCode option info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__em__" .= info ^. metrics . metricEm # truncate
   sub "__ascent__" .= info ^. metrics . metricAscent # truncate
   sub "__descent__" .= info ^. metrics . metricDescent # truncate
-  sub "__fontfilename__" .= option ^. fontFileName ++ ".ttf"
+  sub "__fontfilename__" .= "../" ++ info ^. dirName ++ ".ttf"
 
 -- フォント生成用 Python コードを生成し、ファイルに書き出します。
 writeCode :: GenerateOption -> FontInfo -> IO ()
