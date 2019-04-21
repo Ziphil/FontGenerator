@@ -595,7 +595,7 @@ partBadekStem = makePart trails
 trailLeftPadekStem :: Given Config => PartTrail
 trailLeftPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
-    bend = dotWidth + dotGap
+    bend = padekBend
     height = ascent - dotWidth - badekGap + overshoot
     topCont = searchTailInnerCont bend height bottomCont
     bottomCont = height * 0.55
@@ -604,7 +604,7 @@ trailLeftPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &
 trailRightPadekStem :: Given Config => PartTrail
 trailRightPadekStem = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
-    bend = dotWidth + dotGap
+    bend = padekBend
     height = ascent - dotWidth - badekGap + overshoot
     topCont = height * 0.55
     bottomCont = searchTailInnerCont bend height topCont

@@ -44,6 +44,7 @@ module Ziphil.FontGen.Vekos.Param.Value
   , dotGap
   , badekBearing
   , badekGap
+  , padekBend
   , nokHeight
   , spaceWidth
   )
@@ -163,7 +164,7 @@ acuteThicknessY :: Given Config => Double
 acuteThicknessY = acuteThicknessX * 0.8
 
 acuteWidth :: Given Config => Double
-acuteWidth = bowlWidth * 0.55
+acuteWidth = bowlWidth * 0.6
 
 acuteHeight :: Given Config => Double
 acuteHeight = acuteWidth * 0.45
@@ -177,10 +178,10 @@ circumflexThicknessY :: Given Config => Double
 circumflexThicknessY = circumflexThicknessX * 0.8
 
 circumflexWidth :: Given Config => Double
-circumflexWidth = bowlWidth * 0.45
+circumflexWidth = bowlWidth * 0.5
 
 circumflexHeight :: Given Config => Double
-circumflexHeight = circumflexWidth * 0.9
+circumflexHeight = circumflexWidth * 0.85
 
 diacriticGap :: Given Config => Double
 diacriticGap = descent * 0.25
@@ -196,6 +197,9 @@ badekBearing = bearing * 1.8
 
 badekGap :: Given Config => Double
 badekGap = ascent * 0.13
+
+padekBend :: Given Config => Double
+padekBend = bowlWidth * 0.35
 
 nokHeight :: Given Config => Double
 nokHeight = ascent * 0.3
