@@ -17,13 +17,13 @@ import Text.Regex.Posix
 import qualified Ziphil.FontGen.Vekos as Vekos
 
 
-start :: GenerateOption -> RenderOption -> [String] -> IO ()
-start generateOption renderOption strings = do
+start :: GenerateOption -> RenderOption -> IO ()
+start generateOption renderOption = do
   flushStr $ colorInput "<?> "
   line <- getLine
   flushStrLn ""
   mapM (generateAll' generateOption) $ parseInfos line
-  mapM (flip (renderStrings' renderOption) strings) $ parseInfos line
+  mapM (renderStrings' renderOption) $ parseInfos line
   flushStrLn $ colorMessage "@ Done."
 
 generateAll' :: GenerateOption -> FontInfo -> IO ()
@@ -31,9 +31,9 @@ generateAll' option info = do
   generateAll option info
   flushStrLn $ colorMessage $ "@ Generating: " <> info ^. fullName
 
-renderStrings' :: RenderOption -> FontInfo -> [String] -> IO ()
-renderStrings' option info strings = do
-  renderStrings option info strings 
+renderStrings' :: RenderOption -> FontInfo -> IO ()
+renderStrings' option info = do
+  renderStrings option info
   flushStrLn $ colorMessage $ "@ Rendering: " <> info ^. fullName
 
 flushStr :: String -> IO ()

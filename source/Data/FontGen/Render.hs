@@ -9,8 +9,7 @@
 module Data.FontGen.Render
   ( createOutputDir
   , renderGlyphs
-  , RenderOption, fileName, lineGap, scaleRate
-  , renderString
+  , RenderOption, strings, fileName, lineGap, scaleRate
   , renderStrings
   , GenerateOption, codeFileName, command
   , writeCode
@@ -44,6 +43,7 @@ import System.Process
 styleGlyph :: Glyph -> Diagram B
 styleGlyph = lineWidth (global 0) . fillColor black
 
+-- FontForge に読み込ませるために、ダイアグラムのバウンディングボックスを em スクエアに一致させます。
 adjustWidth :: FontInfo -> Diagram B -> Diagram B
 adjustWidth info = rectEnvelope base size
   where
@@ -53,6 +53,7 @@ adjustWidth info = rectEnvelope base size
 renderDiagram :: Path Rel File -> Diagram B -> IO ()
 renderDiagram path = renderPretty (toFilePath path) absolute
 
+-- Python コードがグリフの幅を取得できるように、指定した値を属性として保持する SVG を生成します。
 renderDiagram' :: Path Rel File -> Double -> Diagram B -> IO ()
 renderDiagram' path glyphWidth = renderPretty' (toFilePath path) option
   where
@@ -83,34 +84,26 @@ renderGlyph info char glyph = (\path -> renderDiagram' path (width glyph) diagra
 renderGlyphs :: FontInfo -> IO ()
 renderGlyphs info = void $ Map.traverseWithKey (renderGlyph info) (info ^. glyphs)
 
-data RenderOption = RenderOption {_fileName :: String, _lineGap :: Double, _scaleRate :: Double}
+data RenderOption = RenderOption {_strings :: [String], _fileName :: String, _lineGap :: Double, _scaleRate :: Double}
   deriving (Eq, Show)
 
 makeFieldsNoPrefix ''RenderOption
 
 instance Default RenderOption where
-  def = RenderOption "test" 200 0.1
+  def = RenderOption [] "test" 200 0.1
 
 makeCharDiagram :: FontInfo -> Char -> Diagram B
-makeCharDiagram info char = styleGlyph $ fromMaybe mempty $ Map.lookup char (info ^. glyphs)
+makeCharDiagram info = styleGlyph . fromMaybe mempty . flip Map.lookup (info ^. glyphs)
 
-makeStringDiagram :: RenderOption -> FontInfo -> String -> Diagram B
-makeStringDiagram option info = hcat . map (makeCharDiagram info)
+makeStringDiagram :: FontInfo -> String -> Diagram B
+makeStringDiagram info = hcat . map (makeCharDiagram info)
 
-renderString :: RenderOption -> FontInfo -> String -> IO ()
-renderString option info string = flip renderDiagram diagram =<< path
+renderStrings :: RenderOption -> FontInfo -> IO ()
+renderStrings option info = flip renderDiagram diagram =<< path
   where
     path = outputFile info (option ^. fileName) "svg"
-    diagram = scale (option ^. scaleRate) $ makeStringDiagram option info string
-
-makeStringsDiagram :: RenderOption -> FontInfo -> [String] -> Diagram B
-makeStringsDiagram option info = vsep (option ^. lineGap) . map (makeStringDiagram option info)
-
-renderStrings :: RenderOption -> FontInfo -> [String] -> IO ()
-renderStrings option info strings = flip renderDiagram diagram =<< path
-  where
-    path = outputFile info (option ^. fileName) "svg"
-    diagram = scale (option ^. scaleRate) $ makeStringsDiagram option info strings
+    diagram = scale (option ^. scaleRate) rawDiagram
+    rawDiagram = vsep (option ^. lineGap) $ map (makeStringDiagram info) $ option ^. strings
 
 data GenerateOption = GenerateOption {_codeFileName :: String, _command :: String}
   deriving (Eq, Show)
