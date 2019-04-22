@@ -106,7 +106,7 @@ searchTailInnerCont bend height outerCont = minimumBy (comparing calcTailError')
 trailLeftLesTail :: Given Config => PartTrail
 trailLeftLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
-    bend = lesTailBend + lesTailCorrection
+    bend = lesTailBend - thicknessX / 2 + lesTailCorrection
     virtualBend = lesTailBend
     height = mean / 2 + descent
     topCont = searchTailInnerCont virtualBend height bottomCont
@@ -116,7 +116,7 @@ trailLeftLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| 
 trailRightLesTail :: Given Config => PartTrail
 trailRightLesTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (-bend &| -height)
   where
-    bend = lesTailBend
+    bend = lesTailBend - thicknessX / 2
     height = mean / 2 + descent
     topCont = descent * 1.08
     bottomCont = searchTailInnerCont bend height topCont
@@ -351,7 +351,7 @@ partNes = makePart trails # moveOriginBy (nesWidth / 2 &| 0)
 trailLeftItTail :: Given Config => PartTrail
 trailLeftItTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (bend &| -height)
   where
-    bend = itTailBend
+    bend = itTailBend - thicknessX / 2
     height = mean / 2 + descent
     topCont = descent * 1.2
     bottomCont = searchTailInnerCont bend height topCont
@@ -360,7 +360,7 @@ trailLeftItTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (bend &| -h
 trailRightItTail :: Given Config => PartTrail
 trailRightItTail = origin ~> (0 &| -topCont) ~:~ (0 &| bottomCont) <~ (bend &| -height)
   where
-    bend = itTailBend
+    bend = itTailBend - thicknessX / 2
     height = mean / 2 + descent
     topCont = searchTailInnerCont bend height bottomCont
     bottomCont = descent * 1.2
@@ -403,7 +403,7 @@ trailInnerLink = origin ~> (0 &| -leftCont) ~:~ (-bottomCont &| 0) <~ (width &| 
 trailLeftUtTail :: Given Config => PartTrail
 trailLeftUtTail = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (bend &| height)
   where
-    bend = utTailBend
+    bend = utTailBend + thicknessX / 2
     height = descent + thicknessY - linkUpperCorrection
     leftCont = height * 0.1
     topCont = bend
@@ -412,7 +412,7 @@ trailLeftUtTail = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (bend &| heig
 trailRightUtTail :: Given Config => PartTrail
 trailRightUtTail = origin ~> (0 &| leftCont) ~:~ (-topCont &| 0) <~ (bend &| height)
   where
-    bend = utTailBend - thicknessX
+    bend = utTailBend - thicknessX / 2
     height = descent
     leftCont = height * 0.1
     topCont = bend

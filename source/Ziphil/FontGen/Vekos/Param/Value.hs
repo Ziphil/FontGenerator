@@ -108,14 +108,15 @@ bowlWidth = (weightConst' * 80 + 370) * stretchConst'
     weightConst' = given @Config ^. weightConst
     stretchConst' = given @Config ^. stretchConst
 
--- l の文字のディセンダー部分が左に曲がる距離を表します。
+-- l の文字のディセンダー部分について、その先端の中央と上にある丸い部分の右端との水平距離を表します。
 lesTailBend :: Given Config => Double
-lesTailBend = bowlWidth * 0.5
+lesTailBend = bowlWidth * 0.6
 
 lesTailCorrection :: Given Config => Double
 lesTailCorrection = thicknessX * 0.3
 
--- y の文字の下半分が内側に曲がる距離を表します。
+-- y の文字の下半分の内側に曲がる部分について、その最下部の外側の端と丸い部分の端との水平距離を表します。
+-- 曲線の外側の曲がり具合を指定しているので、線の太さが大きくなるとより内側に曲がることに注意してください。
 yesLegBend :: Given Config => Double
 yesLegBend = bowlWidth * 0.15
 
@@ -133,16 +134,17 @@ narrowBowlVirtualWidth = bowlWidth * 0.9
 narrowBowlCorrection :: Given Config => Double
 narrowBowlCorrection = thicknessX * 0.15
 
--- n の文字の書き終わりと書き始めの箇所が内側に曲がる距離を表します。
+-- n の文字の書き終わりと書き始めの箇所について、その先端の外側の端と丸い部分の端との水平距離を表します。
+-- 曲線の外側の曲がり具合を指定しているので、線の太さが大きくなるとより内側に曲がることに注意してください。
 nesLegBend :: Given Config => Double
 nesLegBend = yesLegBend
 
 spineWidth :: Given Config => Double
 spineWidth = bowlWidth * 0.5
 
--- i の文字のディセンダー部分が右に曲がる距離を表します。
+-- i の文字のディセンダー部分について、その先端の中央と上にある丸い部分の左端との水平距離を表します。
 itTailBend :: Given Config => Double
-itTailBend = bowlWidth * 0.5
+itTailBend = bowlWidth * 0.6
 
 linkWidth :: Given Config => Double
 linkWidth = bowlWidth * 0.8
@@ -153,13 +155,14 @@ linkUpperCorrection = thicknessY * 0.1
 linkLowerCorrection :: Given Config => Double
 linkLowerCorrection = thicknessY * 0.1
 
--- u の文字のディセンダー部分が左に曲がる距離を表します。
+-- u の文字のディセンダー部分について、その先端の中央と上にある折れ曲がる部分の右端との水平距離を表します。
 utTailBend :: Given Config => Double
-utTailBend = bowlWidth * 0.55
+utTailBend = bowlWidth * 0.45
 
 transphoneThicknessX :: Given Config => Double
 transphoneThicknessX = thicknessX * 0.95
 
+-- 変音符が左側もしくは右側に曲がる水平距離を表します。
 transphoneBend :: Given Config => Double
 transphoneBend = bowlWidth * 0.15
 
@@ -203,7 +206,7 @@ dotWidth = min (weightConst' * 150) (weightConst' * 100 + 30)
     weightConst' = given @Config ^. weightConst
 
 dotGap :: Given Config => Double
-dotGap = dotWidth * 0.3
+dotGap = bowlWidth * 0.09
 
 badekLeftBearing :: Given Config => Double
 badekLeftBearing = bearing * 1.8
@@ -212,7 +215,7 @@ badekGap :: Given Config => Double
 badekGap = ascent * 0.13
 
 padekBend :: Given Config => Double
-padekBend = bowlWidth * 0.3
+padekBend = min (dotWidth + dotGap) (bowlWidth * 0.3)
 
 nokHeight :: Given Config => Double
 nokHeight = ascent * 0.3
