@@ -34,7 +34,6 @@ where
 import Data.FontGen
 import Data.Ord
 import Data.List
-import Data.Reflection
 import Ziphil.FontGen.Vekos.Config
 import Ziphil.FontGen.Vekos.Util
 import Ziphil.FontGen.Vekos.Value

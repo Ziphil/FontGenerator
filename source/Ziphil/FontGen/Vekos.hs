@@ -1,5 +1,4 @@
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TypeApplications #-}
 
 
 module Ziphil.FontGen.Vekos
@@ -18,7 +17,6 @@ where
 import Control.Monad.State
 import Data.FontGen
 import Data.FontGen.FontType
-import Data.Reflection
 import Data.Version
 import Ziphil.FontGen.Vekos.Config
 import qualified Ziphil.FontGen.Vekos.Glyph as Glyph
@@ -28,7 +26,7 @@ import qualified Ziphil.FontGen.Vekos.Util as Util
 config :: Setter Font Font () Config
 config = sets config'
   where
-    config' func = (metrics .~ give @Config (func ()) Util.metrics) . (glyphs .~ give (func ()) Glyph.glyphs)
+    config' func = (metrics .~ give (func ()) Util.metrics) . (glyphs .~ give (func ()) Glyph.glyphs)
 
 commonState :: State Font ()
 commonState = do

@@ -7,8 +7,6 @@ module Ziphil.FontGen.Vekos.Glyph
 where
 
 import Data.FontGen
-import qualified Data.Map as Map
-import Data.Reflection
 import Ziphil.FontGen.Vekos.Config
 import Ziphil.FontGen.Vekos.Part
 import Ziphil.FontGen.Vekos.Util
@@ -16,7 +14,7 @@ import Ziphil.FontGen.Vekos.Value
 
 
 glyphs :: Given Config => Glyphs
-glyphs = Map.fromList list
+glyphs = makeGlyphs list
   where
     list =
       [ ('l', glyphLes), ('r', glyphRes)

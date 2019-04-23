@@ -1,5 +1,4 @@
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE TypeApplications #-}
 
 
 module Ziphil.FontGen.Vekos.Value
@@ -59,7 +58,6 @@ module Ziphil.FontGen.Vekos.Value
 where
 
 import Data.FontGen
-import Data.Reflection
 import Ziphil.FontGen.Vekos.Config
 
 
@@ -96,7 +94,7 @@ bearing = bowlWidth * 0.09
 thicknessX :: Given Config => Double
 thicknessX = weightConst' * 100
   where
-    weightConst' = given @Config ^. weightConst
+    weightConst' = given ^. weightConst
 
 thicknessY :: Given Config => Double
 thicknessY = thicknessX * 0.75
@@ -104,8 +102,8 @@ thicknessY = thicknessX * 0.75
 bowlWidth :: Given Config => Double
 bowlWidth = (weightConst' * 80 + 370) * stretchConst'
   where
-    weightConst' = given @Config ^. weightConst
-    stretchConst' = given @Config ^. stretchConst
+    weightConst' = given ^. weightConst
+    stretchConst' = given ^. stretchConst
 
 -- l の文字のディセンダー部分について、その先端の中央と上にある丸い部分の右端との水平距離を表します。
 lesTailBend :: Given Config => Double
@@ -171,7 +169,7 @@ transphoneGap = bowlWidth * 0.18
 acuteThicknessX :: Given Config => Double
 acuteThicknessX = min (weightConst' * 90) (weightConst' * 40 + 35)
   where
-    weightConst' = given @Config ^. weightConst
+    weightConst' = given ^. weightConst
 
 acuteThicknessY :: Given Config => Double
 acuteThicknessY = acuteThicknessX * 0.75
@@ -185,7 +183,7 @@ acuteHeight = descent * 0.55
 circumflexThicknessX :: Given Config => Double
 circumflexThicknessX = min (weightConst' * 90) (weightConst' * 40 + 35)
   where
-    weightConst' = given @Config ^. weightConst
+    weightConst' = given ^. weightConst
 
 circumflexThicknessY :: Given Config => Double
 circumflexThicknessY = circumflexThicknessX * 0.75
@@ -202,7 +200,7 @@ diacriticGap = descent * 0.25
 dotWidth :: Given Config => Double
 dotWidth = min (weightConst' * 150) (weightConst' * 100 + 30)
   where
-    weightConst' = given @Config ^. weightConst
+    weightConst' = given ^. weightConst
 
 dotGap :: Given Config => Double
 dotGap = bowlWidth * 0.09

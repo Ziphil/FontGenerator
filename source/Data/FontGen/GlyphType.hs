@@ -14,6 +14,7 @@ module Data.FontGen.GlyphType
   , makePath
   , makePart
   , concatPath
+  , makeGlyphs
   , Metrics, metricEm, metricAscent, metricDescent
   , fixVertical
   , Spacing, leftBearing, rightBearing
@@ -25,6 +26,7 @@ where
 import Data.Default.Class
 import Data.FontGen.Util
 import Data.Map (Map)
+import qualified Data.Map as Map
 import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
@@ -51,6 +53,9 @@ makePart = (: []) . makePath
 -- パスのリストからそれらを全て結合した 1 つのパスから成るパーツを生成します。
 concatPath :: [PartPath] -> Part
 concatPath = (: []) . mconcat
+
+makeGlyphs :: [(Char, Glyph)] -> Glyphs
+makeGlyphs = Map.fromList
 
 data Metrics = Metrics {_metricEm :: Double, _metricAscent :: Double, _metricDescent :: Double}
   deriving (Eq, Show)
