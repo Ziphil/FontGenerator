@@ -43,12 +43,12 @@ import System.Process
 styleGlyph :: Glyph -> Diagram B
 styleGlyph = lineWidth (global 0) . fillColor black
 
--- FontForge に読み込ませるために、ダイアグラムのバウンディングボックスを em スクエアに一致させます。
-adjustWidth :: FontInfo -> Diagram B -> Diagram B
-adjustWidth info = rectEnvelope base size
+-- FontForge に読み込ませるために、ダイアグラムのバウンディングボックスを em 正方形に一致させます。
+adjustWidth :: Font -> Diagram B -> Diagram B
+adjustWidth font = rectEnvelope base size
   where
-    base = (0 &| 0 - info ^. metrics . metricDescent)
-    size = (info ^. metrics . metricEm &| info ^. metrics . metricEm)
+    base = (0 &| 0 - font ^. metrics . metricDescent)
+    size = (font ^. metrics . metricEm &| font ^. metrics . metricEm)
 
 renderDiagram :: Path Rel File -> Diagram B -> IO ()
 renderDiagram path = renderPretty (toFilePath path) absolute
@@ -60,29 +60,29 @@ renderDiagram' path glyphWidth = renderPretty' (toFilePath path) option
     option = SVGOptions absolute Nothing "" [extraAttribute] True
     extraAttribute = makeAttribute "glyph-width" (Text.pack $ show glyphWidth)
 
-outputDir :: FontInfo -> IO (Path Rel Dir)
-outputDir info = (root </>) <$> dir
+outputDir :: Font -> IO (Path Rel Dir)
+outputDir font = (root </>) <$> dir
   where
     root = $(mkRelDir "out")
-    dir = parseRelDir $ info ^. dirName
+    dir = parseRelDir $ font ^. dirName
 
-outputFile :: FontInfo -> String -> String -> IO (Path Rel File)
-outputFile info name ext = (</>) <$> outputDir info <*> file
+outputFile :: Font -> String -> String -> IO (Path Rel File)
+outputFile font name ext = (</>) <$> outputDir font <*> file
   where
     file = (-<.> ext) =<< parseRelFile name
 
-createOutputDir :: FontInfo -> IO ()
-createOutputDir info = createDirIfMissing True =<< outputDir info
+createOutputDir :: Font -> IO ()
+createOutputDir font = createDirIfMissing True =<< outputDir font
 
-renderGlyph :: FontInfo -> Char -> Glyph -> IO ()
-renderGlyph info char glyph = (\path -> renderDiagram' path (width glyph) diagram) =<< path
+renderGlyph :: Font -> Char -> Glyph -> IO ()
+renderGlyph font char glyph = (\path -> renderDiagram' path (width glyph) diagram) =<< path
   where
-    path = outputFile info name "svg"
+    path = outputFile font name "svg"
     name = show $ ord char
-    diagram = adjustWidth info $ styleGlyph glyph
+    diagram = adjustWidth font $ styleGlyph glyph
 
-renderGlyphs :: FontInfo -> IO ()
-renderGlyphs info = void $ Map.traverseWithKey (renderGlyph info) (info ^. glyphs)
+renderGlyphs :: Font -> IO ()
+renderGlyphs font = void $ Map.traverseWithKey (renderGlyph font) (font ^. glyphs)
 
 data RenderOption = RenderOption {_strings :: [String], _fileName :: String, _lineGap :: Double, _scaleRate :: Double}
   deriving (Eq, Show)
@@ -92,18 +92,18 @@ makeFieldsNoPrefix ''RenderOption
 instance Default RenderOption where
   def = RenderOption [] "test" 200 0.1
 
-makeCharDiagram :: FontInfo -> Char -> Diagram B
-makeCharDiagram info = styleGlyph . fromMaybe mempty . flip Map.lookup (info ^. glyphs)
+makeCharDiagram :: Font -> Char -> Diagram B
+makeCharDiagram font = styleGlyph . fromMaybe mempty . flip Map.lookup (font ^. glyphs)
 
-makeStringDiagram :: FontInfo -> String -> Diagram B
-makeStringDiagram info = hcat . map (makeCharDiagram info)
+makeStringDiagram :: Font -> String -> Diagram B
+makeStringDiagram font = hcat . map (makeCharDiagram font)
 
-renderStrings :: RenderOption -> FontInfo -> IO ()
-renderStrings option info = flip renderDiagram diagram =<< path
+renderStrings :: RenderOption -> Font -> IO ()
+renderStrings option font = flip renderDiagram diagram =<< path
   where
-    path = outputFile info (option ^. fileName) "svg"
+    path = outputFile font (option ^. fileName) "svg"
     diagram = scale (option ^. scaleRate) rawDiagram
-    rawDiagram = vsep (option ^. lineGap) $ map (makeStringDiagram info) $ option ^. strings
+    rawDiagram = vsep (option ^. lineGap) $ map (makeStringDiagram font) $ option ^. strings
 
 data GenerateOption = GenerateOption {_codeFileName :: String, _command :: String}
   deriving (Eq, Show)
@@ -120,39 +120,39 @@ sub needle = sets sub'
     sub' func = Text.replace (Text.pack needle) (Text.pack $ show $ func needle)
 
 -- テンプレートコード中のメタ変数を変換して、フォント生成用の Python コードを生成します。
-makeCode :: GenerateOption -> FontInfo -> Text
-makeCode option info = decodeUtf8 $(embedFile "resource/generate.py") &~ do
-  sub "__familyname__" .= info ^. extendedFamily
-  sub "__fontname__" .= info ^. fullName
-  sub "__fullname__" .= info ^. fullName
-  sub "__weight__" .= info ^. style . weight # showWeight
-  sub "__version__" .= info ^. version # showVersion
-  sub "__copyright__" .= info ^. copyright
-  sub "__em__" .= info ^. metrics . metricEm
-  sub "__ascent__" .= info ^. metrics . metricAscent
-  sub "__descent__" .= info ^. metrics . metricDescent
-  sub "__fontfilename__" .= "../" <> info ^. dirName <> ".ttf"
+makeCode :: GenerateOption -> Font -> Text
+makeCode option font = decodeUtf8 $(embedFile "resource/generate.py") &~ do
+  sub "__familyname__" .= font ^. extendedFamily
+  sub "__fontname__" .= font ^. fullName
+  sub "__fullname__" .= font ^. fullName
+  sub "__weight__" .= font ^. style . weight # showWeight
+  sub "__version__" .= font ^. version # showVersion
+  sub "__copyright__" .= font ^. copyright
+  sub "__em__" .= font ^. metrics . metricEm
+  sub "__ascent__" .= font ^. metrics . metricAscent
+  sub "__descent__" .= font ^. metrics . metricDescent
+  sub "__fontfilename__" .= "../" <> font ^. dirName <> ".ttf"
 
 -- フォント生成用 Python コードを生成し、ファイルに書き出します。
-writeCode :: GenerateOption -> FontInfo -> IO ()
-writeCode option info = flip Text.writeFile code =<< path
+writeCode :: GenerateOption -> Font -> IO ()
+writeCode option font = flip Text.writeFile code =<< path
   where
-    path = toFilePath <$> outputFile info (option ^. codeFileName) "py"
-    code = makeCode option info
+    path = toFilePath <$> outputFile font (option ^. codeFileName) "py"
+    code = makeCode option font
 
 -- フォント生成用 Python コードを実行して、フォントを生成します。
 -- あらかじめ生成用のコードを用意しておいてください。
-generateFont :: GenerateOption -> FontInfo -> IO ()
-generateFont option info = void . system =<< (<> (" & " <> pythonCommand)) <$> cdCommand
+generateFont :: GenerateOption -> Font -> IO ()
+generateFont option font = void . system =<< (<> (" & " <> pythonCommand)) <$> cdCommand
   where
     pythonCommand = option ^. command <> " " <> path
-    cdCommand = ("cd " <>) . toFilePath <$> outputDir info
+    cdCommand = ("cd " <>) . toFilePath <$> outputDir font
     path = option ^. codeFileName <> ".py"
 
 -- グリフ生成からフォント生成までの一連の処理を全て行います。
-generateAll :: GenerateOption -> FontInfo -> IO ()
-generateAll option info = do
-  createOutputDir info
-  renderGlyphs info
-  writeCode option info
-  generateFont option info
+generateAll :: GenerateOption -> Font -> IO ()
+generateAll option font = do
+  createOutputDir font
+  renderGlyphs font
+  writeCode option font
+  generateFont option font

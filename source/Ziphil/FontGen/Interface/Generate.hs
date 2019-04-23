@@ -2,11 +2,11 @@
 
 
 module Ziphil.FontGen.Interface.Generate
-  ( start
+  ( main
   )
 where
 
-import Data.FontGen hiding (start)
+import Data.FontGen
 import Data.FontGen.FontType
 import Data.FontGen.Render
 import Data.Map (Map)
@@ -17,17 +17,17 @@ import Ziphil.FontGen.Interface.Util
 import qualified Ziphil.FontGen.Vekos as Vekos
 
 
-start :: GenerateOption -> RenderOption -> IO ()
-start generateOption renderOption = do
+main :: GenerateOption -> RenderOption -> IO ()
+main generateOption renderOption = do
   flushStr $ colorInput "<?> "
   line <- getLine
-  infos <- return $ parseInfos line
-  infosWithIndex <- return $ zipWith (\info i -> (info, (i, length infos))) infos [1 ..]
+  fonts <- return $ parseFonts line
+  fontsWithIndex <- return $ zipWith (\font i -> (font, (i, length fonts))) fonts [1 ..]
   flushStrLn ""
   prepareProgress "Generating"
-  mapM (generateAll' generateOption) infosWithIndex
+  mapM (generateAll' generateOption) fontsWithIndex
   prepareProgress "Rendering"
-  mapM (renderStrings' renderOption) infosWithIndex
+  mapM (renderStrings' renderOption) fontsWithIndex
   flushStrLn $ colorMessage "@ Done."
 
 prepareProgress :: String -> IO ()
@@ -41,32 +41,32 @@ updateProgress message item (i, size) = do
   clearLine
   flushStrLn $ colorMessage $ "@ " <> message <> ": " <> printf "[%2d/%2d]" i size <> " " <> item
 
-generateAll' :: GenerateOption -> (FontInfo, (Int, Int)) -> IO ()
-generateAll' option (info, progress) = do
-  updateProgress "Generating" (info ^. fullName) progress
-  generateAll option info
+generateAll' :: GenerateOption -> (Font, (Int, Int)) -> IO ()
+generateAll' option (font, progress) = do
+  updateProgress "Generating" (font ^. fullName) progress
+  generateAll option font
 
-renderStrings' :: RenderOption -> (FontInfo, (Int, Int)) -> IO ()
-renderStrings' option (info, progress) = do
-  updateProgress "Rendering" (info ^. fullName) progress
-  renderStrings option info
+renderStrings' :: RenderOption -> (Font, (Int, Int)) -> IO ()
+renderStrings' option (font, progress) = do
+  updateProgress "Rendering" (font ^. fullName) progress
+  renderStrings option font
   
-parseInfos :: String -> [FontInfo]
-parseInfos string = Map.elems $ Map.filterWithKey check wholeInfos
+parseFonts :: String -> [Font]
+parseFonts string = Map.elems $ Map.filterWithKey check wholeFonts
   where
-    check key info = key =~ ("^" <> string <> "$")
+    check key font = key =~ ("^" <> string <> "$")
 
-wholeInfos :: Map String FontInfo
-wholeInfos = Map.fromList list
+wholeFonts :: Map String Font
+wholeFonts = Map.fromList list
   where
     list =
-      [ ("Vr", Vekos.regularInfo)
-      , ("Vb", Vekos.boldInfo)
-      , ("Vt", Vekos.thinInfo)
-      , ("Vrc", Vekos.regularCondensedInfo)
-      , ("Vbc", Vekos.boldCondensedInfo)
-      , ("Vtc", Vekos.thinCondensedInfo)
-      , ("Vre", Vekos.regularExtendedInfo)
-      , ("Vbe", Vekos.boldExtendedInfo)
-      , ("Vte", Vekos.thinExtendedInfo)
+      [ ("Vr", Vekos.regularFont)
+      , ("Vb", Vekos.boldFont)
+      , ("Vt", Vekos.thinFont)
+      , ("Vrc", Vekos.regularCondensedFont)
+      , ("Vbc", Vekos.boldCondensedFont)
+      , ("Vtc", Vekos.thinCondensedFont)
+      , ("Vre", Vekos.regularExtendedFont)
+      , ("Vbe", Vekos.boldExtendedFont)
+      , ("Vte", Vekos.thinExtendedFont)
       ]

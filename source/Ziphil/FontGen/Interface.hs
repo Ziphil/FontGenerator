@@ -2,16 +2,16 @@
 
 
 module Ziphil.FontGen.Interface
-  ( start
+  ( main
   )
 where
 
-import Data.FontGen hiding (start)
+import Data.FontGen
 import Data.FontGen.FontType
 import Data.FontGen.Render
 import qualified Ziphil.FontGen.Interface.Generate as Generate
 
 
-start :: GenerateOption -> RenderOption -> IO ()
-start generateOption renderOption = do
-  Generate.start generateOption renderOption
+main :: GenerateOption -> RenderOption -> IO ()
+main generateOption renderOption = do
+  Generate.main generateOption renderOption

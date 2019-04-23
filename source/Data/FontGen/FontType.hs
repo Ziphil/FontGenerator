@@ -14,7 +14,7 @@ module Data.FontGen.FontType
   , showSlope
   , showStretch
   , Style, weight, slope, stretch
-  , FontInfo, family, copyright, version, style, metrics, glyphs
+  , Font, family, copyright, version, style, metrics, glyphs
   , extendedFamily
   , fullName
   , dirName
@@ -58,35 +58,35 @@ makeFieldsNoPrefix ''Style
 instance Default Style where
   def = Style Regular Upright Normal
 
-data FontInfo = FontInfo {_family :: String, _copyright :: String, _version :: Version, _style :: Style, _metrics :: Metrics, _glyphs :: Glyphs}
+data Font = Font {_family :: String, _copyright :: String, _version :: Version, _style :: Style, _metrics :: Metrics, _glyphs :: Glyphs}
 
-makeFieldsNoPrefix ''FontInfo
+makeFieldsNoPrefix ''Font
 
 instance Default Version where
   def = makeVersion [0, 0, 0]
 
-instance Default FontInfo where
-  def = FontInfo "Undefined" "None" def def def Map.empty
+instance Default Font where
+  def = Font "Undefined" "None" def def def Map.empty
 
-modifiers :: FontInfo -> [String]
-modifiers info = filter (not . null) [familyString, stretchString, weightString, slopeString]
+modifiers :: Font -> [String]
+modifiers font = filter (not . null) [familyString, stretchString, weightString, slopeString]
   where
-    familyString = info ^. family
-    weightString = showWeight $ info ^. style . weight
-    slopeString = showSlope $ info ^. style . slope
-    stretchString = showStretch $ info ^. style . stretch
+    familyString = font ^. family
+    weightString = showWeight $ font ^. style . weight
+    slopeString = showSlope $ font ^. style . slope
+    stretchString = showStretch $ font ^. style . stretch
 
-stretchModifiers :: FontInfo -> [String]
-stretchModifiers info = filter (not . null) [familyString, stretchString]
+stretchModifiers :: Font -> [String]
+stretchModifiers font = filter (not . null) [familyString, stretchString]
   where
-    familyString = info ^. family
-    stretchString = showStretch $ info ^. style . stretch
+    familyString = font ^. family
+    stretchString = showStretch $ font ^. style . stretch
 
-extendedFamily :: Getter FontInfo String
+extendedFamily :: Getter Font String
 extendedFamily = to $ intercalate " " . stretchModifiers
 
-fullName :: Getter FontInfo String
+fullName :: Getter Font String
 fullName = to $ intercalate " " . modifiers
 
-dirName :: Getter FontInfo String
+dirName :: Getter Font String
 dirName = to $ map toLower . intercalate "-" . modifiers

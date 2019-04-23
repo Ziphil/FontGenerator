@@ -10,7 +10,7 @@ import qualified Ziphil.FontGen.Interface as Interface
 
 
 main :: IO ()
-main = Interface.start generateOption renderOption
+main = Interface.main generateOption renderOption
   where
     generateOption = def
     renderOption = with &~ do
