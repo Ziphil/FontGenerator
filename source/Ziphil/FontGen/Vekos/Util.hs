@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 
-module Ziphil.FontGen.Vekos.Param.Util
+module Ziphil.FontGen.Vekos.Util
   ( metrics
   , spacing
   , makeGlyph'
@@ -11,8 +11,8 @@ where
 
 import Data.FontGen
 import Data.Reflection
-import Ziphil.FontGen.Vekos.Param.Config
-import Ziphil.FontGen.Vekos.Param.Value
+import Ziphil.FontGen.Vekos.Config
+import Ziphil.FontGen.Vekos.Value
 
 
 metrics :: Given Config => Metrics

@@ -9,8 +9,10 @@ where
 import Data.FontGen
 import qualified Data.Map as Map
 import Data.Reflection
-import Ziphil.FontGen.Vekos.Param
+import Ziphil.FontGen.Vekos.Config
 import Ziphil.FontGen.Vekos.Part
+import Ziphil.FontGen.Vekos.Util
+import Ziphil.FontGen.Vekos.Value
 
 
 glyphs :: Given Config => Glyphs

@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeApplications #-}
 
 
-module Ziphil.FontGen.Vekos.Param.Value
+module Ziphil.FontGen.Vekos.Value
   ( descent
   , mean
   , ascent
@@ -58,10 +58,9 @@ module Ziphil.FontGen.Vekos.Param.Value
   )
 where
 
-import Control.Lens
-import Data.FontGen.GlyphType
+import Data.FontGen
 import Data.Reflection
-import Ziphil.FontGen.Vekos.Param.Config
+import Ziphil.FontGen.Vekos.Config
 
 
 -- ディセンダーラインの深さを表します。

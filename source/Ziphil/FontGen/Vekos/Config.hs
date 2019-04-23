@@ -4,13 +4,12 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 
-module Ziphil.FontGen.Vekos.Param.Config
+module Ziphil.FontGen.Vekos.Config
   ( Config, weightConst, stretchConst
   )
 where
 
-import Control.Lens
-import Data.Default.Class
+import Data.FontGen
 
 
 data Config = Config {_weightConst :: Double, _stretchConst :: Double}

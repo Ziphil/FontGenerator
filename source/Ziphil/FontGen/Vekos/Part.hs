@@ -35,7 +35,9 @@ import Data.FontGen
 import Data.Ord
 import Data.List
 import Data.Reflection
-import Ziphil.FontGen.Vekos.Param
+import Ziphil.FontGen.Vekos.Config
+import Ziphil.FontGen.Vekos.Util
+import Ziphil.FontGen.Vekos.Value
 
 
 -- k, p, c, l, a などの文字に共通する丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
