@@ -16,6 +16,7 @@ module Data.FontGen.FontType
   , Style, weight, slope, stretch
   , Font, family, copyright, version, style, metrics, glyphs
   , extendedFamily
+  , postScriptName
   , fullName
   , dirName
   )
@@ -84,6 +85,9 @@ stretchModifiers font = filter (not . null) [familyString, stretchString]
 
 extendedFamily :: Getter Font String
 extendedFamily = to $ intercalate " " . stretchModifiers
+
+postScriptName :: Getter Font String
+postScriptName = to $ intercalate "" . modifiers
 
 fullName :: Getter Font String
 fullName = to $ intercalate " " . modifiers

@@ -123,7 +123,7 @@ sub needle = sets sub'
 makeCode :: GenerateOption -> Font -> Text
 makeCode option font = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__familyname__" .= font ^. extendedFamily
-  sub "__fontname__" .= font ^. fullName
+  sub "__fontname__" .= font ^. postScriptName
   sub "__fullname__" .= font ^. fullName
   sub "__weight__" .= font ^. style . weight # showWeight
   sub "__version__" .= font ^. version # showVersion
