@@ -14,7 +14,6 @@ dependencies:
   - containers
   - data-default-class
   - deepseq
-  - diagrams
   - diagrams-contrib
   - diagrams-lib
   - diagrams-svg
