@@ -33,7 +33,8 @@ for file in os.listdir("."):
     glyph = font.createMappedChar(codepoint)
     if root.find("{http://www.w3.org/2000/svg}g") is not None:
       glyph.importOutlines("%d.svg" % codepoint)
-      glyph.autoHint()
+      if __autohint__:
+        glyph.autoHint()
     glyph.width = width
 
 font.generate(__fontfilename__)

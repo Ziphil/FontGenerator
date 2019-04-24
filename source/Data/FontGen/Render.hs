@@ -84,13 +84,13 @@ renderGlyph font char glyph = (\path -> renderDiagram' path (width glyph) diagra
 renderGlyphs :: Font -> IO ()
 renderGlyphs font = void $ Map.traverseWithKey (renderGlyph font) (font ^. glyphs)
 
-data RenderOption = RenderOption {_strings :: [String], _fileName :: String, _lineGap :: Double, _scaleRate :: Double}
+data RenderOption = RenderOption {_fileName :: String, _strings :: [String], _lineGap :: Double, _scaleRate :: Double}
   deriving (Eq, Show)
 
 makeFieldsNoPrefix ''RenderOption
 
 instance Default RenderOption where
-  def = RenderOption [] "test" 200 0.1
+  def = RenderOption "test" [] 200 0.1
 
 makeCharDiagram :: Font -> Char -> Diagram B
 makeCharDiagram font = styleGlyph . fromMaybe mempty . flip Map.lookup (font ^. glyphs)
@@ -105,13 +105,23 @@ renderStrings option font = flip renderDiagram diagram =<< path
     diagram = scale (option ^. scaleRate) rawDiagram
     rawDiagram = vsep (option ^. lineGap) $ map (makeStringDiagram font) $ option ^. strings
 
-data GenerateOption = GenerateOption {_codeFileName :: String, _command :: String}
+data Format = TrueType | OpenType | WebOpenFont
+  deriving (Eq, Show, Enum)
+
+extension :: Getter Format String
+extension = to $ \format ->
+  case format of
+    TrueType -> "ttf"
+    OpenType -> "otf"
+    WebOpenFont -> "woff"
+
+data GenerateOption = GenerateOption {_codeFileName :: String, _command :: String, _format :: Format, _autoHint :: Bool}
   deriving (Eq, Show)
 
 makeFieldsNoPrefix ''GenerateOption
 
 instance Default GenerateOption where
-  def = GenerateOption "generate" "ffpython"
+  def = GenerateOption "generate" "ffpython" TrueType True
 
 -- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
 sub :: Show a => String -> Setter Text Text String a
@@ -131,7 +141,8 @@ makeCode option font = decodeUtf8 $(embedFile "resource/generate.py") &~ do
   sub "__em__" .= font ^. metrics . metricEm
   sub "__ascent__" .= font ^. metrics . metricAscent
   sub "__descent__" .= font ^. metrics . metricDescent
-  sub "__fontfilename__" .= "../" <> font ^. dirName <> ".ttf"
+  sub "__autohint__" .= option ^. autoHint
+  sub "__fontfilename__" .= "../" <> font ^. dirName <> "." <> option ^. format . extension
 
 -- フォント生成用 Python コードを生成し、ファイルに書き出します。
 writeCode :: GenerateOption -> Font -> IO ()
