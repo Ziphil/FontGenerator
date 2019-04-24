@@ -7,7 +7,7 @@
 
 
 module Data.FontGen.Render
-  ( createOutputDir
+  ( ensureOutputDir
   , renderGlyphs
   , RenderOption, strings, fileName, lineGap, scaleRate
   , renderStrings
@@ -71,8 +71,8 @@ outputFile font name ext = (</>) <$> outputDir font <*> file
   where
     file = (-<.> ext) =<< parseRelFile name
 
-createOutputDir :: Font -> IO ()
-createOutputDir font = createDirIfMissing True =<< outputDir font
+ensureOutputDir :: Font -> IO ()
+ensureOutputDir font = ensureDir =<< outputDir font
 
 renderGlyph :: Font -> Char -> Glyph -> IO ()
 renderGlyph font char glyph = (\path -> renderDiagram' path (width glyph) diagram) =<< path
@@ -163,7 +163,7 @@ generateFont option font = void . system =<< (<> (" & " <> pythonCommand)) <$> c
 -- グリフ生成からフォント生成までの一連の処理を全て行います。
 generateAll :: GenerateOption -> Font -> IO ()
 generateAll option font = do
-  createOutputDir font
+  ensureOutputDir font
   renderGlyphs font
   writeCode option font
   generateFont option font
