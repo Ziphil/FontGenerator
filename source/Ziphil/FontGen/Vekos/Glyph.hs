@@ -32,6 +32,7 @@ glyphs = makeGlyphs list
       , ('i', glyphIt), ('í', glyphItAcute), ('ì', glyphItGrave), ('î', glyphItCircumflex)
       , ('u', glyphUt), ('ù', glyphUtGrave), ('û', glyphUtCircumflex)
       , ('o', glyphOt), ('ò', glyphOtGrave), ('ô', glyphOtCircumflex)
+      , ('1', glyphTas), ('9', glyphVun)
       , (',', glyphTadek), ('.', glyphDek)
       , ('!', glyphBadek), ('?', glyphPadek)
       , ('\'', glyphNok), ('ʻ', glyphDikak)
@@ -327,6 +328,20 @@ glyphOtCircumflex = makeGlyph' parts
     parts = 
       [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
       , partCircumflex # translate (beakWidth &| -circumflexHeight - diacriticGap)
+      ]
+
+glyphTas :: Given Config => Glyph
+glyphTas = makeGlyph' parts
+  where
+    parts =
+      [ partTas # translate (tasWidth / 2 &| mean / 2)
+      ]
+
+glyphVun :: Given Config => Glyph
+glyphVun = makeGlyph' parts
+  where
+    parts =
+      [ partTas # rotateHalfTurn # translate (tasWidth / 2 &| mean / 2)
       ]
 
 glyphTadek :: Given Config => Glyph

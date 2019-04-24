@@ -14,6 +14,9 @@ module Ziphil.FontGen.Vekos.Part
   , partUpperUt
   , partUtTail
   , partUt
+  , partTasFrame
+  , partCrossbar
+  , partTas
   , partTransphone
   , partAcute
   , partCircumflex
@@ -28,6 +31,7 @@ module Ziphil.FontGen.Vekos.Part
   , narrowBowlWidth
   , xalWidth
   , nesWidth
+  , tasWidth
   )
 where
 
@@ -458,6 +462,79 @@ partUt = concat parts
       , partUtTail # translate (-talWidth / 2 + linkWidth &| -mean / 2 + thicknessY - linkUpperCorrection)
       ]
 
+tasWidth :: Given Config => Double
+tasWidth = bowlWidth / 2 + shoulderWidth
+
+-- 1 の文字の右下にある部分の外側の曲線を、上端から下端への向きで生成します。
+trailOuterShoulder :: Given Config => PartTrail
+trailOuterShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
+  where
+    width = shoulderWidth
+    height = crossbarAltitude + thicknessY / 2 + overshoot
+    rightCont = height * 0.1
+    bottomCont = width
+
+-- 1 の文字の右下にある部分の内側の曲線を、上端から下端への向きで生成します。
+trailInnerShoulder :: Given Config => PartTrail
+trailInnerShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
+  where
+    width = shoulderWidth - thicknessX
+    height = crossbarAltitude - thicknessY / 2 + overshoot
+    rightCont = height * 0.1
+    bottomCont = width
+
+-- 1 の文字の横線以外の部分を生成します。
+-- 原点は全体の中央にあるので、回転や反転で変化しません。
+partTasFrame :: Given Config => Part
+partTasFrame = makePart trails # moveOriginBy (tasWidth / 2 &| 0)
+  where
+    trails =
+      [ trailOuterBowl # reflectY
+      , trailOuterShoulder # backward
+      , trailCut # backward
+      , trailInnerShoulder
+      , trailInnerBowl # reflectY # backward
+      , trailInnerBowl
+      , trailInnerBeak # backward
+      , trailCut
+      , trailOuterBeak
+      , trailOuterBowl # backward
+      ]
+
+-- 1 の文字の横線の部分の直線を、左端から右端への向きで生成します。
+trailCrossbar :: Given Config => PartTrail
+trailCrossbar = origin ~~ (width &| 0)
+  where
+    width = bowlWidth / 2 + shoulderWidth - thicknessX
+
+-- 文字の書き始めや書き終わりの位置にある垂直に切られた部分を、上端から下端への向きで生成します。
+trailVerticalCut :: Given Config => PartTrail
+trailVerticalCut = origin ~~ (0 &| -height)
+  where
+    height = thicknessY
+
+-- 1 の文字と同じ形を生成します。
+-- 原点は左上の角にあります。
+partCrossbar :: Given Config => Part
+partCrossbar = makePart trails
+  where
+    trails =
+      [ trailVerticalCut
+      , trailCrossbar
+      , trailVerticalCut # backward
+      , trailCrossbar # backward
+      ]
+
+-- 1 の文字の横線以外の部分を生成します。
+-- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+partTas :: Given Config => Part
+partTas = concat parts
+  where
+    parts =
+      [ partTasFrame
+      , partCrossbar # translate (thicknessX / 2 - tasWidth / 2 &| crossbarAltitude - mean / 2 + thicknessY / 2)
+      ]
+
 -- 変音符の右に飛び出るように曲がる曲線の上半分を、下端から上端への向きで生成します。
 trailTransphone :: Given Config => PartTrail
 trailTransphone = origin ~> zero ~~ (0 &| rightCont) <~ (bend &| -height)
@@ -670,12 +747,6 @@ trailFekHorizontal :: Given Config => PartTrail
 trailFekHorizontal = origin ~~ (width &| 0)
   where
     width = fekWidth
-
--- 文字の書き始めや書き終わりの位置にある垂直に切られた部分を、上端から下端への向きで生成します。
-trailVerticalCut :: Given Config => PartTrail
-trailVerticalCut = origin ~~ (0 &| -height)
-  where
-    height = thicknessY
 
 partFek :: Given Config => Part
 partFek = makePart trails

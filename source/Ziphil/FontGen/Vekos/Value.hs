@@ -28,6 +28,8 @@ module Ziphil.FontGen.Vekos.Value
   , linkUpperCorrection
   , linkLowerCorrection
   , utTailBend
+  , shoulderWidth
+  , crossbarAltitude
   , transphoneThicknessX
   , transphoneBend
   , transphoneGap
@@ -156,6 +158,13 @@ linkLowerCorrection = thicknessY * 0.1
 utTailBend :: Given Config => Double
 utTailBend = bowlWidth * 0.45
 
+shoulderWidth :: Given Config => Double
+shoulderWidth = beakWidth
+
+-- 1 の文字の横棒について、その鉛直方向中央とベースラインとの鉛直距離を表します。
+crossbarAltitude :: Given Config => Double
+crossbarAltitude = mean * 0.45
+
 transphoneThicknessX :: Given Config => Double
 transphoneThicknessX = thicknessX * 0.95
 
@@ -226,7 +235,7 @@ dikakBend = bowlWidth * 0.15
 dikakHeight :: Given Config => Double
 dikakHeight = ascent * 0.3
 
--- フェークの垂直方向中央とベースラインの間の距離を表します。
+-- フェークの鉛直方向中央とベースラインとの鉛直距離を表します。
 fekAltitude :: Given Config => Double
 fekAltitude = mean / 2
 
