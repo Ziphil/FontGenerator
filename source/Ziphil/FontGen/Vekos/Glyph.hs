@@ -265,7 +265,7 @@ glyphEtAcute = makeGlyph' parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
-      , partAcute # reflectY # translate (beakWidth &| -diacriticGap)
+      , partAcute # reflectY # translate (talBeakWidth &| -diacriticGap)
       ]
 
 glyphEtGrave :: Given Config => Glyph
@@ -273,7 +273,7 @@ glyphEtGrave = makeGlyph' parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
-      , partAcute # translate (beakWidth &| -acuteHeight - diacriticGap)
+      , partAcute # translate (talBeakWidth &| -acuteHeight - diacriticGap)
       ]
 
 glyphEtCircumflex :: Given Config => Glyph
@@ -281,7 +281,7 @@ glyphEtCircumflex = makeGlyph' parts
   where
     parts = 
       [ partIt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
-      , partCircumflex # translate (beakWidth &| -circumflexHeight - diacriticGap)
+      , partCircumflex # translate (talBeakWidth &| -circumflexHeight - diacriticGap)
       ]
 
 glyphUt :: Given Config => Glyph
@@ -319,7 +319,7 @@ glyphOtGrave = makeGlyph' parts
   where
     parts = 
       [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
-      , partAcute # translate (beakWidth &| -acuteHeight - diacriticGap)
+      , partAcute # translate (talBeakWidth &| -acuteHeight - diacriticGap)
       ]
 
 glyphOtCircumflex :: Given Config => Glyph
@@ -327,7 +327,7 @@ glyphOtCircumflex = makeGlyph' parts
   where
     parts = 
       [ partUt # rotateHalfTurn # translate (talWidth / 2 &| mean / 2)
-      , partCircumflex # translate (beakWidth &| -circumflexHeight - diacriticGap)
+      , partCircumflex # translate (talBeakWidth &| -circumflexHeight - diacriticGap)
       ]
 
 glyphTas :: Given Config => Glyph

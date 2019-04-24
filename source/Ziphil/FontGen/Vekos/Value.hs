@@ -17,8 +17,8 @@ module Ziphil.FontGen.Vekos.Value
   , lesTailBend
   , lesTailCorrection
   , yesLegBend
-  , beakWidth
-  , beakHeight
+  , talBeakWidth
+  , talBeakHeight
   , narrowBowlVirtualWidth
   , narrowBowlCorrection
   , nesLegBend
@@ -28,6 +28,8 @@ module Ziphil.FontGen.Vekos.Value
   , linkUpperCorrection
   , linkLowerCorrection
   , utTailBend
+  , tasBeakWidth
+  , tasBeakHeight
   , shoulderWidth
   , crossbarAltitude
   , transphoneThicknessX
@@ -119,11 +121,11 @@ lesTailCorrection = thicknessX * 0.3
 yesLegBend :: Given Config => Double
 yesLegBend = bowlWidth * 0.15
 
-beakWidth :: Given Config => Double
-beakWidth = bowlWidth / 2 * 0.95
+talBeakWidth :: Given Config => Double
+talBeakWidth = bowlWidth / 2 * 0.95
   
-beakHeight :: Given Config => Double
-beakHeight = mean * 0.35
+talBeakHeight :: Given Config => Double
+talBeakHeight = mean * 0.35
 
 -- x, j の文字に共通する細い丸い部分の見た目の幅を表します。
 -- 実際に作られるパーツの幅は、2 つ重ねたときに重なった部分が太く見えないよう補正されるので、この値より小さくなります。
@@ -158,8 +160,14 @@ linkLowerCorrection = thicknessY * 0.1
 utTailBend :: Given Config => Double
 utTailBend = bowlWidth * 0.45
 
+tasBeakWidth :: Given Config => Double
+tasBeakWidth = talBeakWidth
+
+tasBeakHeight :: Given Config => Double
+tasBeakHeight = mean * 0.3
+
 shoulderWidth :: Given Config => Double
-shoulderWidth = beakWidth
+shoulderWidth = tasBeakWidth
 
 -- 1 の文字の横棒について、その鉛直方向中央とベースラインとの鉛直距離を表します。
 crossbarAltitude :: Given Config => Double

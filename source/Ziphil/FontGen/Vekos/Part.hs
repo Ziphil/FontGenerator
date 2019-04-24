@@ -183,23 +183,23 @@ partYes = makePart trails # moveOriginBy (bowlWidth / 2 &| 0)
       ]
 
 talWidth :: Given Config => Double
-talWidth = bowlWidth / 2 + beakWidth
+talWidth = bowlWidth / 2 + talBeakWidth
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
-trailOuterBeak :: Given Config => PartTrail
-trailOuterBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+trailOuterTalBeak :: Given Config => PartTrail
+trailOuterTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
   where
-    width = beakWidth
-    height = beakHeight + overshoot
+    width = talBeakWidth
+    height = talBeakHeight + overshoot
     rightCont = height * 0.05
     topCont = width
 
 -- t の文字の右上にある部分の内側の曲線を、右端から上端への向きで生成します。
-trailInnerBeak :: Given Config => PartTrail
-trailInnerBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+trailInnerTalBeak :: Given Config => PartTrail
+trailInnerTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
   where
-    width = beakWidth - thicknessX
-    height = beakHeight - thicknessY + overshoot
+    width = talBeakWidth - thicknessX
+    height = talBeakHeight - thicknessY + overshoot
     rightCont = height * 0.05
     topCont = width
 
@@ -210,14 +210,14 @@ partTal = makePart trails # moveOriginBy (talWidth / 2 &| 0)
   where
     trails =
       [ trailOuterBowl # reflectY
-      , trailOuterBeak # reflectY # backward
+      , trailOuterTalBeak # reflectY # backward
       , trailCut # backward
-      , trailInnerBeak # reflectY
+      , trailInnerTalBeak # reflectY
       , trailInnerBowl # reflectY # backward
       , trailInnerBowl
-      , trailInnerBeak # backward
+      , trailInnerTalBeak # backward
       , trailCut
-      , trailOuterBeak
+      , trailOuterTalBeak
       , trailOuterBowl # backward
       ]
 
@@ -380,9 +380,9 @@ partIt = makePart trails # moveOriginBy (talWidth / 2 &| 0)
       , trailCut
       , trailRightItTail # backward
       , trailInnerBowl
-      , trailInnerBeak # backward
+      , trailInnerTalBeak # backward
       , trailCut
-      , trailOuterBeak
+      , trailOuterTalBeak
       , trailOuterBowl # backward
       ]
 
@@ -433,9 +433,9 @@ partUpperUt = makePart trails # moveOriginBy (talWidth / 2 &| 0)
       , origin ~~ (0 &| thicknessY - linkLowerCorrection)
       , trailInnerLink # backward
       , trailInnerBowl
-      , trailInnerBeak # backward
+      , trailInnerTalBeak # backward
       , trailCut
-      , trailOuterBeak
+      , trailOuterTalBeak
       , trailOuterBowl # backward
       ]
 
@@ -463,7 +463,25 @@ partUt = concat parts
       ]
 
 tasWidth :: Given Config => Double
-tasWidth = bowlWidth / 2 + shoulderWidth
+tasWidth = bowlWidth / 2 + max shoulderWidth tasBeakWidth
+
+-- 1 の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
+trailOuterTasBeak :: Given Config => PartTrail
+trailOuterTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+  where
+    width = tasBeakWidth
+    height = tasBeakHeight + overshoot
+    rightCont = height * 0.05
+    topCont = width
+
+-- 1 の文字の右上にある部分の内側の曲線を、右端から上端への向きで生成します。
+trailInnerTasBeak :: Given Config => PartTrail
+trailInnerTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+  where
+    width = tasBeakWidth - thicknessX
+    height = tasBeakHeight - thicknessY + overshoot
+    rightCont = height * 0.05
+    topCont = width
 
 -- 1 の文字の右下にある部分の外側の曲線を、上端から下端への向きで生成します。
 trailOuterShoulder :: Given Config => PartTrail
@@ -495,9 +513,9 @@ partTasFrame = makePart trails # moveOriginBy (tasWidth / 2 &| 0)
       , trailInnerShoulder
       , trailInnerBowl # reflectY # backward
       , trailInnerBowl
-      , trailInnerBeak # backward
+      , trailInnerTasBeak # backward
       , trailCut
-      , trailOuterBeak
+      , trailOuterTasBeak
       , trailOuterBowl # backward
       ]
 
