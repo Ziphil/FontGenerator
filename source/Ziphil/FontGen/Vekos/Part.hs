@@ -3,7 +3,7 @@
 
 module Ziphil.FontGen.Vekos.Part
   ( partBowl
-  , partTail
+  , partLesTail
   , partLes
   , partYes
   , partTal
@@ -136,8 +136,8 @@ trailCut = origin ~~ (width &| 0)
 -- 反転や回転を施すことで、c などの文字のディセンダーや k, p などの文字のアセンダーとしても使えます。
 -- 丸い部分と重ねたときに重なった部分が太く見えすぎないように、左側を少し細く補正してあります。
 -- 原点は補正がないとしたときの左上の角にあります。
-partTail :: Given Config => Part
-partTail = makePart trails # moveOriginBy (-lesTailCorrection &| 0)
+partLesTail :: Given Config => Part
+partLesTail = makePart trails # moveOriginBy (-lesTailCorrection &| 0)
   where
     trails =
       [ trailLeftLesTail
@@ -153,7 +153,7 @@ partLes = concat parts
   where
     parts =
       [ partBowl
-      , partTail # translate (bowlWidth / 2 - thicknessX &| 0)
+      , partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
       ]
 
 -- y の文字の下半分にある曲線を、上端から下端への向きで生成します。
