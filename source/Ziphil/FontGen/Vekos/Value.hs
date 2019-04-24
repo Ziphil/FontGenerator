@@ -31,6 +31,7 @@ module Ziphil.FontGen.Vekos.Value
   , tasBeakWidth
   , tasBeakHeight
   , shoulderWidth
+  , shoulderStraightHeight
   , crossbarAltitude
   , transphoneThicknessX
   , transphoneBend
@@ -167,7 +168,13 @@ tasBeakHeight :: Given Config => Double
 tasBeakHeight = mean * 0.3
 
 shoulderWidth :: Given Config => Double
-shoulderWidth = tasBeakWidth
+shoulderWidth = bowlWidth / 2 * 1
+
+-- 1 の文字の右下にある中央の横線と繋がる部分に含まれる直線部分の長さを表します。
+-- この部分のアウトラインを単純に 1 つの曲線としてしまうと尖って見えてしまうため、途中から垂直な直線に連結させています。
+-- その垂直な直線部分の長さを指定します。
+shoulderStraightHeight :: Given Config => Double
+shoulderStraightHeight = thicknessY / 2
 
 -- 1 の文字の横棒について、その鉛直方向中央とベースラインとの鉛直距離を表します。
 crossbarAltitude :: Given Config => Double

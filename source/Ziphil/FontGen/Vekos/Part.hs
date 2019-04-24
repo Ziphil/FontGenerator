@@ -488,7 +488,7 @@ trailOuterShoulder :: Given Config => PartTrail
 trailOuterShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
   where
     width = shoulderWidth
-    height = crossbarAltitude + thicknessY / 2 + overshoot
+    height = crossbarAltitude + thicknessY / 2 - shoulderStraightHeight + overshoot
     rightCont = height * 0.1
     bottomCont = width
 
@@ -497,9 +497,15 @@ trailInnerShoulder :: Given Config => PartTrail
 trailInnerShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
   where
     width = shoulderWidth - thicknessX
-    height = crossbarAltitude - thicknessY / 2 + overshoot
+    height = crossbarAltitude - thicknessY / 2 - shoulderStraightHeight + overshoot
     rightCont = height * 0.1
     bottomCont = width
+
+-- 1 の文字の右下にある部分に含まれる直線を、上端から下端への向きで生成します。
+trailShoulderStraight :: Given Config => PartTrail
+trailShoulderStraight = origin ~~ (0 &| height)
+  where
+    height = shoulderStraightHeight
 
 -- 1 の文字の横線以外の部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
@@ -509,7 +515,9 @@ partTasFrame = makePart trails # moveOriginBy (tasWidth / 2 &| 0)
     trails =
       [ trailOuterBowl # reflectY
       , trailOuterShoulder # backward
+      , trailShoulderStraight
       , trailCut # backward
+      , trailShoulderStraight # backward
       , trailInnerShoulder
       , trailInnerBowl # reflectY # backward
       , trailInnerBowl
