@@ -14,6 +14,7 @@ module Ziphil.FontGen.Vekos.Part
   , partUpperUt
   , partUtTail
   , partUt
+  , partRac
   , partTasFrame
   , partCrossbar
   , partTas
@@ -460,6 +461,16 @@ partUt = concat parts
     parts =
       [ partUpperUt
       , partUtTail # translate (-talWidth / 2 + linkWidth &| -mean / 2 + thicknessY - linkUpperCorrection)
+      ]
+
+-- 6 の文字と同じ形を生成します。
+-- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+partRac :: Given Config => Part
+partRac = concat parts
+  where
+    parts =
+      [ partYes # rotateHalfTurn
+      , partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
       ]
 
 tasWidth :: Given Config => Double
