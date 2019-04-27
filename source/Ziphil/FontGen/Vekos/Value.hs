@@ -29,6 +29,8 @@ module Ziphil.FontGen.Vekos.Value
   , linkLowerCorrection
   , utTailBend
   , solidusGrade
+  , xelBeakWidth
+  , xelBeakHeight
   , tasBeakWidth
   , tasBeakHeight
   , tasShoulderWidth
@@ -168,6 +170,12 @@ utTailBend = bowlWidth * 0.45
 
 solidusGrade :: Given Config => Double
 solidusGrade = mean / 2 * 0.8
+
+xelBeakWidth :: Given Config => Double
+xelBeakWidth = narrowBowlVirtualWidth / 2 * 0.95
+  
+xelBeakHeight :: Given Config => Double
+xelBeakHeight = mean * 0.35
 
 tasBeakWidth :: Given Config => Double
 tasBeakWidth = talBeakWidth

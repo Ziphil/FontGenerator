@@ -18,6 +18,8 @@ module Ziphil.FontGen.Vekos.Part
   , partRac
   , partSolidus
   , partNuf
+  , partXelHalf
+  , partXel
   , partTasFrame
   , partTasCrossbar
   , partTas
@@ -38,6 +40,7 @@ module Ziphil.FontGen.Vekos.Part
   , narrowBowlWidth
   , xalWidth
   , nesWidth
+  , xelWidth
   , tasWidth
   )
 where
@@ -525,6 +528,59 @@ partNuf = concat parts
     parts =
       [ partBowl
       , partSolidus
+      ]
+
+xelHalfVirtualWidth :: Given Config => Double
+xelHalfVirtualWidth = narrowBowlVirtualWidth / 2 + xelBeakWidth
+
+xelWidth :: Given Config => Double
+xelWidth = xelHalfVirtualWidth * 2 - thicknessX
+
+-- 5 の文字の左上にある部分の外側の曲線を、右端から上端への向きで生成します。
+trailOuterXelBeak :: Given Config => PartTrail
+trailOuterXelBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+  where
+    width = xelBeakWidth
+    height = xelBeakHeight + overshoot
+    leftCont = height * 0.05
+    topCont = width
+
+-- 5 の文字の左上にある部分の内側の曲線を、右端から上端への向きで生成します。
+trailInnerXelBeak :: Given Config => PartTrail
+trailInnerXelBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+  where
+    width = xelBeakWidth - thicknessX
+    height = xelBeakHeight - thicknessY + overshoot
+    leftCont = height * 0.05
+    topCont = width
+
+-- 5 の文字の左半分を生成します。
+-- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
+-- 原点は全体の中央にあります。
+partXelHalf :: Given Config => Part
+partXelHalf = makePart trails # moveOriginBy (-xelHalfVirtualWidth / 2 + narrowBowlCorrection &| 0)
+  where
+    trails =
+      [ trailOuterRightNarrowBowl # reflectX
+      , trailOuterXelBeak # backward
+      , trailCut
+      , trailInnerXelBeak
+      , trailInnerNarrowBowl # reflectX # backward
+      , trailInnerNarrowBowl # rotateHalfTurn
+      , trailInnerXelBeak # reflectY # backward
+      , trailCut # backward
+      , trailOuterXelBeak # reflectY
+      , trailOuterRightNarrowBowl # rotateHalfTurn # backward
+      ]
+
+-- 5 の文字と同じ形を生成します。
+-- 原点は全体の中央にあります。
+partXel :: Given Config => Part
+partXel = concat parts # moveOriginBy (xelWidth / 2 - xelHalfVirtualWidth / 2 &| 0)
+  where
+    parts =
+      [ partXelHalf
+      , partXelHalf # reflectX # translate (xelHalfVirtualWidth - thicknessX &| 0)
       ]
 
 tasWidth :: Given Config => Double
