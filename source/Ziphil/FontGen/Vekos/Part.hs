@@ -713,7 +713,7 @@ trailOuterYusShoulder :: Given Config => PartTrail
 trailOuterYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
   where
     width = yusCrossbarLatitude + thicknessX / 2 - yusShoulderStraightWidth
-    height = mean / 2
+    height = mean / 2 + overshoot
     leftCont = height * 0.1
     topCont = width
 
@@ -722,7 +722,7 @@ trailInnerYusShoulder :: Given Config => PartTrail
 trailInnerYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
   where
     width = yusCrossbarLatitude - thicknessX / 2 - yusShoulderStraightWidth
-    height = mean / 2 - thicknessY
+    height = mean / 2 - thicknessY + overshoot
     leftCont = height * 0.1
     topCont = width
 

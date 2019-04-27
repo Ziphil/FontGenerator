@@ -190,20 +190,20 @@ tasShoulderWidth = bowlWidth / 2 * 1
 -- この部分のアウトラインを単純に 1 つの曲線としてしまうと尖って見えてしまうため、途中から垂直な直線に連結させています。
 -- その垂直な直線部分の長さを指定します。
 tasShoulderStraightHeight :: Given Config => Double
-tasShoulderStraightHeight = thicknessY / 2
+tasShoulderStraightHeight = thicknessY * 0.5
 
 -- 1 の文字の横棒について、その鉛直方向中央とベースラインとの鉛直距離を表します。
 tasCrossbarAltitude :: Given Config => Double
 tasCrossbarAltitude = mean * 0.45
 
 yusWidth :: Given Config => Double
-yusWidth = bowlWidth * 1.2
+yusWidth = bowlWidth * 1.3
 
 yusLegBend :: Given Config => Double
 yusLegBend = yesLegBend
 
 yusShoulderStraightWidth :: Given Config => Double
-yusShoulderStraightWidth = thicknessX / 2
+yusShoulderStraightWidth = thicknessX * 0.8
 
 yusCrossbarLatitude :: Given Config => Double
 yusCrossbarLatitude = yusWidth / 2 * 0.95
