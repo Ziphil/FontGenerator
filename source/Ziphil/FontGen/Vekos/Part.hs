@@ -19,7 +19,7 @@ module Ziphil.FontGen.Vekos.Part
   , partSolidus
   , partNuf
   , partTasFrame
-  , partCrossbar
+  , partTasCrossbar
   , partTas
   , partYusFrame
   , partYusCrossbar
@@ -528,7 +528,7 @@ partNuf = concat parts
       ]
 
 tasWidth :: Given Config => Double
-tasWidth = bowlWidth / 2 + max shoulderWidth tasBeakWidth
+tasWidth = bowlWidth / 2 + max tasShoulderWidth tasBeakWidth
 
 -- 1 の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
 trailOuterTasBeak :: Given Config => PartTrail
@@ -549,28 +549,28 @@ trailInnerTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| h
     topCont = width
 
 -- 1 の文字の右下にある部分の外側の曲線を、上端から下端への向きで生成します。
-trailOuterShoulder :: Given Config => PartTrail
-trailOuterShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
+trailOuterTasShoulder :: Given Config => PartTrail
+trailOuterTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
   where
-    width = shoulderWidth
-    height = crossbarAltitude + thicknessY / 2 - shoulderStraightHeight + overshoot
+    width = tasShoulderWidth
+    height = tasCrossbarAltitude + thicknessY / 2 - tasShoulderStraightHeight + overshoot
     rightCont = height * 0.1
     bottomCont = width
 
 -- 1 の文字の右下にある部分の内側の曲線を、上端から下端への向きで生成します。
-trailInnerShoulder :: Given Config => PartTrail
-trailInnerShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
+trailInnerTasShoulder :: Given Config => PartTrail
+trailInnerTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
   where
-    width = shoulderWidth - thicknessX
-    height = crossbarAltitude - thicknessY / 2 - shoulderStraightHeight + overshoot
+    width = tasShoulderWidth - thicknessX
+    height = tasCrossbarAltitude - thicknessY / 2 - tasShoulderStraightHeight + overshoot
     rightCont = height * 0.1
     bottomCont = width
 
 -- 1 の文字の右下にある部分に含まれる直線を、上端から下端への向きで生成します。
-trailShoulderStraight :: Given Config => PartTrail
-trailShoulderStraight = origin ~~ (0 &| height)
+trailTasShoulderStraight :: Given Config => PartTrail
+trailTasShoulderStraight = origin ~~ (0 &| height)
   where
-    height = shoulderStraightHeight
+    height = tasShoulderStraightHeight
 
 -- 1 の文字の横線以外の部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
@@ -579,11 +579,11 @@ partTasFrame = makePart trails # moveOriginBy (tasWidth / 2 &| 0)
   where
     trails =
       [ trailOuterBowl # reflectY
-      , trailOuterShoulder # backward
-      , trailShoulderStraight
+      , trailOuterTasShoulder # backward
+      , trailTasShoulderStraight
       , trailCut # backward
-      , trailShoulderStraight # backward
-      , trailInnerShoulder
+      , trailTasShoulderStraight # backward
+      , trailInnerTasShoulder
       , trailInnerBowl # reflectY # backward
       , trailInnerBowl
       , trailInnerTasBeak # backward
@@ -593,10 +593,10 @@ partTasFrame = makePart trails # moveOriginBy (tasWidth / 2 &| 0)
       ]
 
 -- 1 の文字の横線の部分の直線を、左端から右端への向きで生成します。
-trailCrossbar :: Given Config => PartTrail
-trailCrossbar = origin ~~ (width &| 0)
+trailTasCrossbar :: Given Config => PartTrail
+trailTasCrossbar = origin ~~ (width &| 0)
   where
-    width = bowlWidth / 2 + shoulderWidth - thicknessX
+    width = bowlWidth / 2 + tasShoulderWidth - thicknessX
 
 -- 文字の書き始めや書き終わりの位置にある垂直に切られた部分を、上端から下端への向きで生成します。
 trailVerticalCut :: Given Config => PartTrail
@@ -606,14 +606,14 @@ trailVerticalCut = origin ~~ (0 &| -height)
 
 -- 1 の文字の横線の部分を生成します。
 -- 原点は左上の角にあります。
-partCrossbar :: Given Config => Part
-partCrossbar = makePart trails
+partTasCrossbar :: Given Config => Part
+partTasCrossbar = makePart trails
   where
     trails =
       [ trailVerticalCut
-      , trailCrossbar
+      , trailTasCrossbar
       , trailVerticalCut # backward
-      , trailCrossbar # backward
+      , trailTasCrossbar # backward
       ]
 
 -- 1 の文字と同じ形を生成します。
@@ -623,7 +623,7 @@ partTas = concat parts
   where
     parts =
       [ partTasFrame
-      , partCrossbar # translate (thicknessX / 2 - tasWidth / 2 &| crossbarAltitude - mean / 2 + thicknessY / 2)
+      , partTasCrossbar # translate (thicknessX / 2 - tasWidth / 2 &| tasCrossbarAltitude - mean / 2 + thicknessY / 2)
       ]
 
 -- 3 の文字の左上にある丸い部分の外側の曲線を、左端から上端への向きで生成します。
