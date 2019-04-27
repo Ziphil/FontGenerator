@@ -34,6 +34,10 @@ module Ziphil.FontGen.Vekos.Value
   , shoulderWidth
   , shoulderStraightHeight
   , crossbarAltitude
+  , yusWidth
+  , yusLegBend 
+  , yusShoulderStraightWidth 
+  , yusCrossbarLatitude
   , transphoneThicknessX
   , transphoneBend
   , transphoneGap
@@ -183,6 +187,18 @@ shoulderStraightHeight = thicknessY / 2
 -- 1 の文字の横棒について、その鉛直方向中央とベースラインとの鉛直距離を表します。
 crossbarAltitude :: Given Config => Double
 crossbarAltitude = mean * 0.45
+
+yusWidth :: Given Config => Double
+yusWidth = bowlWidth * 1.2
+
+yusLegBend :: Given Config => Double
+yusLegBend = yesLegBend
+
+yusShoulderStraightWidth :: Given Config => Double
+yusShoulderStraightWidth = thicknessX / 2
+
+yusCrossbarLatitude :: Given Config => Double
+yusCrossbarLatitude = yusWidth / 2 * 0.95
 
 transphoneThicknessX :: Given Config => Double
 transphoneThicknessX = thicknessX * 0.95

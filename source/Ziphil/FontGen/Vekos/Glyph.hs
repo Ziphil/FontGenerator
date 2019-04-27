@@ -35,6 +35,7 @@ glyphs = makeGlyphs list
       , ('6', glyphRac), ('4', glyphPav), ('2', glyphQic), ('8', glyphKeq)
       , ('0', glyphNuf)
       , ('1', glyphTas), ('9', glyphVun)
+      , ('3', glyphYus), ('7', glyphSiz)
       , (',', glyphTadek), ('.', glyphDek)
       , ('!', glyphBadek), ('?', glyphPadek)
       , ('\'', glyphNok), ('ʻ', glyphDikak)
@@ -379,6 +380,20 @@ glyphVun = makeGlyph' parts
   where
     parts =
       [ partTas # rotateHalfTurn # translate (tasWidth / 2 &| mean / 2)
+      ]
+
+glyphYus :: Given Config => Glyph
+glyphYus = makeGlyph' parts
+  where
+    parts =
+      [ partYus # translate (yusWidth / 2 &| mean / 2)
+      ]
+
+glyphSiz :: Given Config => Glyph
+glyphSiz = makeGlyph' parts
+  where
+    parts =
+      [ partYus # rotateHalfTurn # translate (yusWidth / 2 &| mean / 2)
       ]
 
 glyphTadek :: Given Config => Glyph

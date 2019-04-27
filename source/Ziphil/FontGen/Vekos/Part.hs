@@ -21,6 +21,9 @@ module Ziphil.FontGen.Vekos.Part
   , partTasFrame
   , partCrossbar
   , partTas
+  , partYusFrame
+  , partYusCrossbar
+  , partYus
   , partTransphone
   , partAcute
   , partCircumflex
@@ -601,7 +604,7 @@ trailVerticalCut = origin ~~ (0 &| -height)
   where
     height = thicknessY
 
--- 1 の文字と同じ形を生成します。
+-- 1 の文字の横線の部分を生成します。
 -- 原点は左上の角にあります。
 partCrossbar :: Given Config => Part
 partCrossbar = makePart trails
@@ -613,7 +616,7 @@ partCrossbar = makePart trails
       , trailCrossbar # backward
       ]
 
--- 1 の文字の横線以外の部分を生成します。
+-- 1 の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partTas :: Given Config => Part
 partTas = concat parts
@@ -621,6 +624,104 @@ partTas = concat parts
     parts =
       [ partTasFrame
       , partCrossbar # translate (thicknessX / 2 - tasWidth / 2 &| crossbarAltitude - mean / 2 + thicknessY / 2)
+      ]
+
+-- 3 の文字の左上にある丸い部分の外側の曲線を、左端から上端への向きで生成します。
+trailOuterYusBowl :: Given Config => PartTrail
+trailOuterYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+  where
+    width = yusWidth / 2
+    height = mean / 2 + overshoot
+    leftCont = height * 0.1
+    topCont = width
+
+-- 3 の文字の左上にある丸い部分の内側の曲線を、左端から上端への向きで生成します。
+trailInnerYusBowl :: Given Config => PartTrail
+trailInnerYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+  where
+    width = yusWidth / 2 - thicknessX
+    height = mean / 2 - thicknessY + overshoot
+    leftCont = height * 0.1
+    topCont = width
+
+-- 3 の文字の右下にある曲線を、上端から下端への向きで生成します。
+trailYusLeg :: Given Config => PartTrail
+trailYusLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (-bend &| -height)
+  where
+    bend = yusLegBend
+    height = mean / 2
+    leftCont = height * 0.6
+
+-- 3 の文字の左下にある部分の外側の曲線を、左端から下端への向きで生成します。
+trailOuterYusShoulder :: Given Config => PartTrail
+trailOuterYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
+  where
+    width = yusCrossbarLatitude + thicknessX / 2 - yusShoulderStraightWidth
+    height = mean / 2
+    leftCont = height * 0.1
+    topCont = width
+
+-- 3 の文字の左下にある部分の内側の曲線を、左端から下端への向きで生成します。
+trailInnerYusShoulder :: Given Config => PartTrail
+trailInnerYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
+  where
+    width = yusCrossbarLatitude - thicknessX / 2 - yusShoulderStraightWidth
+    height = mean / 2 - thicknessY
+    leftCont = height * 0.1
+    topCont = width
+
+-- 3 の文字の左下にある部分に含まれる直線を、左端から右端への向きで生成します。
+trailYusShoulderStraight :: Given Config => PartTrail
+trailYusShoulderStraight = origin ~~ (width &| 0)
+  where
+    width = yusShoulderStraightWidth
+
+-- 3 の文字の縦線以外の部分を生成します。
+-- 原点は全体の中央にあるので、回転や反転で変化しません。
+partYusFrame :: Given Config => Part
+partYusFrame = makePart trails # moveOriginBy (yusWidth / 2 &| 0)
+  where
+    trails =
+      [ trailOuterYusShoulder
+      , trailYusShoulderStraight
+      , trailVerticalCut # backward
+      , trailYusShoulderStraight # backward
+      , trailInnerYusShoulder # backward
+      , trailInnerYusBowl
+      , trailInnerYusBowl # reflectX # backward
+      , trailYusLeg
+      , trailCut
+      , trailYusLeg # backward
+      , trailOuterYusBowl # reflectX
+      , trailOuterYusBowl # backward
+      ]
+
+-- 3 の文字の縦線の部分の直線を、上端から下端への向きで生成します。
+trailYusCrossbar :: Given Config => PartTrail
+trailYusCrossbar = origin ~~ (0 &| -height)
+  where
+    height = mean - thicknessY
+
+-- 3 の文字と縦線の部分を生成します。
+-- 原点は左上の角にあります。
+partYusCrossbar :: Given Config => Part
+partYusCrossbar = makePart trails
+  where
+    trails =
+      [ trailYusCrossbar
+      , trailCut
+      , trailYusCrossbar # backward
+      , trailCut # backward
+      ]
+
+-- 3 の文字と同じ形を生成します。
+-- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
+partYus :: Given Config => Part
+partYus = concat parts
+  where
+    parts =
+      [ partYusFrame
+      , partYusCrossbar # translate (yusCrossbarLatitude - yusWidth / 2 - thicknessX / 2 &| mean / 2 - thicknessX / 2)
       ]
 
 -- 変音符の右に飛び出るように曲がる曲線の上半分を、下端から上端への向きで生成します。
