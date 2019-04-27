@@ -33,6 +33,7 @@ glyphs = makeGlyphs list
       , ('u', glyphUt), ('ù', glyphUtGrave), ('û', glyphUtCircumflex)
       , ('o', glyphOt), ('ò', glyphOtGrave), ('ô', glyphOtCircumflex)
       , ('6', glyphRac), ('4', glyphPav), ('2', glyphQic), ('8', glyphKeq)
+      , ('0', glyphNuf)
       , ('1', glyphTas), ('9', glyphVun)
       , (',', glyphTadek), ('.', glyphDek)
       , ('!', glyphBadek), ('?', glyphPadek)
@@ -357,6 +358,13 @@ glyphKeq = makeGlyph' parts
   where
     parts =
       [ partRac # reflectY # translate (bowlWidth / 2 &| mean / 2)
+      ]
+  
+glyphNuf :: Given Config => Glyph
+glyphNuf = makeGlyph' parts
+  where
+    parts =
+      [ partNuf # translate (bowlWidth / 2 &| mean / 2)
       ]
 
 glyphTas :: Given Config => Glyph

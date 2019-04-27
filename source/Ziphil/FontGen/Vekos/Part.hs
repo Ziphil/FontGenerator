@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TypeApplications #-}
 
 
 module Ziphil.FontGen.Vekos.Part
@@ -15,6 +16,8 @@ module Ziphil.FontGen.Vekos.Part
   , partUtTail
   , partUt
   , partRac
+  , partSolidus
+  , partNuf
   , partTasFrame
   , partCrossbar
   , partTas
@@ -96,7 +99,7 @@ idealThickness angle =
 calcTailError :: Given Config => Double -> Double -> Double -> Double -> Double
 calcTailError bend height innerCont outerCont = abs (distance point base - idealThickness angle / 2)
   where
-    angle = angleBetween (point .-. base) (1 &| 0) ^-^ quarterTurn
+    angle = angleBetween (point .-. base) unitX ^-^ quarterTurn
     point = head $ closestPoint segment base
     base = (-bend / 2 + thicknessX / 2 &| -height / 2)
     segment = origin ~> (0 &| -innerCont) ~~ (0 &| outerCont) <~ (-bend &| -height)
@@ -295,7 +298,7 @@ nesWidth = narrowBowlVirtualWidth + spineWidth
 calcSpineError :: Given Config => Double -> Double -> Double -> Double -> Double
 calcSpineError bend width innerCont outerCont = abs (distance point base - idealThickness angle / 2)
   where
-    angle = angleBetween (point .-. base) (1 &| 0) ^-^ quarterTurn
+    angle = angleBetween (point .-. base) unitX ^-^ quarterTurn
     point = head $ closestPoint segment base
     base = (width / 2 &| bend / 2 - thicknessY / 2)
     segment = origin ~> (innerCont &| 0) ~~ (-outerCont &| 0) <~ (width &| bend)
@@ -471,6 +474,54 @@ partRac = concat parts
     parts =
       [ partYes # rotateHalfTurn
       , partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
+      ]
+
+solidusLength :: Given Config => Double
+solidusLength = rawLength * 2 - thicknessX
+  where
+    rawLength = distance origin $ head $ intersectPointsP line (head partBowl)
+    line = origin ~~ (bowlWidth / 2 &| solidusGrade)
+
+solidusThickness :: Given Config => Double
+solidusThickness = idealThickness solidusAngle
+
+solidusAngle :: Given Config => Angle Double
+solidusAngle = signedAngleBetween (bowlWidth / 2 &| solidusGrade) unitX
+
+-- 0 の文字の斜線の部分の長い方の直線を、左端から右端への向きで生成します。
+-- パーツを構成した後に回転することを想定しているので、このトレイルは水平です。
+trailSolidus :: Given Config => PartTrail
+trailSolidus = origin ~~ (length &| 0)
+  where
+    length = solidusLength
+
+-- 0 の文字の斜線の部分の短い方の直線を、上端から下端への向きで生成します。
+-- パーツを構成した後に回転することを想定しているので、このトレイルは鉛直です。
+trailSolidusCut :: Given Config => PartTrail
+trailSolidusCut = origin ~~ (0 &| -length)
+  where
+    length = solidusThickness
+
+-- 0 の文字の斜線の部分を生成します。
+-- 原点は全体の中央にあります。
+partSolidus :: Given Config => Part
+partSolidus = makePart trails # moveOriginBy (solidusLength / 2 &| -solidusThickness / 2) # rotate solidusAngle
+  where
+    trails =
+      [ trailSolidusCut
+      , trailSolidus
+      , trailSolidusCut # backward
+      , trailSolidus # backward
+      ]
+
+-- 0 の文字と同じ形を生成します。
+-- 原点は全体の中央にあります。
+partNuf :: Given Config => Part
+partNuf = concat parts
+  where
+    parts =
+      [ partBowl
+      , partSolidus
       ]
 
 tasWidth :: Given Config => Double

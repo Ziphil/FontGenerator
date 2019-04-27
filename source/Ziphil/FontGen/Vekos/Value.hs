@@ -28,6 +28,7 @@ module Ziphil.FontGen.Vekos.Value
   , linkUpperCorrection
   , linkLowerCorrection
   , utTailBend
+  , solidusGrade
   , tasBeakWidth
   , tasBeakHeight
   , shoulderWidth
@@ -160,6 +161,9 @@ linkLowerCorrection = thicknessY * 0.1
 -- u の文字のディセンダー部分について、その先端の中央と上にある折れ曲がる部分の右端との水平距離を表します。
 utTailBend :: Given Config => Double
 utTailBend = bowlWidth * 0.45
+
+solidusGrade :: Given Config => Double
+solidusGrade = mean / 2 * 0.8
 
 tasBeakWidth :: Given Config => Double
 tasBeakWidth = talBeakWidth

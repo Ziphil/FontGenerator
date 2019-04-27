@@ -135,6 +135,9 @@ instance (Metric v, OrderedField n) => SegmentLike (FixedSegment v n) where
 instance (Metric v, OrderedField n) => SegmentLike (Trail v n) where
   segmentLike = trailLike . (mapLoc $ fromSegments . (: []))
 
+instance (Metric v, OrderedField n) => SegmentLike (Path v n) where
+  segmentLike = trailLike . (mapLoc $ fromSegments . (: []))
+
 instance SegmentLike t => SegmentLike (Located t) where
   segmentLike = liftA2 at segmentLike loc
 
