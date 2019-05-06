@@ -32,7 +32,7 @@ commonState :: State Font ()
 commonState = do
   family .= "Vekos"
   copyright .= "Copyright 2019 Ziphil"
-  version .= makeVersion [1, 0, 2]
+  version .= makeVersion [1, 1, 0]
 
 regularFont :: Font
 regularFont = with &~ commonState &~ do
