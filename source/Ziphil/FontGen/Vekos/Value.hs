@@ -30,8 +30,8 @@ module Ziphil.FontGen.Vekos.Value
   , utTailBend
   , solidusThicknessRatio
   , solidusGrade
-  , xelBeakWidth
-  , xelBeakHeight
+  , xefBeakWidth
+  , xefBeakHeight
   , tasBeakWidth
   , tasBeakHeight
   , tasShoulderWidth
@@ -179,11 +179,11 @@ solidusThicknessRatio = min 1 (-weightConst' * 0.12 + 1.084)
 solidusGrade :: Given Config => Double
 solidusGrade = mean / 2 * 0.8
 
-xelBeakWidth :: Given Config => Double
-xelBeakWidth = narrowBowlVirtualWidth / 2 * 0.95
+xefBeakWidth :: Given Config => Double
+xefBeakWidth = narrowBowlVirtualWidth / 2 * 0.95
   
-xelBeakHeight :: Given Config => Double
-xelBeakHeight = mean * 0.35
+xefBeakHeight :: Given Config => Double
+xefBeakHeight = mean * 0.35
 
 tasBeakWidth :: Given Config => Double
 tasBeakWidth = talBeakWidth

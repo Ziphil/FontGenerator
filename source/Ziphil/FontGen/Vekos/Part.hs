@@ -18,8 +18,8 @@ module Ziphil.FontGen.Vekos.Part
   , partRac
   , partSolidus
   , partNuf
-  , partXelHalf
-  , partXel
+  , partXefHalf
+  , partXef
   , partTasFrame
   , partTasCrossbar
   , partTas
@@ -40,7 +40,7 @@ module Ziphil.FontGen.Vekos.Part
   , narrowBowlWidth
   , xalWidth
   , nesWidth
-  , xelWidth
+  , xefWidth
   , tasWidth
   )
 where
@@ -530,57 +530,57 @@ partNuf = concat parts
       , partSolidus
       ]
 
-xelHalfVirtualWidth :: Given Config => Double
-xelHalfVirtualWidth = narrowBowlVirtualWidth / 2 + xelBeakWidth
+xefHalfVirtualWidth :: Given Config => Double
+xefHalfVirtualWidth = narrowBowlVirtualWidth / 2 + xefBeakWidth
 
-xelWidth :: Given Config => Double
-xelWidth = xelHalfVirtualWidth * 2 - thicknessX
+xefWidth :: Given Config => Double
+xefWidth = xefHalfVirtualWidth * 2 - thicknessX
 
 -- 5 の文字の左上にある部分の外側の曲線を、右端から上端への向きで生成します。
-trailOuterXelBeak :: Given Config => PartTrail
-trailOuterXelBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+trailOuterXefBeak :: Given Config => PartTrail
+trailOuterXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
-    width = xelBeakWidth
-    height = xelBeakHeight + overshoot
+    width = xefBeakWidth
+    height = xefBeakHeight + overshoot
     leftCont = height * 0.05
     topCont = width
 
 -- 5 の文字の左上にある部分の内側の曲線を、右端から上端への向きで生成します。
-trailInnerXelBeak :: Given Config => PartTrail
-trailInnerXelBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+trailInnerXefBeak :: Given Config => PartTrail
+trailInnerXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
-    width = xelBeakWidth - thicknessX
-    height = xelBeakHeight - thicknessY + overshoot
+    width = xefBeakWidth - thicknessX
+    height = xefBeakHeight - thicknessY + overshoot
     leftCont = height * 0.05
     topCont = width
 
 -- 5 の文字の左半分を生成します。
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
 -- 原点は全体の中央にあります。
-partXelHalf :: Given Config => Part
-partXelHalf = makePart trails # moveOriginBy (-xelHalfVirtualWidth / 2 + narrowBowlCorrection &| 0)
+partXefHalf :: Given Config => Part
+partXefHalf = makePart trails # moveOriginBy (-xefHalfVirtualWidth / 2 + narrowBowlCorrection &| 0)
   where
     trails =
       [ trailOuterRightNarrowBowl # reflectX
-      , trailOuterXelBeak # backward
+      , trailOuterXefBeak # backward
       , trailCut
-      , trailInnerXelBeak
+      , trailInnerXefBeak
       , trailInnerNarrowBowl # reflectX # backward
       , trailInnerNarrowBowl # rotateHalfTurn
-      , trailInnerXelBeak # reflectY # backward
+      , trailInnerXefBeak # reflectY # backward
       , trailCut # backward
-      , trailOuterXelBeak # reflectY
+      , trailOuterXefBeak # reflectY
       , trailOuterRightNarrowBowl # rotateHalfTurn # backward
       ]
 
 -- 5 の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
-partXel :: Given Config => Part
-partXel = concat parts # moveOriginBy (xelWidth / 2 - xelHalfVirtualWidth / 2 &| 0)
+partXef :: Given Config => Part
+partXef = concat parts # moveOriginBy (xefWidth / 2 - xefHalfVirtualWidth / 2 &| 0)
   where
     parts =
-      [ partXelHalf
-      , partXelHalf # reflectX # translate (xelHalfVirtualWidth - thicknessX &| 0)
+      [ partXefHalf
+      , partXefHalf # reflectX # translate (xefHalfVirtualWidth - thicknessX &| 0)
       ]
 
 tasWidth :: Given Config => Double
