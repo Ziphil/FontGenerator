@@ -63,6 +63,9 @@ module Ziphil.FontGen.Vekos.Value
   , dikakRightBearing
   , dikakBend
   , dikakHeight
+  , middotAltitude
+  , kaltakBearing
+  , upperKaltakAltitude
   , fekAltitude
   , fekWidth
   , rakutWidth
@@ -288,6 +291,15 @@ dikakBend = bowlWidth * 0.15
 
 dikakHeight :: Given Config => Double
 dikakHeight = ascent * 0.3
+
+middotAltitude :: Given Config => Double
+middotAltitude = mean / 2
+
+kaltakBearing :: Given Config => Double
+kaltakBearing = bearing * 1.8
+
+upperKaltakAltitude :: Given Config => Double
+upperKaltakAltitude = mean * 0.7
 
 -- フェークの鉛直方向中央とベースラインとの鉛直距離を表します。
 fekAltitude :: Given Config => Double

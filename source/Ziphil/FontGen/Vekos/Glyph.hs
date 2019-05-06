@@ -39,6 +39,7 @@ glyphs = makeGlyphs list
       , (',', glyphTadek), ('.', glyphDek)
       , ('!', glyphBadek), ('?', glyphPadek)
       , ('\'', glyphNok), ('ʻ', glyphDikak)
+      , ('·', glyphMiddot), (':', glyphKaltak)
       , ('-', glyphFek)
       , ('[', glyphOpeningRakut), (']', glyphClosingRakut), ('«', glyphOpeningRakut), ('»', glyphClosingRakut)
       , (' ', glyphSpace)
@@ -458,6 +459,24 @@ glyphDikak = makeGlyphWithSpacing' spacing parts
     spacing = with &~ do
       leftBearing .= bearing
       rightBearing .= dikakRightBearing
+
+glyphMiddot :: Given Config => Glyph
+glyphMiddot = makeGlyph' parts
+  where
+    parts =
+      [ partFloatingDot # translate (0 &| middotAltitude)
+      ]
+
+glyphKaltak :: Given Config => Glyph
+glyphKaltak = makeGlyphWithSpacing' spacing parts
+  where
+    parts =
+      [ partDot 
+      , partFloatingDot # translate (0 &| upperKaltakAltitude)
+      ]
+    spacing = with &~ do
+      leftBearing .= kaltakBearing
+      rightBearing .= kaltakBearing
 
 glyphFek :: Given Config => Glyph
 glyphFek = makeGlyph' parts

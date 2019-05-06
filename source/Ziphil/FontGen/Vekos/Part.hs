@@ -30,6 +30,7 @@ module Ziphil.FontGen.Vekos.Part
   , partAcute
   , partCircumflex
   , partDot
+  , partFloatingDot
   , partBadekStem
   , partPadekStem
   , partNok
@@ -892,7 +893,7 @@ partCircumflex = concatPath paths # moveOriginBy (circumflexWidth / 2 &| -circum
       , makePath innerTrails # backward # translate (circumflexThicknessX &| 0)
       ]
 
--- デックやパデックなどに含まれる円の曲線を、左端から時計回りに生成します。
+-- デックやパデックなどに含まれる円の曲線を、左端から反時計回りに生成します。
 trailDot :: Given Config => PartTrail
 trailDot = circle radius # rotateHalfTurn
   where
@@ -902,6 +903,16 @@ trailDot = circle radius # rotateHalfTurn
 -- 原点は円に外接する矩形の左下の角からオーバーシュート分だけ上に移動した位置にあります。
 partDot :: Given Config => Part
 partDot = makePart trails # moveOriginBy (0 &| -dotWidth / 2 + overshoot)
+  where
+    trails =
+      [ trailDot
+      ]
+
+-- カルタックなどに含まれるベースラインより上に浮いた円を生成します。
+-- partDot が返すパーツと形は同じですが、原点の位置が異なります。
+-- 原点は左端にあります。
+partFloatingDot :: Given Config => Part
+partFloatingDot = makePart trails
   where
     trails =
       [ trailDot
