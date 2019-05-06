@@ -36,6 +36,8 @@ module Ziphil.FontGen.Vekos.Part
   , partNok
   , partDikak
   , partFek
+  , partFohak
+  , partDash
   , partOpeningRakut
   , talWidth
   , narrowBowlWidth
@@ -1010,6 +1012,8 @@ trailFekHorizontal = origin ~~ (width &| 0)
   where
     width = fekWidth
 
+-- フェークと同じ形を生成します。
+-- 原点は左上の角にあります。
 partFek :: Given Config => Part
 partFek = makePart trails
   where
@@ -1018,6 +1022,42 @@ partFek = makePart trails
       , trailFekHorizontal
       , trailVerticalCut # backward
       , trailFekHorizontal # backward
+      ]
+
+-- フォーハックの直線を、左端から右端への向きで生成します。
+trailFohakHorizontal :: Given Config => PartTrail
+trailFohakHorizontal = origin ~~ (width &| 0)
+  where
+    width = fohakWidth
+
+-- フォーハックと同じ形を生成します。
+-- 原点は左上の角にあります。
+partFohak :: Given Config => Part
+partFohak = makePart trails
+  where
+    trails =
+      [ trailVerticalCut
+      , trailFohakHorizontal
+      , trailVerticalCut # backward
+      , trailFohakHorizontal # backward
+      ]
+
+-- ダッシュの直線を、左端から右端への向きで生成します。
+trailDashHorizontal :: Given Config => PartTrail
+trailDashHorizontal = origin ~~ (width &| 0)
+  where
+    width = dashWidth
+
+-- ダッシュと同じ形を生成します。
+-- 原点は左上の角にあります。
+partDash :: Given Config => Part
+partDash = makePart trails
+  where
+    trails =
+      [ trailVerticalCut
+      , trailDashHorizontal
+      , trailVerticalCut # backward
+      , trailDashHorizontal # backward
       ]
 
 -- ラクットの縦向きの棒状の部分の直線を、上端から下端への向きで生成します。

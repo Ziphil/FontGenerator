@@ -40,7 +40,7 @@ glyphs = makeGlyphs list
       , ('!', glyphBadek), ('?', glyphPadek)
       , ('\'', glyphNok), ('ʻ', glyphDikak)
       , ('·', glyphMiddot), (':', glyphKaltak)
-      , ('-', glyphFek)
+      , ('-', glyphFek), ('…', glyphFohak), ('—', glyphDash)
       , ('[', glyphOpeningRakut), (']', glyphClosingRakut), ('«', glyphOpeningRakut), ('»', glyphClosingRakut)
       , (' ', glyphSpace)
       ]
@@ -483,6 +483,20 @@ glyphFek = makeGlyph' parts
   where
     parts =
       [ partFek # translate (0 &| fekAltitude + thicknessY / 2)
+      ]
+
+glyphFohak :: Given Config => Glyph
+glyphFohak = makeGlyph' parts
+  where
+    parts =
+      [ partFohak # translate (0 &| thicknessY)
+      ]
+
+glyphDash :: Given Config => Glyph
+glyphDash = makeGlyph' parts
+  where
+    parts =
+      [ partDash # translate (0 &| dashAltitude + thicknessY / 2)
       ]
 
 glyphOpeningRakut :: Given Config => Glyph

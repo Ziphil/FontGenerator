@@ -68,6 +68,9 @@ module Ziphil.FontGen.Vekos.Value
   , upperKaltakAltitude
   , fekAltitude
   , fekWidth
+  , fohakWidth
+  , dashAltitude
+  , dashWidth
   , rakutWidth
   , rakutHeight
   , spaceWidth
@@ -307,6 +310,15 @@ fekAltitude = mean / 2
 
 fekWidth :: Given Config => Double
 fekWidth = bowlWidth * 0.6
+
+fohakWidth :: Given Config => Double
+fohakWidth = bowlWidth * 1.5
+
+dashAltitude :: Given Config => Double
+dashAltitude = mean / 2
+
+dashWidth :: Given Config => Double
+dashWidth = bowlWidth * 2
 
 rakutWidth :: Given Config => Double
 rakutWidth = bowlWidth * 0.55
