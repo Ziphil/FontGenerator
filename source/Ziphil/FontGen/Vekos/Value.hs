@@ -28,6 +28,7 @@ module Ziphil.FontGen.Vekos.Value
   , linkUpperCorrection
   , linkLowerCorrection
   , utTailBend
+  , solidusThicknessRatio
   , solidusGrade
   , xelBeakWidth
   , xelBeakHeight
@@ -39,6 +40,7 @@ module Ziphil.FontGen.Vekos.Value
   , yusWidth
   , yusLegBend 
   , yusShoulderStraightWidth 
+  , yusCrossbarThicknessRatio
   , yusCrossbarLatitude
   , transphoneThicknessRatio
   , transphoneBend
@@ -168,6 +170,12 @@ linkLowerCorrection = thicknessY * 0.1
 utTailBend :: Given Config => Double
 utTailBend = bowlWidth * 0.45
 
+-- 0 の文字の斜線の部分の太さに乗算する係数を表します。
+solidusThicknessRatio :: Given Config => Double
+solidusThicknessRatio = min 1 (-weightConst' * 0.12 + 1.084)
+  where
+    weightConst' = given ^. weightConst
+
 solidusGrade :: Given Config => Double
 solidusGrade = mean / 2 * 0.8
 
@@ -203,7 +211,10 @@ yusLegBend :: Given Config => Double
 yusLegBend = yesLegBend
 
 yusShoulderStraightWidth :: Given Config => Double
-yusShoulderStraightWidth = thicknessX * 0.8
+yusShoulderStraightWidth = thicknessX * yusCrossbarThicknessRatio * 0.7
+
+yusCrossbarThicknessRatio :: Given Config => Double
+yusCrossbarThicknessRatio = 1
 
 yusCrossbarLatitude :: Given Config => Double
 yusCrossbarLatitude = yusWidth / 2 * 0.95

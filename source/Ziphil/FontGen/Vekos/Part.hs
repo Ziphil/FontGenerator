@@ -489,7 +489,7 @@ solidusLength = rawLength * 2 - thicknessX
     line = origin ~~ (bowlWidth / 2 &| solidusGrade)
 
 solidusThickness :: Given Config => Double
-solidusThickness = idealThickness solidusAngle
+solidusThickness = idealThickness solidusAngle * solidusThicknessRatio
 
 solidusAngle :: Given Config => Angle Double
 solidusAngle = signedAngleBetween (bowlWidth / 2 &| solidusGrade) unitX
@@ -712,7 +712,7 @@ trailYusLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (-bend &| -height)
 trailOuterYusShoulder :: Given Config => PartTrail
 trailOuterYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
   where
-    width = yusCrossbarLatitude + thicknessX / 2 - yusShoulderStraightWidth
+    width = yusCrossbarLatitude + thicknessX * yusCrossbarThicknessRatio / 2 - yusShoulderStraightWidth
     height = mean / 2 + overshoot
     leftCont = height * 0.1
     topCont = width
@@ -721,7 +721,7 @@ trailOuterYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width 
 trailInnerYusShoulder :: Given Config => PartTrail
 trailInnerYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
   where
-    width = yusCrossbarLatitude - thicknessX / 2 - yusShoulderStraightWidth
+    width = yusCrossbarLatitude + thicknessX * (yusCrossbarThicknessRatio - 2) / 2 - yusShoulderStraightWidth
     height = mean / 2 - thicknessY + overshoot
     leftCont = height * 0.1
     topCont = width
@@ -758,6 +758,12 @@ trailYusCrossbar = origin ~~ (0 &| -height)
   where
     height = mean - thicknessY
 
+-- 3 の文字の縦線の部分の水平に切られた部分を、左端から右端への向きで生成します。
+trailYusCrossbarCut :: Given Config => PartTrail
+trailYusCrossbarCut = origin ~~ (width &| 0)
+  where
+    width = thicknessX * yusCrossbarThicknessRatio
+
 -- 3 の文字と縦線の部分を生成します。
 -- 原点は左上の角にあります。
 partYusCrossbar :: Given Config => Part
@@ -765,9 +771,9 @@ partYusCrossbar = makePart trails
   where
     trails =
       [ trailYusCrossbar
-      , trailCut
+      , trailYusCrossbarCut
       , trailYusCrossbar # backward
-      , trailCut # backward
+      , trailYusCrossbarCut # backward
       ]
 
 -- 3 の文字と同じ形を生成します。
@@ -777,7 +783,7 @@ partYus = concat parts
   where
     parts =
       [ partYusFrame
-      , partYusCrossbar # translate (yusCrossbarLatitude - yusWidth / 2 - thicknessX / 2 &| mean / 2 - thicknessX / 2)
+      , partYusCrossbar # translate (yusCrossbarLatitude - yusWidth / 2 - thicknessX * yusCrossbarThicknessRatio / 2 &| mean / 2 - thicknessX / 2)
       ]
 
 -- 変音符の右に飛び出るように曲がる曲線の上半分を、下端から上端への向きで生成します。
