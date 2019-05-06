@@ -792,7 +792,7 @@ trailTransphone = origin ~> zero ~~ (0 &| rightCont) <~ (bend &| -height)
 trailTransphoneCut :: Given Config => PartTrail
 trailTransphoneCut = origin ~~ (width &| 0)
   where
-    width = transphoneThicknessX
+    width = thicknessX * transphoneThicknessRatio
 
 -- 変音符と同じ形を生成します。
 -- 原点は右に飛び出る部分の左中央にあります。

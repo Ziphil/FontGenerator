@@ -40,7 +40,7 @@ module Ziphil.FontGen.Vekos.Value
   , yusLegBend 
   , yusShoulderStraightWidth 
   , yusCrossbarLatitude
-  , transphoneThicknessX
+  , transphoneThicknessRatio
   , transphoneBend
   , transphoneGap
   , acuteThicknessX
@@ -208,8 +208,8 @@ yusShoulderStraightWidth = thicknessX * 0.8
 yusCrossbarLatitude :: Given Config => Double
 yusCrossbarLatitude = yusWidth / 2 * 0.95
 
-transphoneThicknessX :: Given Config => Double
-transphoneThicknessX = thicknessX * 0.95
+transphoneThicknessRatio :: Given Config => Double
+transphoneThicknessRatio = 0.95
 
 -- 変音符が左側もしくは右側に曲がる水平距離を表します。
 transphoneBend :: Given Config => Double
