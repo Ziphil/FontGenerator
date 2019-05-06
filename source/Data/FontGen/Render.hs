@@ -45,10 +45,11 @@ styleGlyph = lineWidth (global 0) . fillColor black
 
 -- FontForge に読み込ませるために、ダイアグラムのバウンディングボックスを em 正方形に一致させます。
 adjustWidth :: Font -> Diagram B -> Diagram B
-adjustWidth font = rectEnvelope base size
+adjustWidth font diagram = rectEnvelope base size diagram
   where
-    base = (0 &| 0 - font ^. metrics . metricDescent)
+    base = (-leftBearing &| 0 - font ^. metrics . metricDescent)
     size = (font ^. metrics . metricEm &| font ^. metrics . metricEm)
+    leftBearing = norm $ envelopeV (-1 &| 0) diagram
 
 renderDiagram :: Path Rel File -> Diagram B -> IO ()
 renderDiagram path = renderPretty (toFilePath path) absolute

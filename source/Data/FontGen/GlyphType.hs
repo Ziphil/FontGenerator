@@ -16,9 +16,7 @@ module Data.FontGen.GlyphType
   , concatPath
   , makeGlyphs
   , Metrics, metricEm, metricAscent, metricDescent
-  , fixVertical
   , Spacing, leftBearing, rightBearing
-  , addBearing
   , makeGlyph
   )
 where
@@ -65,14 +63,6 @@ makeFieldsNoPrefix ''Metrics
 instance Default Metrics where
   def = Metrics 1000 750 250
 
--- 与えられたメトリクスの情報に従って、出力用にグリフのエンベロープを修正します。
--- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
-fixVertical :: Metrics -> Glyph -> Glyph
-fixVertical metrics glyph = rectEnvelope base size glyph
-  where
-    base = (0 &| 0 - metrics ^. metricDescent)
-    size = (width glyph &| metrics ^. metricEm)
-
 data Spacing = Spacing {_leftBearing :: Double, _rightBearing :: Double}
   deriving (Eq, Show)
 
@@ -81,11 +71,15 @@ makeFieldsNoPrefix ''Spacing
 instance Default Spacing where
   def = Spacing 0 0
 
--- 与えられたスペーシングの情報に従って、グリフのエンベロープの左右に空白を追加します。
-addBearing :: Spacing -> Glyph -> Glyph
-addBearing spacing = extrudeLeft (spacing ^. leftBearing) . extrudeRight (spacing ^. rightBearing)
+-- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
+-- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
+fixEnvelope :: Metrics -> Spacing -> Glyph -> Glyph
+fixEnvelope metrics spacing glyph = rectEnvelope base size glyph
+  where
+    base = (0 - spacing ^. leftBearing &| 0 - metrics ^. metricDescent)
+    size = (width glyph + spacing ^. leftBearing + spacing ^. rightBearing &| metrics ^. metricEm)
 
 -- パーツのリストからグリフを生成します。
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
 makeGlyph :: Metrics -> Spacing -> [Part] -> Glyph
-makeGlyph metrics spacing = addBearing spacing . fixVertical metrics . mconcat . map strokePath . concat
+makeGlyph metrics spacing = fixEnvelope metrics spacing . mconcat . map strokePath . concat
