@@ -6,9 +6,12 @@ module Ziphil.FontGen.Vekos.Util
   , spacing
   , makeGlyph'
   , makeGlyphWithSpacing'
+  , makeGlyphs'
   )
 where
 
+import Control.Arrow
+import Data.Char
 import Data.FontGen
 import Data.Reflection
 import Ziphil.FontGen.Vekos.Config
@@ -35,3 +38,7 @@ makeGlyph' = makeGlyph metrics spacing
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。
 makeGlyphWithSpacing' :: Given Config => Spacing -> [Part] -> Glyph
 makeGlyphWithSpacing' = makeGlyph metrics
+
+-- 対応する大文字がある場合に、その大文字にも同じグリフを割り当てるようにして、グリフマップを生成します。
+makeGlyphs' :: [(Char, Glyph)] -> Glyphs
+makeGlyphs' list = makeGlyphs $ list ++ map (first toUpper) list

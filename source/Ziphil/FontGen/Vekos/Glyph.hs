@@ -14,7 +14,7 @@ import Ziphil.FontGen.Vekos.Value
 
 
 glyphs :: Given Config => Glyphs
-glyphs = makeGlyphs list
+glyphs = makeGlyphs' list
   where
     list =
       [ ('l', glyphLes), ('r', glyphRes)
