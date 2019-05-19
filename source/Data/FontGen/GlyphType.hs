@@ -15,6 +15,7 @@ module Data.FontGen.GlyphType
   , makePart
   , concatPath
   , makeGlyphs
+  , (>-)
   , Metrics, metricEm, metricAscent, metricDescent
   , Spacing, leftBearing, rightBearing
   , makeGlyph
@@ -54,6 +55,20 @@ concatPath = (: []) . mconcat
 
 makeGlyphs :: [(Char, Glyph)] -> Glyphs
 makeGlyphs = Map.fromList
+
+class ToChar c where
+  toChar :: c -> Char
+
+instance ToChar Char where
+  toChar = id
+
+instance ToChar Int where
+  toChar = toEnum
+
+-- グリフマップを生成する際に文字とグリフのタプルを作るユーティリティ演算子です。
+infix 0 >-
+(>-) :: ToChar c => c -> Glyph -> (Char, Glyph)
+thing >- glyph = (toChar thing, glyph)
 
 data Metrics = Metrics {_metricEm :: Double, _metricAscent :: Double, _metricDescent :: Double}
   deriving (Eq, Show)
