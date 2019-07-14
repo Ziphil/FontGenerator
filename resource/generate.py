@@ -31,7 +31,7 @@ for file in os.listdir("."):
     root = tree.getroot()
     width = float(root.attrib["glyph-width"])
     glyph = font.createMappedChar(codepoint)
-    if root.find("{http://www.w3.org/2000/svg}g") is not None:
+    if root.find("{http://www.w3.org/2000/svg}g") is not None or root.find("{http://www.w3.org/2000/svg}path") is not None:
       glyph.importOutlines("%d.svg" % codepoint)
       if __autohint__:
         glyph.autoHint()
