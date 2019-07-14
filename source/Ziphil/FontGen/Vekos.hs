@@ -24,9 +24,7 @@ import qualified Ziphil.FontGen.Vekos.Util as Util
 
 
 config :: Setter Font Font () Config
-config = sets config'
-  where
-    config' func = (metrics .~ give (func ()) Util.metrics) . (glyphs .~ give (func ()) Glyph.glyphs)
+config = sets $ \func -> (metrics .~ give (func ()) Util.metrics) . (glyphs .~ give (func ()) Glyph.glyphs)
 
 commonState :: State Font ()
 commonState = do

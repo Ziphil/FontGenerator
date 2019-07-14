@@ -129,9 +129,7 @@ renderGlyphs option font = void $ Map.traverseWithKey (renderGlyph option font) 
 
 -- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
 sub :: Show a => String -> Setter Text Text String a
-sub needle = sets sub'
-  where
-    sub' func = Text.replace (Text.pack needle) (Text.pack $ show $ func needle)
+sub needle = sets $ \func -> Text.replace (Text.pack needle) (Text.pack $ show $ func needle)
 
 -- テンプレートコード中のメタ変数を変換して、フォント生成用の Python コードを生成します。
 makeCode :: GenerateOption -> Font -> Text
