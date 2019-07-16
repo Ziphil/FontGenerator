@@ -12,4 +12,4 @@ where
 import Data.FontGen.GlyphType
 import Data.FontGen.Util
 import Diagrams.TwoD.Segment
-import Diagrams.Prelude hiding ((<~), (~~), (&~), origin, stretch)
+import Diagrams.Prelude hiding ((<~), (~~), (&~), origin, stretch, gap)
