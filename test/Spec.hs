@@ -4,7 +4,6 @@
 module Main where
 
 import Test.Hspec
-import Ziphil.Util.Test
 
 
 test :: SpecWith ()
