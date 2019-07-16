@@ -23,7 +23,7 @@ glyphs = makeGlyphs' list
       ]
 
 glyphAt :: Given Config => Bool -> Glyph
-glyphAt = makeGlyph' parts
+glyphAt = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
       [ partLeftOblique
@@ -32,7 +32,7 @@ glyphAt = makeGlyph' parts
       ]
 
 glyphTal :: Given Config => Bool -> Glyph
-glyphTal = makeGlyph' parts
+glyphTal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
       [ partLeftOblique
@@ -40,7 +40,7 @@ glyphTal = makeGlyph' parts
       ]
 
 glyphFal :: Given Config => Bool -> Glyph
-glyphFal = makeGlyph' parts
+glyphFal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
       [ partRightOblique

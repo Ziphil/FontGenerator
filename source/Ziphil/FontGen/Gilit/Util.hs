@@ -3,8 +3,7 @@
 
 module Ziphil.FontGen.Gilit.Util
   ( metrics
-  , spacing
-  , makeGlyph'
+  , singleSpacing
   , makeGlyphWithSpacing'
   , makeGlyphs'
   , choose
@@ -26,19 +25,14 @@ metrics = with &~ do
   metricAscent .= actualAscent
   metricDescent .= actualDescent
 
-spacing :: Given Config => Spacing
-spacing = with &~ do
-  leftBearing .= gap / 2 - triangleWidth / 4
-  rightBearing .= gap / 2- triangleWidth / 4
-
--- パーツのリストからグリフを生成します。
--- このとき、デフォルトのメトリクスとスペーシングの情報を自動的に使用します。
-makeGlyph' :: Given Config => [Bool -> Part] -> Bool -> Glyph
-makeGlyph' parts flag = makeGlyph metrics spacing $ map ($ flag) parts
+singleSpacing :: Given Config => WidthSpacing
+singleSpacing = with &~ do
+  leftX .= triangleWidth / 4 - gap / 2
+  fixedWidth .= triangleWidth / 2 + gap
 
 -- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。
-makeGlyphWithSpacing' :: Given Config => Spacing -> [Bool -> Part] -> Bool -> Glyph
+makeGlyphWithSpacing' :: Given Config => WidthSpacing -> [Bool -> Part] -> Bool -> Glyph
 makeGlyphWithSpacing' spacing parts flag = makeGlyph metrics spacing $ map ($ flag) parts
 
 -- 対応する大文字がある場合に、その大文字には上下反転したグリフを割り当てるようにして、グリフマップを生成します。
