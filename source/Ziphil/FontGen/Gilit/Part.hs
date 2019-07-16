@@ -126,7 +126,7 @@ partLeftChippedOblique = makePart trails # moveOriginBy (originX &| 0)
       , trailTopLeftOblique
       , trailLeftLeftChippedOblique
       ]
-    originX = thickness / tanA obliqueAngle
+    originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedOblique :: Given Config => Part
 partRightChippedOblique = partLeftChippedOblique # reflectSide
