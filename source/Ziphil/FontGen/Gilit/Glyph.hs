@@ -22,6 +22,7 @@ glyphs = makeGlyphs list
       , 'f' >- glyphUpFal, 'F' >- glyphDownFal
       , 'e' >- glyphUpEt
       , 'k' >- glyphUpKal
+      , ' ' >- glyphSpace
       ]
 
 glyphUpAt :: Given Config => Glyph
@@ -92,3 +93,10 @@ glyphUpKal = makeGlyphWithSpacing' singleSpacing parts
       , partRightOblique
       , partBase
       ]
+
+glyphSpace :: Given Config => Glyph
+glyphSpace = makeGlyphWithSpacing' spacing []
+  where
+    spacing = with &~ do
+      leftX .= 0
+      fixedWidth .= spaceWidth

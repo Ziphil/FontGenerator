@@ -13,6 +13,7 @@ module Ziphil.FontGen.Gilit.Value
   , gap
   , thickness
   , triangleWidth
+  , spaceWidth
   )
 where
 
@@ -55,3 +56,6 @@ thickness = 70
 
 triangleWidth :: Given Config => Double
 triangleWidth = 500
+
+spaceWidth :: Given Config => Double
+spaceWidth = triangleWidth * 0.5
