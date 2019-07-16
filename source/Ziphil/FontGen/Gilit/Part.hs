@@ -20,6 +20,7 @@ module Ziphil.FontGen.Gilit.Part
   , partRightChippedDescender
   , partDiamond
   , obliqueAngle
+  , horizontalGap
   , ascent
   , descent
   , em
@@ -37,6 +38,9 @@ import Ziphil.FontGen.Gilit.Value
 
 obliqueAngle :: Given Config => Angle Double
 obliqueAngle = atan2A triangleHeight (triangleWidth / 2)
+
+horizontalGap :: Given Config => Double
+horizontalGap = gap / sinA obliqueAngle
 
 trailCut :: Given Config => PartTrail
 trailCut = origin ~~ (x &| y)

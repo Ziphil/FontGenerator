@@ -27,8 +27,8 @@ metrics = with &~ do
 
 singleSpacing :: Given Config => WidthSpacing
 singleSpacing = with &~ do
-  leftX .= triangleWidth / 4 - gap / 2 - thickness / (sinA obliqueAngle * 2)
-  fixedWidth .= triangleWidth / 2 + gap + thickness / (sinA obliqueAngle)
+  leftX .= triangleWidth / 4 - horizontalGap / 2 - thickness / (sinA obliqueAngle * 2)
+  fixedWidth .= triangleWidth / 2 + horizontalGap + thickness / (sinA obliqueAngle)
 
 -- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。

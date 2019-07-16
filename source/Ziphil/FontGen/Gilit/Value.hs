@@ -2,8 +2,8 @@
 
 
 module Ziphil.FontGen.Gilit.Value
-  ( gap
-  , thickness
+  ( thickness
+  , gap
   , triangleWidth
   , triangleHeight
   , ascenderHeight
@@ -16,11 +16,13 @@ import Data.FontGen
 import Ziphil.FontGen.Gilit.Config
 
 
-gap :: Given Config => Double
-gap = 80
-
 thickness :: Given Config => Double
 thickness = 70
+
+-- 文字と文字の間隔を表します。
+-- ただし、隣り合う三角形の斜辺部に垂直な方向の距離であり、水平距離ではありません。
+gap :: Given Config => Double
+gap = thickness * 1.2
 
 triangleWidth :: Given Config => Double
 triangleWidth = 500
@@ -34,7 +36,7 @@ ascenderHeight :: Given Config => Double
 ascenderHeight = 250
 
 diamondGap :: Given Config => Double
-diamondGap = 70
+diamondGap = thickness * 1
 
 spaceWidth :: Given Config => Double
 spaceWidth = triangleWidth * 0.5
