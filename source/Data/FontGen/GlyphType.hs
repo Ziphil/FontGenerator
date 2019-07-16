@@ -17,7 +17,8 @@ module Data.FontGen.GlyphType
   , makeGlyphs
   , (>-)
   , Metrics, metricEm, metricAscent, metricDescent
-  , Spacing, leftBearing, rightBearing
+  , FixedSpacing, leftBearing, rightBearing
+  , WidthSpacing, leftX, fixedWidth
   , makeGlyph
   )
 where
@@ -78,29 +79,48 @@ makeFieldsNoPrefix ''Metrics
 instance Default Metrics where
   def = Metrics 1000 750 250
 
-data Spacing = Spacing {_leftBearing :: Double, _rightBearing :: Double}
+data FixedSpacing = FixedSpacing {_leftBearing :: Double, _rightBearing :: Double}
   deriving (Eq, Show)
 
-makeFieldsNoPrefix ''Spacing
+makeFieldsNoPrefix ''FixedSpacing
 
-instance Default Spacing where
-  def = Spacing 0 0
+instance Default FixedSpacing where
+  def = FixedSpacing 0 0
 
-class FixEnvelope m s where
-  fixEnvelope :: m -> s -> Glyph -> Glyph
+data WidthSpacing = WidthSpacing {_leftX :: Double, _fixedWidth :: Double}
+  deriving (Eq, Show)
+
+makeFieldsNoPrefix ''WidthSpacing
+
+instance Default WidthSpacing where
+  def = WidthSpacing 0 0
+
+class ReformEnvelope m s where
+  reformEnvelope :: m -> s -> Glyph -> Glyph
 
 -- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
 -- 具体的には、左右にスペーシングとして設定された一定量の余白を追加します。
-fixEnvelopeSpacing :: Metrics -> Spacing -> Glyph -> Glyph
-fixEnvelopeSpacing metrics spacing glyph = rectEnvelope base size glyph
+reformEnvelopeSpacing :: Metrics -> FixedSpacing -> Glyph -> Glyph
+reformEnvelopeSpacing metrics spacing glyph = rectEnvelope base size glyph
   where
     base = (0 - spacing ^. leftBearing &| 0 - metrics ^. metricDescent)
     size = (width glyph + spacing ^. leftBearing + spacing ^. rightBearing &| metrics ^. metricEm)
 
-instance FixEnvelope Metrics Spacing where
-  fixEnvelope = fixEnvelopeSpacing
+-- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
+-- 具体的には、指定された X 座標を左端とし、指定された横幅になるように左端に空白を追加します。
+reformEnvelopeWidth :: Metrics -> WidthSpacing -> Glyph -> Glyph
+reformEnvelopeWidth metrics spacing glyph = rectEnvelope base size glyph
+  where
+    base = (spacing ^. leftX &| 0 - metrics ^. metricDescent)
+    size = (spacing ^. fixedWidth &| metrics ^. metricEm)
+
+instance ReformEnvelope Metrics FixedSpacing where
+  reformEnvelope = reformEnvelopeSpacing
+
+instance ReformEnvelope Metrics WidthSpacing where
+  reformEnvelope = reformEnvelopeWidth
 
 -- パーツのリストからグリフを生成します。
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
-makeGlyph :: FixEnvelope m s => m -> s -> [Part] -> Glyph
-makeGlyph metrics spacing = fixEnvelope metrics spacing . mconcat . map strokePath . concat
+makeGlyph :: ReformEnvelope m s => m -> s -> [Part] -> Glyph
+makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . concat
