@@ -28,8 +28,8 @@ metrics = with &~ do
 
 spacing :: Given Config => Spacing
 spacing = with &~ do
-  leftBearing .= bearing
-  rightBearing .= bearing
+  leftBearing .= gap / 2 - triangleWidth / 4
+  rightBearing .= gap / 2- triangleWidth / 4
 
 -- パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスとスペーシングの情報を自動的に使用します。

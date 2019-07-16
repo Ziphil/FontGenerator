@@ -10,7 +10,7 @@ module Ziphil.FontGen.Gilit.Value
   , actualAscent
   , actualEm
   , overshoot
-  , bearing
+  , gap
   , thickness
   , triangleWidth
   )
@@ -47,8 +47,8 @@ actualEm = actualDescent + actualAscent
 overshoot :: Given Config => Double
 overshoot = 20
 
-bearing :: Given Config => Double
-bearing = 0
+gap :: Given Config => Double
+gap = 70
 
 thickness :: Given Config => Double
 thickness = 70
