@@ -4,9 +4,14 @@
 module Ziphil.FontGen.Gilit.Part
   ( partLeftOblique
   , partRightOblique
+  , partLeftChippedOblique
+  , partRightChippedOblique
   , partBase
+  , partChippedBase
   , partLeftAscender
   , partRightAscender
+  , partLeftDescender
+  , partRightDescender
   )
 where
 
@@ -55,6 +60,38 @@ partLeftOblique = makePart trails
 partRightOblique :: Given Config => Part
 partRightOblique = partLeftOblique # reflectX # moveOriginBy (-triangleWidth &| 0)
 
+trailBottomLeftChippedOblique :: Given Config => PartTrail
+trailBottomLeftChippedOblique = origin ~~ (x &| 0)
+  where
+    x = thickness / (sinA obliqueAngle) - thickness / (tanA obliqueAngle)
+
+trailLeftLeftChippedOblique :: Given Config => PartTrail
+trailLeftLeftChippedOblique = origin ~~ (x &| y)
+  where
+    x = -triangleWidth / 2 + thickness / (tanA obliqueAngle * 2)
+    y = -mean - overshoot + thickness / 2
+
+trailChip :: Given Config => PartTrail
+trailChip = origin ~~ (x &| y)
+  where
+    x = thickness / (tanA obliqueAngle * 2)
+    y = -thickness / 2
+
+partLeftChippedOblique :: Given Config => Part
+partLeftChippedOblique = makePart trails # moveOriginBy (originX &| 0) 
+  where
+    trails =
+      [ trailBottomLeftChippedOblique
+      , trailRightLeftOblique
+      , trailTopLeftOblique
+      , trailLeftLeftChippedOblique
+      , trailChip
+      ]
+    originX = -thickness / (tanA obliqueAngle)
+
+partRightChippedOblique :: Given Config => Part
+partRightChippedOblique = partLeftChippedOblique # reflectX # moveOriginBy (-triangleWidth &| 0)
+
 trailBottomBase :: Given Config => PartTrail
 trailBottomBase = origin ~~ (x &| 0)
   where
@@ -87,6 +124,19 @@ partBase = makePart trails
       , trailLeftBase
       ]
 
+partChippedBase :: Given Config => Part
+partChippedBase = makePart trails # moveOriginBy (originX &| 0)
+  where
+    trails =
+      [ trailTopBase # backward
+      , trailChip # reflectX # backward
+      , trailChip # rotateHalfTurn
+      , trailTopBase
+      , trailChip # reflectY # backward
+      , trailChip
+      ]
+    originX = -thickness / (tanA obliqueAngle)
+
 trailBottomLeftAscender :: Given Config => PartTrail
 trailBottomLeftAscender = origin ~~ (x &| y)
   where
@@ -113,3 +163,24 @@ partLeftAscender = makePart trails # moveOriginBy (originX &| originY)
 
 partRightAscender :: Given Config => Part
 partRightAscender = partLeftAscender # reflectX # moveOriginBy (-triangleWidth &| 0)
+
+trailRightLeftDescender :: Given Config => PartTrail
+trailRightLeftDescender = origin ~~ (x &| y)
+  where
+    x = -y / (tanA obliqueAngle)
+    y = descent + thickness / 2
+
+partLeftDescender :: Given Config => Part
+partLeftDescender = makePart trails # moveOriginBy (originX &| originY)
+  where
+    trails = 
+      [ trailRightLeftDescender # backward
+      , trailBottomLeftAscender
+      , trailRightLeftDescender
+      , trailBottomLeftAscender # backward
+      ]
+    originX = -thickness / (tanA obliqueAngle * 2)
+    originY = -thickness / 2
+
+partRightDescender :: Given Config => Part
+partRightDescender = partLeftDescender # reflectX # moveOriginBy (-triangleWidth &| 0)
