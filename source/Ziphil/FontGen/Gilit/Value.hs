@@ -9,7 +9,10 @@ module Ziphil.FontGen.Gilit.Value
   , actualDescent
   , actualAscent
   , actualEm
+  , overshoot
   , bearing
+  , thickness
+  , triangleWidth
   )
 where
 
@@ -33,13 +36,22 @@ em :: Given Config => Double
 em = ascent + descent
 
 actualDescent :: Given Config => Double
-actualDescent = descent + 40
+actualDescent = descent + 20
 
 actualAscent :: Given Config => Double
-actualAscent = ascent + 10
+actualAscent = ascent + 20
 
 actualEm :: Given Config => Double
 actualEm = actualDescent + actualAscent
 
+overshoot :: Given Config => Double
+overshoot = 20
+
 bearing :: Given Config => Double
 bearing = 0
+
+thickness :: Given Config => Double
+thickness = 70
+
+triangleWidth :: Given Config => Double
+triangleWidth = 500
