@@ -17,7 +17,7 @@ import Ziphil.FontGen.Gilit.Config
 
 
 thickness :: Given Config => Double
-thickness = 70
+thickness = 80
 
 -- 文字と文字の間隔を表します。
 -- ただし、隣り合う三角形の斜辺部に垂直な方向の距離であり、水平距離ではありません。
