@@ -24,7 +24,7 @@ metrics = with &~ do
   metricAscent .= actualAscent
   metricDescent .= actualDescent
 
-spacing :: Given Config => Spacing
+spacing :: Given Config => FixedSpacing
 spacing = with &~ do
   leftBearing .= bearing
   rightBearing .= bearing
@@ -36,7 +36,7 @@ makeGlyph' = makeGlyph metrics spacing
 
 -- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。
-makeGlyphWithSpacing' :: Given Config => Spacing -> [Part] -> Glyph
+makeGlyphWithSpacing' :: Given Config => FixedSpacing -> [Part] -> Glyph
 makeGlyphWithSpacing' = makeGlyph metrics
 
 -- 対応する大文字がある場合に、その大文字にも同じグリフを割り当てるようにして、グリフマップを生成します。
