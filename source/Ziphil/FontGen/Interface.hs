@@ -11,6 +11,7 @@ import Data.FontGen.FontType
 import Data.FontGen.Render
 import Data.Map (Map)
 import qualified Data.Map as Map
+import qualified Ziphil.FontGen.Gilit as Gilit
 import qualified Ziphil.FontGen.Interface.Generate as Generate
 import qualified Ziphil.FontGen.Vekos as Vekos
 
@@ -31,4 +32,5 @@ fonts = Map.fromList list
       , ("Vre", Vekos.regularExtendedFont)
       , ("Vbe", Vekos.boldExtendedFont)
       , ("Vte", Vekos.thinExtendedFont)
+      , ("Gr", Gilit.regularFont)
       ]
