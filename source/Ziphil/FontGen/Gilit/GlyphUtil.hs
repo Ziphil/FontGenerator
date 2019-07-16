@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 
-module Ziphil.FontGen.Gilit.Util
+module Ziphil.FontGen.Gilit.GlyphUtil
   ( metrics
   , singleSpacing
   , makeGlyphWithSpacing'

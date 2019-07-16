@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 
-module Ziphil.FontGen.Vekos.Util
+module Ziphil.FontGen.Vekos.GlyphUtil
   ( metrics
   , spacing
   , makeGlyph'
@@ -15,6 +15,7 @@ import Data.Char
 import Data.FontGen
 import Data.Reflection
 import Ziphil.FontGen.Vekos.Config
+import Ziphil.FontGen.Vekos.Part
 import Ziphil.FontGen.Vekos.Value
 
 

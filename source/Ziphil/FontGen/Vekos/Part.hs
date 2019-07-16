@@ -44,12 +44,17 @@ module Ziphil.FontGen.Vekos.Part
   , nesWidth
   , xefWidth
   , tasWidth
+  , ascent
+  , em
+  , actualDescent
+  , actualAscent
+  , actualEm
   )
 where
 
 import Data.FontGen
 import Ziphil.FontGen.Vekos.Config
-import Ziphil.FontGen.Vekos.Func
+import Ziphil.FontGen.Vekos.PartFunc
 import Ziphil.FontGen.Vekos.Value
 
 
@@ -1063,3 +1068,18 @@ partOpeningRakut = concat parts
       [ partRakutVertical
       , partRakutHorizontal
       ]
+
+ascent :: Given Config => Double
+ascent = mean + descent
+
+em :: Given Config => Double
+em = ascent + descent
+
+actualDescent :: Given Config => Double
+actualDescent = descent + extraDescent
+
+actualAscent :: Given Config => Double
+actualAscent = ascent + extraAscent
+
+actualEm :: Given Config => Double
+actualEm = actualDescent + actualAscent

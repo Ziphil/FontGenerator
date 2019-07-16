@@ -8,8 +8,8 @@ where
 
 import Data.FontGen
 import Ziphil.FontGen.Gilit.Config
+import Ziphil.FontGen.Gilit.GlyphUtil
 import Ziphil.FontGen.Gilit.Part
-import Ziphil.FontGen.Gilit.Util
 import Ziphil.FontGen.Gilit.Value
 
 

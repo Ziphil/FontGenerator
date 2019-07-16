@@ -12,7 +12,7 @@ import Data.FontGen.FontType
 import Data.Version
 import Ziphil.FontGen.Gilit.Config
 import qualified Ziphil.FontGen.Gilit.Glyph as Glyph
-import qualified Ziphil.FontGen.Gilit.Util as Util
+import qualified Ziphil.FontGen.Gilit.GlyphUtil as Util
 
 
 config :: Setter Font Font () Config

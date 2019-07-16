@@ -20,7 +20,7 @@ import Data.FontGen.FontType
 import Data.Version
 import Ziphil.FontGen.Vekos.Config
 import qualified Ziphil.FontGen.Vekos.Glyph as Glyph
-import qualified Ziphil.FontGen.Vekos.Util as Util
+import qualified Ziphil.FontGen.Vekos.GlyphUtil as Util
 
 
 config :: Setter Font Font () Config

@@ -4,11 +4,8 @@
 module Ziphil.FontGen.Vekos.Value
   ( descent
   , mean
-  , ascent
-  , em
-  , actualDescent
-  , actualAscent
-  , actualEm
+  , extraDescent
+  , extraAscent
   , overshoot
   , bearing
   , thicknessX
@@ -90,20 +87,11 @@ descent = 250
 mean :: Given Config => Double
 mean = 500
 
-ascent :: Given Config => Double
-ascent = mean + descent
+extraDescent :: Given Config => Double
+extraDescent = 40
 
-em :: Given Config => Double
-em = ascent + descent
-
-actualDescent :: Given Config => Double
-actualDescent = descent + 40
-
-actualAscent :: Given Config => Double
-actualAscent = ascent + 10
-
-actualEm :: Given Config => Double
-actualEm = actualDescent + actualAscent
+extraAscent :: Given Config => Double
+extraAscent = 10
 
 overshoot :: Given Config => Double
 overshoot = 10
@@ -278,13 +266,13 @@ badekLeftBearing :: Given Config => Double
 badekLeftBearing = bearing * 1.8
 
 badekGap :: Given Config => Double
-badekGap = ascent * 0.13
+badekGap = (mean + descent) * 0.13
 
 padekBend :: Given Config => Double
 padekBend = min (dotWidth + dotGap) (bowlWidth * 0.3)
 
 nokHeight :: Given Config => Double
-nokHeight = ascent * 0.3
+nokHeight = (mean + descent) * 0.3
 
 dikakRightBearing :: Given Config => Double
 dikakRightBearing = -bearing * 0.5
@@ -293,7 +281,7 @@ dikakBend :: Given Config => Double
 dikakBend = bowlWidth * 0.15
 
 dikakHeight :: Given Config => Double
-dikakHeight = ascent * 0.3
+dikakHeight = (mean + descent) * 0.3
 
 middotAltitude :: Given Config => Double
 middotAltitude = mean / 2
@@ -324,7 +312,7 @@ rakutWidth :: Given Config => Double
 rakutWidth = bowlWidth * 0.55
 
 rakutHeight :: Given Config => Double
-rakutHeight = ascent * 0.6
+rakutHeight = (mean + descent) * 0.6
 
 spaceWidth :: Given Config => Double
 spaceWidth = bowlWidth * 0.55

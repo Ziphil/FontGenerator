@@ -8,8 +8,8 @@ where
 
 import Data.FontGen
 import Ziphil.FontGen.Vekos.Config
+import Ziphil.FontGen.Vekos.GlyphUtil
 import Ziphil.FontGen.Vekos.Part
-import Ziphil.FontGen.Vekos.Util
 import Ziphil.FontGen.Vekos.Value
 
 
