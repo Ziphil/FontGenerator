@@ -2,9 +2,12 @@
 
 
 module Ziphil.FontGen.Gilit.Part
-  ( partLeftOblique
-  , partRightOblique
-  , partBase
+  ( partLeftUpOblique
+  , partRightUpOblique
+  , partUpBase
+  , partLeftDownOblique
+  , partRightDownOblique
+  , partDownBase
   )
 where
 
@@ -85,11 +88,11 @@ partUpBase = makePart trails
       , trailLeftUpBase
       ]
 
-partLeftOblique :: Given Config => Bool -> Part
-partLeftOblique = choose partLeftUpOblique
+partLeftDownOblique :: Given Config => Part
+partLeftDownOblique = partLeftUpOblique # reflectY # moveOriginBy (0 &| -mean)
 
-partRightOblique :: Given Config => Bool -> Part
-partRightOblique = choose partRightUpOblique
+partRightDownOblique :: Given Config => Part
+partRightDownOblique = partRightUpOblique # reflectY # moveOriginBy (0 &| -mean)
 
-partBase :: Given Config => Bool -> Part
-partBase = choose partUpBase
+partDownBase :: Given Config => Part
+partDownBase = partUpBase # reflectY # moveOriginBy (0 &| -mean)

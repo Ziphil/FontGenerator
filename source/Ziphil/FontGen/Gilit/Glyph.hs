@@ -14,35 +14,60 @@ import Ziphil.FontGen.Gilit.Value
 
 
 glyphs :: Given Config => Glyphs
-glyphs = makeGlyphs' list
+glyphs = makeGlyphs list
   where
     list =
-      [ 'a' >- glyphAt
-      , 't' >- glyphTal
-      , 'f' >- glyphFal
+      [ 'a' >- glyphUpAt, 'A' >- glyphDownAt
+      , 't' >- glyphUpTal, 'T' >- glyphDownTal
+      , 'f' >- glyphUpFal, 'F' >- glyphDownFal
       ]
 
-glyphAt :: Given Config => Bool -> Glyph
-glyphAt = makeGlyphWithSpacing' singleSpacing parts
+glyphUpAt :: Given Config => Glyph
+glyphUpAt = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partLeftOblique
-      , partRightOblique
-      , partBase
+      [ partLeftUpOblique
+      , partRightUpOblique
+      , partUpBase
       ]
 
-glyphTal :: Given Config => Bool -> Glyph
-glyphTal = makeGlyphWithSpacing' singleSpacing parts
+glyphDownAt :: Given Config => Glyph
+glyphDownAt = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partLeftOblique
-      , partBase
+      [ partLeftDownOblique
+      , partRightDownOblique
+      , partDownBase
       ]
 
-glyphFal :: Given Config => Bool -> Glyph
-glyphFal = makeGlyphWithSpacing' singleSpacing parts
+glyphUpTal :: Given Config => Glyph
+glyphUpTal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partRightOblique
-      , partBase
+      [ partLeftUpOblique
+      , partUpBase
+      ]
+
+glyphDownTal :: Given Config => Glyph
+glyphDownTal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partLeftDownOblique
+      , partDownBase
+      ]
+
+glyphUpFal :: Given Config => Glyph
+glyphUpFal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partRightUpOblique
+      , partUpBase
+      ]
+
+glyphDownFal :: Given Config => Glyph
+glyphDownFal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partRightDownOblique
+      , partDownBase
       ]
