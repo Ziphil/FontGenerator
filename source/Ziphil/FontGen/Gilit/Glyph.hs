@@ -84,7 +84,7 @@ glyphDownKal = makeGlyphWithSpacing' singleSpacing parts
       [ partChippedBase # reflectTriangle
       , partLeftOblique # reflectTriangle
       , partRightChippedOblique # reflectTriangle
-      , partRightDescender # reflectTriangle
+      , partRightChippedDescender # reflectTriangle
       ]
 
 glyphUpFal :: Given Config => Glyph
@@ -120,7 +120,7 @@ glyphDownPal = makeGlyphWithSpacing' singleSpacing parts
       [ partChippedBase # reflectTriangle
       , partLeftChippedOblique # reflectTriangle
       , partRightOblique # reflectTriangle
-      , partLeftDescender # reflectTriangle
+      , partLeftChippedDescender # reflectTriangle
       ]
 
 glyphUpCal :: Given Config => Glyph
@@ -130,7 +130,7 @@ glyphUpCal = makeGlyphWithSpacing' singleSpacing parts
       [ partChippedBase
       , partLeftChippedOblique
       , partRightOblique
-      , partLeftDescender
+      , partLeftChippedDescender
       ]
 
 glyphDownCal :: Given Config => Glyph
@@ -150,7 +150,7 @@ glyphUpLes = makeGlyphWithSpacing' singleSpacing parts
       [ partChippedBase
       , partLeftOblique
       , partRightChippedOblique
-      , partRightDescender
+      , partRightChippedDescender
       ]
 
 glyphDownLes :: Given Config => Glyph
@@ -214,7 +214,7 @@ glyphDownEt = makeGlyphWithSpacing' singleSpacing parts
     parts = 
       [ partChippedBase # reflectTriangle
       , partRightOblique # reflectTriangle
-      , partLeftDescender # reflectTriangle
+      , partLeftChippedDescender # reflectTriangle
       ]
 
 glyphUpIt :: Given Config => Glyph
@@ -223,7 +223,7 @@ glyphUpIt = makeGlyphWithSpacing' singleSpacing parts
     parts = 
       [ partChippedBase
       , partRightOblique
-      , partLeftDescender
+      , partLeftChippedDescender
       ]
 
 glyphDownIt :: Given Config => Glyph
@@ -250,7 +250,7 @@ glyphDownOt = makeGlyphWithSpacing' singleSpacing parts
     parts = 
       [ partChippedBase # reflectTriangle
       , partRightChippedOblique # reflectTriangle
-      , partRightDescender # reflectTriangle
+      , partRightChippedDescender # reflectTriangle
       ]
 
 glyphUpUt :: Given Config => Glyph
@@ -259,7 +259,7 @@ glyphUpUt = makeGlyphWithSpacing' singleSpacing parts
     parts = 
       [ partChippedBase
       , partLeftChippedOblique
-      , partLeftDescender
+      , partLeftChippedDescender
       ]
 
 glyphDownUt :: Given Config => Glyph

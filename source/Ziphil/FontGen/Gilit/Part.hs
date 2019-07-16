@@ -12,8 +12,8 @@ module Ziphil.FontGen.Gilit.Part
   , partChippedBase
   , partLeftAscender
   , partRightAscender
-  , partLeftDescender
-  , partRightDescender
+  , partLeftChippedDescender
+  , partRightChippedDescender
   , partDiamond
   , obliqueAngle
   , ascent
@@ -205,25 +205,32 @@ partLeftAscender = makePart trails # moveOriginBy (originX &| originY)
 partRightAscender :: Given Config => Part
 partRightAscender = partLeftAscender # reflectSide
 
-trailRightLeftDescender :: Given Config => PartTrail
-trailRightLeftDescender = origin ~~ (x &| y)
+trailRightLeftChippedDescender :: Given Config => PartTrail
+trailRightLeftChippedDescender = origin ~~ (x &| y)
   where
     x = -y / tanA obliqueAngle
-    y = ascenderHeight + thickness / (cosA obliqueAngle * 4)
+    y = ascenderHeight + thickness / 2 - thickness / (cosA obliqueAngle * 4)
 
-partLeftDescender :: Given Config => Part
-partLeftDescender = makePart trails # moveOriginBy (originX &| 0)
+trailLeftLeftChippedDescender :: Given Config => PartTrail
+trailLeftLeftChippedDescender = origin ~~ (x &| y)
+  where
+    x = -y / tanA obliqueAngle
+    y = -ascenderHeight - thickness / (cosA obliqueAngle * 4)
+
+partLeftChippedDescender :: Given Config => Part
+partLeftChippedDescender = makePart trails # moveOriginBy (originX &| 0)
   where
     trails = 
-      [ trailRightLeftDescender # backward
+      [ trailLeftLeftChippedDescender
       , trailBottomLeftAscender
-      , trailRightLeftDescender
-      , trailBottomLeftAscender # backward
+      , trailRightLeftChippedDescender
+      , trailBottomLeftChippedOblique # backward
+      , trailChip
       ]
     originX = thickness / (sinA obliqueAngle * 2)
 
-partRightDescender :: Given Config => Part
-partRightDescender = partLeftDescender # reflectSide
+partRightChippedDescender :: Given Config => Part
+partRightChippedDescender = partLeftChippedDescender # reflectSide
 
 partDiamond :: Given Config => Part
 partDiamond = makePart trails # moveOriginBy (originX &| originY)
