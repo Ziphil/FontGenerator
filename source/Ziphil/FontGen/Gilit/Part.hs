@@ -39,7 +39,7 @@ trailBottomLeftOblique = origin ~~ (x &| 0)
 trailRightLeftOblique :: Given Config => PartTrail
 trailRightLeftOblique = origin ~~ (x &| y)
   where
-    x = y / (tanA obliqueAngle)
+    x = y / tanA obliqueAngle
     y = triangleHeight + thickness / 2
 
 trailTopLeftOblique :: Given Config => PartTrail
@@ -51,7 +51,7 @@ trailTopLeftOblique = origin ~~ (x &| y)
 trailLeftLeftOblique :: Given Config => PartTrail
 trailLeftLeftOblique = origin ~~ (x &| y)
   where
-    x = y / (tanA obliqueAngle)
+    x = y / tanA obliqueAngle
     y = -triangleHeight - thickness / (cosA obliqueAngle * 2) - thickness / 2
 
 partLeftOblique :: Given Config => Part
@@ -72,18 +72,18 @@ partRightOblique = partLeftOblique # reflectSide
 trailBottomLeftChippedOblique :: Given Config => PartTrail
 trailBottomLeftChippedOblique = origin ~~ (x &| 0)
   where
-    x = thickness / (sinA obliqueAngle) - thickness / (tanA obliqueAngle)
+    x = thickness / sinA obliqueAngle - thickness / tanA obliqueAngle
 
 trailLeftLeftChippedOblique :: Given Config => PartTrail
 trailLeftLeftChippedOblique = origin ~~ (x &| y)
   where
-    x = y / (tanA obliqueAngle)
+    x = y / tanA obliqueAngle
     y = -triangleHeight - thickness / (cosA obliqueAngle * 2)
 
 trailChip :: Given Config => PartTrail
 trailChip = origin ~~ (x &| y)
   where
-    x = -y / (tanA obliqueAngle)
+    x = -y / tanA obliqueAngle
     y = -thickness / 2
 
 partLeftChippedOblique :: Given Config => Part
@@ -96,7 +96,7 @@ partLeftChippedOblique = makePart trails # moveOriginBy (originX &| 0)
       , trailTopLeftOblique
       , trailLeftLeftChippedOblique
       ]
-    originX = thickness / (tanA obliqueAngle)
+    originX = thickness / tanA obliqueAngle
 
 partRightChippedOblique :: Given Config => Part
 partRightChippedOblique = partLeftChippedOblique # reflectSide
@@ -104,7 +104,7 @@ partRightChippedOblique = partLeftChippedOblique # reflectSide
 trailBottomBase :: Given Config => PartTrail
 trailBottomBase = origin ~~ (x &| 0)
   where
-    x = triangleWidth + thickness / (sinA obliqueAngle) + thickness / (tanA obliqueAngle)
+    x = triangleWidth + thickness / sinA obliqueAngle + thickness / tanA obliqueAngle
 
 trailRightBase :: Given Config => PartTrail
 trailRightBase = origin ~~ (x &| y)
@@ -115,7 +115,7 @@ trailRightBase = origin ~~ (x &| y)
 trailTopBase :: Given Config => PartTrail
 trailTopBase = origin ~~ (x &| 0)
   where
-    x = -triangleWidth - thickness / (sinA obliqueAngle) + thickness / (tanA obliqueAngle)
+    x = -triangleWidth - thickness / sinA obliqueAngle + thickness / tanA obliqueAngle
 
 trailLeftBase :: Given Config => PartTrail
 trailLeftBase = origin ~~ (x &| y)
@@ -157,7 +157,7 @@ trailBottomLeftAscender = origin ~~ (x &| y)
 trailRightLeftAscender :: Given Config => PartTrail
 trailRightLeftAscender = origin ~~ (x &| y)
   where
-    x = -y / (tanA obliqueAngle)
+    x = -y / tanA obliqueAngle
     y = ascenderHeight + thickness / (cosA obliqueAngle * 4)
 
 partLeftAscender :: Given Config => Part
@@ -178,7 +178,7 @@ partRightAscender = partLeftAscender # reflectSide
 trailRightLeftDescender :: Given Config => PartTrail
 trailRightLeftDescender = origin ~~ (x &| y)
   where
-    x = -y / (tanA obliqueAngle)
+    x = -y / tanA obliqueAngle
     y = ascenderHeight + thickness / (cosA obliqueAngle * 4)
 
 partLeftDescender :: Given Config => Part
