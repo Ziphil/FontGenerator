@@ -86,15 +86,21 @@ makeFieldsNoPrefix ''Spacing
 instance Default Spacing where
   def = Spacing 0 0
 
+class FixEnvelope m s where
+  fixEnvelope :: m -> s -> Glyph -> Glyph
+
 -- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
--- あらかじめ、もともとのグリフの原点をベースライン上の最左の位置に設定しておいてください。
-fixEnvelope :: Metrics -> Spacing -> Glyph -> Glyph
-fixEnvelope metrics spacing glyph = rectEnvelope base size glyph
+-- 具体的には、左右にスペーシングとして設定された一定量の余白を追加します。
+fixEnvelopeSpacing :: Metrics -> Spacing -> Glyph -> Glyph
+fixEnvelopeSpacing metrics spacing glyph = rectEnvelope base size glyph
   where
     base = (0 - spacing ^. leftBearing &| 0 - metrics ^. metricDescent)
     size = (width glyph + spacing ^. leftBearing + spacing ^. rightBearing &| metrics ^. metricEm)
 
+instance FixEnvelope Metrics Spacing where
+  fixEnvelope = fixEnvelopeSpacing
+
 -- パーツのリストからグリフを生成します。
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
-makeGlyph :: Metrics -> Spacing -> [Part] -> Glyph
+makeGlyph :: FixEnvelope m s => m -> s -> [Part] -> Glyph
 makeGlyph metrics spacing = fixEnvelope metrics spacing . mconcat . map strokePath . concat
