@@ -2,12 +2,9 @@
 
 
 module Ziphil.FontGen.Gilit.Part
-  ( partLeftUpOblique
-  , partRightUpOblique
-  , partUpBase
-  , partLeftDownOblique
-  , partRightDownOblique
-  , partDownBase
+  ( partLeftOblique
+  , partRightOblique
+  , partBase
   )
 where
 
@@ -20,79 +17,70 @@ import Ziphil.FontGen.Gilit.Value
 obliqueAngle :: Given Config => Angle Double
 obliqueAngle = atan2A (mean + overshoot) (triangleWidth / 2)
 
-trailBottomLeftUpOblique :: Given Config => PartTrail
-trailBottomLeftUpOblique = origin ~~ (x &| 0)
+trailBottomLeftOblique :: Given Config => PartTrail
+trailBottomLeftOblique = origin ~~ (x &| 0)
   where
     x = thickness / sinA obliqueAngle
 
-trailRightLeftUpOblique :: Given Config => PartTrail
-trailRightLeftUpOblique = origin ~~ (x &| y)
+trailRightLeftOblique :: Given Config => PartTrail
+trailRightLeftOblique = origin ~~ (x &| y)
   where
     x = triangleWidth / 2 - thickness / (2 * sinA obliqueAngle)
     y = mean + overshoot - thickness / (2 * cosA obliqueAngle)
 
-trailTopLeftUpOblique :: Given Config => PartTrail
-trailTopLeftUpOblique = origin ~~ (x &| y)
+trailTopLeftOblique :: Given Config => PartTrail
+trailTopLeftOblique = origin ~~ (x &| y)
   where
     x = -thickness / (2 * sinA obliqueAngle)
     y = thickness / (2 * cosA obliqueAngle)
 
-trailLeftLeftUpOblique :: Given Config => PartTrail
-trailLeftLeftUpOblique = origin ~~ (x &| y)
+trailLeftLeftOblique :: Given Config => PartTrail
+trailLeftLeftOblique = origin ~~ (x &| y)
   where
     x = -triangleWidth / 2
     y = -mean - overshoot
 
-partLeftUpOblique :: Given Config => Part
-partLeftUpOblique = makePart trails
+partLeftOblique :: Given Config => Part
+partLeftOblique = makePart trails
   where
     trails =
-      [ trailBottomLeftUpOblique
-      , trailRightLeftUpOblique
-      , trailTopLeftUpOblique
-      , trailLeftLeftUpOblique
+      [ trailBottomLeftOblique
+      , trailRightLeftOblique
+      , trailTopLeftOblique
+      , trailLeftLeftOblique
       ]
 
-partRightUpOblique :: Given Config => Part
-partRightUpOblique = partLeftUpOblique # reflectX # moveOriginBy (-triangleWidth &| 0)
+partRightOblique :: Given Config => Part
+partRightOblique = partLeftOblique # reflectX # moveOriginBy (-triangleWidth &| 0)
 
-trailBottomUpBase :: Given Config => PartTrail
-trailBottomUpBase = origin ~~ (x &| 0)
+trailBottomBase :: Given Config => PartTrail
+trailBottomBase = origin ~~ (x &| 0)
   where
     x = triangleWidth
 
-trailRightUpBase :: Given Config => PartTrail
-trailRightUpBase = origin ~~ (x &| y)
+trailRightBase :: Given Config => PartTrail
+trailRightBase = origin ~~ (x &| y)
   where
     x = -thickness / tanA obliqueAngle
     y = thickness
 
-trailTopUpBase :: Given Config => PartTrail
-trailTopUpBase = origin ~~ (x &| 0)
+trailTopBase :: Given Config => PartTrail
+trailTopBase = origin ~~ (x &| 0)
   where
     x = -triangleWidth + thickness / tanA obliqueAngle * 2
 
-trailLeftUpBase :: Given Config => PartTrail
-trailLeftUpBase = origin ~~ (x &| y)
+trailLeftBase :: Given Config => PartTrail
+trailLeftBase = origin ~~ (x &| y)
   where
     x = -thickness / tanA obliqueAngle
     y = -thickness
 
-partUpBase :: Given Config => Part
-partUpBase = makePart trails
+partBase :: Given Config => Part
+partBase = makePart trails
   where
     trails =
-      [ trailBottomUpBase
-      , trailRightUpBase
-      , trailTopUpBase
-      , trailLeftUpBase
+      [ trailBottomBase
+      , trailRightBase
+      , trailTopBase
+      , trailLeftBase
       ]
-
-partLeftDownOblique :: Given Config => Part
-partLeftDownOblique = partLeftUpOblique # reflectY # moveOriginBy (0 &| -mean)
-
-partRightDownOblique :: Given Config => Part
-partRightDownOblique = partRightUpOblique # reflectY # moveOriginBy (0 &| -mean)
-
-partDownBase :: Given Config => Part
-partDownBase = partUpBase # reflectY # moveOriginBy (0 &| -mean)

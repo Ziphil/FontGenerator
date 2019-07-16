@@ -5,6 +5,7 @@ module Ziphil.FontGen.Gilit.Util
   ( metrics
   , singleSpacing
   , makeGlyphWithSpacing'
+  , reflectTriangle
   )
 where
 
@@ -32,3 +33,7 @@ singleSpacing = with &~ do
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。
 makeGlyphWithSpacing' :: Given Config => WidthSpacing -> [Part] -> Glyph
 makeGlyphWithSpacing' = makeGlyph metrics
+
+-- 上に尖った三角形状の文字のパーツを反転させ、下に尖った三角形状の文字のパーツに変換します。
+reflectTriangle :: Given Config => Part -> Part
+reflectTriangle = reflectY >>> moveOriginBy (0 &| -mean)

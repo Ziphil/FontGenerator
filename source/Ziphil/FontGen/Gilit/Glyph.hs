@@ -26,48 +26,48 @@ glyphUpAt :: Given Config => Glyph
 glyphUpAt = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partLeftUpOblique
-      , partRightUpOblique
-      , partUpBase
+      [ partLeftOblique
+      , partRightOblique
+      , partBase
       ]
 
 glyphDownAt :: Given Config => Glyph
 glyphDownAt = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partLeftDownOblique
-      , partRightDownOblique
-      , partDownBase
+      [ partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partBase # reflectTriangle
       ]
 
 glyphUpTal :: Given Config => Glyph
 glyphUpTal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partLeftUpOblique
-      , partUpBase
+      [ partLeftOblique
+      , partBase
       ]
 
 glyphDownTal :: Given Config => Glyph
 glyphDownTal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partLeftDownOblique
-      , partDownBase
+      [ partLeftOblique # reflectTriangle
+      , partBase # reflectTriangle
       ]
 
 glyphUpFal :: Given Config => Glyph
 glyphUpFal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partRightUpOblique
-      , partUpBase
+      [ partRightOblique
+      , partBase
       ]
 
 glyphDownFal :: Given Config => Glyph
 glyphDownFal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partRightDownOblique
-      , partDownBase
+      [ partRightOblique # reflectTriangle
+      , partBase # reflectTriangle
       ]
