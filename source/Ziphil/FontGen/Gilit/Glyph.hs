@@ -14,35 +14,35 @@ import Ziphil.FontGen.Gilit.Value
 
 
 glyphs :: Given Config => Glyphs
-glyphs = makeGlyphs list
+glyphs = makeGlyphs' list
   where
     list =
-      [ 'a' >- glyphUpAt
-      , 't' >- glyphUpTal
-      , 'f' >- glyphUpFal
+      [ 'a' >- glyphAt
+      , 't' >- glyphTal
+      , 'f' >- glyphFal
       ]
 
-glyphUpAt :: Given Config => Glyph
-glyphUpAt = makeGlyph' parts
+glyphAt :: Given Config => Bool -> Glyph
+glyphAt = makeGlyph' parts
   where
     parts = 
-      [ partLeftUpOblique
-      , partRightUpOblique
-      , partUpBase
+      [ partLeftOblique
+      , partRightOblique
+      , partBase
       ]
 
-glyphUpTal :: Given Config => Glyph
-glyphUpTal = makeGlyph' parts
+glyphTal :: Given Config => Bool -> Glyph
+glyphTal = makeGlyph' parts
   where
     parts = 
-      [ partLeftUpOblique
-      , partUpBase
+      [ partLeftOblique
+      , partBase
       ]
 
-glyphUpFal :: Given Config => Glyph
-glyphUpFal = makeGlyph' parts
+glyphFal :: Given Config => Bool -> Glyph
+glyphFal = makeGlyph' parts
   where
     parts = 
-      [ partRightUpOblique
-      , partUpBase
+      [ partRightOblique
+      , partBase
       ]

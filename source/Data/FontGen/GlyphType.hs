@@ -67,7 +67,7 @@ instance ToChar Int where
 
 -- グリフマップを生成する際に文字とグリフのタプルを作るユーティリティ演算子です。
 infix 0 >-
-(>-) :: ToChar c => c -> Glyph -> (Char, Glyph)
+(>-) :: ToChar c => c -> g -> (Char, g)
 thing >- glyph = (toChar thing, glyph)
 
 data Metrics = Metrics {_metricEm :: Double, _metricAscent :: Double, _metricDescent :: Double}
