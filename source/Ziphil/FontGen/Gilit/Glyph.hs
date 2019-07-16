@@ -20,6 +20,8 @@ glyphs = makeGlyphs list
       [ 'a' >- glyphUpAt, 'A' >- glyphDownAt
       , 't' >- glyphUpTal, 'T' >- glyphDownTal
       , 'f' >- glyphUpFal, 'F' >- glyphDownFal
+      , 'e' >- glyphUpEt
+      , 'k' >- glyphUpKal
       ]
 
 glyphUpAt :: Given Config => Glyph
@@ -70,4 +72,23 @@ glyphDownFal = makeGlyphWithSpacing' singleSpacing parts
     parts = 
       [ partRightOblique # reflectTriangle
       , partBase # reflectTriangle
+      ]
+
+glyphUpEt :: Given Config => Glyph
+glyphUpEt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partRightAscender
+      , partRightOblique
+      , partBase
+      ]
+
+glyphUpKal :: Given Config => Glyph
+glyphUpKal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partLeftAscender
+      , partLeftOblique
+      , partRightOblique
+      , partBase
       ]

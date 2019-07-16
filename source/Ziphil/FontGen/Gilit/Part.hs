@@ -5,6 +5,8 @@ module Ziphil.FontGen.Gilit.Part
   ( partLeftOblique
   , partRightOblique
   , partBase
+  , partLeftAscender
+  , partRightAscender
   )
 where
 
@@ -25,14 +27,14 @@ trailBottomLeftOblique = origin ~~ (x &| 0)
 trailRightLeftOblique :: Given Config => PartTrail
 trailRightLeftOblique = origin ~~ (x &| y)
   where
-    x = triangleWidth / 2 - thickness / (2 * sinA obliqueAngle)
-    y = mean + overshoot - thickness / (2 * cosA obliqueAngle)
+    x = triangleWidth / 2 - thickness / (sinA obliqueAngle * 2)
+    y = mean + overshoot - thickness / (cosA obliqueAngle * 2)
 
 trailTopLeftOblique :: Given Config => PartTrail
 trailTopLeftOblique = origin ~~ (x &| y)
   where
-    x = -thickness / (2 * sinA obliqueAngle)
-    y = thickness / (2 * cosA obliqueAngle)
+    x = -thickness / (sinA obliqueAngle * 2)
+    y = thickness / (cosA obliqueAngle * 2)
 
 trailLeftLeftOblique :: Given Config => PartTrail
 trailLeftLeftOblique = origin ~~ (x &| y)
@@ -84,3 +86,30 @@ partBase = makePart trails
       , trailTopBase
       , trailLeftBase
       ]
+
+trailBottomLeftAscender :: Given Config => PartTrail
+trailBottomLeftAscender = origin ~~ (x &| y)
+  where
+    x = thickness / (sinA obliqueAngle * 2)
+    y = thickness / (cosA obliqueAngle * 2)
+
+trailRightLeftAscender :: Given Config => PartTrail
+trailRightLeftAscender = origin ~~ (x &| y)
+  where
+    x = -y / (tanA obliqueAngle)
+    y = descent - overshoot + thickness / (cosA obliqueAngle * 2)
+
+partLeftAscender :: Given Config => Part
+partLeftAscender = makePart trails # moveOriginBy (originX &| originY)
+  where
+    trails =
+      [ trailBottomLeftAscender
+      , trailRightLeftAscender
+      , trailBottomLeftAscender # backward
+      , trailRightLeftAscender # backward
+      ]
+    originX = -triangleWidth / 2
+    originY = -mean - overshoot + thickness / (cosA obliqueAngle)
+
+partRightAscender :: Given Config => Part
+partRightAscender = partLeftAscender # reflectX # moveOriginBy (-triangleWidth &| 0)
