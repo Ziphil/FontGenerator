@@ -17,103 +17,258 @@ glyphs :: Given Config => Glyphs
 glyphs = makeGlyphs list
   where
     list =
-      [ 'a' >- glyphUpAt, 'A' >- glyphDownAt
+      [ 's' >- glyphUpSal, 'S' >- glyphDownSal
       , 't' >- glyphUpTal, 'T' >- glyphDownTal
+      , 'k' >- glyphUpKal, 'K' >- glyphDownKal
       , 'f' >- glyphUpFal, 'F' >- glyphDownFal
-      , 'e' >- glyphUpEt
-      , 'k' >- glyphUpKal
-      , 'c' >- glyphUpCal
-      , 's' >- glyphUpSal
+      , 'p' >- glyphUpPal, 'P' >- glyphDownPal
+      , 'c' >- glyphUpCal, 'C' >- glyphDownCal
+      , 'l' >- glyphUpLes, 'L' >- glyphDownLes
+      , 'y' >- glyphUpYes, 'Y' >- glyphDownYes
+      , 'a' >- glyphUpAt, 'A' >- glyphDownAt
+      , 'e' >- glyphUpEt, 'E' >- glyphDownEt
+      , 'i' >- glyphUpIt, 'I' >- glyphDownIt
+      , 'o' >- glyphUpOt, 'O' >- glyphDownOt
+      , 'u' >- glyphUpUt, 'U' >- glyphDownUt
       , ' ' >- glyphSpace
-      ]
-
-glyphUpAt :: Given Config => Glyph
-glyphUpAt = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partLeftOblique
-      , partRightOblique
-      , partBase
-      ]
-
-glyphDownAt :: Given Config => Glyph
-glyphDownAt = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partLeftOblique # reflectTriangle
-      , partRightOblique # reflectTriangle
-      , partBase # reflectTriangle
-      ]
-
-glyphUpTal :: Given Config => Glyph
-glyphUpTal = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partLeftOblique
-      , partBase
-      ]
-
-glyphDownTal :: Given Config => Glyph
-glyphDownTal = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partLeftOblique # reflectTriangle
-      , partBase # reflectTriangle
-      ]
-
-glyphUpFal :: Given Config => Glyph
-glyphUpFal = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partRightOblique
-      , partBase
-      ]
-
-glyphDownFal :: Given Config => Glyph
-glyphDownFal = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partRightOblique # reflectTriangle
-      , partBase # reflectTriangle
-      ]
-
-glyphUpEt :: Given Config => Glyph
-glyphUpEt = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partRightAscender
-      , partRightOblique
-      , partBase
-      ]
-
-glyphUpKal :: Given Config => Glyph
-glyphUpKal = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partLeftAscender
-      , partLeftOblique
-      , partRightOblique
-      , partBase
-      ]
-
-glyphUpCal :: Given Config => Glyph
-glyphUpCal = makeGlyphWithSpacing' singleSpacing parts
-  where
-    parts = 
-      [ partLeftChippedOblique
-      , partRightOblique
-      , partChippedBase
-      , partLeftDescender 
       ]
 
 glyphUpSal :: Given Config => Glyph
 glyphUpSal = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partLeftShortOblique
+      [ partBase
+      , partLeftShortOblique
       , partRightShortOblique
-      , partBase
       , partDiamond
+      ]
+
+glyphDownSal :: Given Config => Glyph
+glyphDownSal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      ]
+
+glyphUpTal :: Given Config => Glyph
+glyphUpTal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftOblique
+      ]
+
+glyphDownTal :: Given Config => Glyph
+glyphDownTal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      ]
+
+glyphUpKal :: Given Config => Glyph
+glyphUpKal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftOblique
+      , partRightOblique
+      , partRightAscender
+      ]
+
+glyphDownKal :: Given Config => Glyph
+glyphDownKal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partRightChippedOblique # reflectTriangle
+      , partRightDescender # reflectTriangle
+      ]
+
+glyphUpFal :: Given Config => Glyph
+glyphUpFal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partRightOblique
+      ]
+
+glyphDownFal :: Given Config => Glyph
+glyphDownFal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partRightOblique # reflectTriangle
+      ]
+
+glyphUpPal :: Given Config => Glyph
+glyphUpPal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftOblique
+      , partRightOblique
+      , partLeftAscender
+      ]
+
+glyphDownPal :: Given Config => Glyph
+glyphDownPal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partLeftChippedOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partLeftDescender # reflectTriangle
+      ]
+
+glyphUpCal :: Given Config => Glyph
+glyphUpCal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partLeftChippedOblique
+      , partRightOblique
+      , partLeftDescender
+      ]
+
+glyphDownCal :: Given Config => Glyph
+glyphDownCal = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partLeftAscender # reflectTriangle
+      ]
+
+glyphUpLes :: Given Config => Glyph
+glyphUpLes = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partLeftOblique
+      , partRightChippedOblique
+      , partRightDescender
+      ]
+
+glyphDownLes :: Given Config => Glyph
+glyphDownLes = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partRightAscender # reflectTriangle
+      ]
+
+glyphUpYes :: Given Config => Glyph
+glyphUpYes = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partLeftOblique
+      , partRightOblique
+      ]
+
+glyphDownYes :: Given Config => Glyph
+glyphDownYes = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftShortOblique # reflectTriangle
+      , partRightShortOblique # reflectTriangle
+      , partDiamond # reflectTriangle
+      ]
+
+glyphUpAt :: Given Config => Glyph
+glyphUpAt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftOblique
+      , partRightOblique
+      ]
+
+glyphDownAt :: Given Config => Glyph
+glyphDownAt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      ]
+
+glyphUpEt :: Given Config => Glyph
+glyphUpEt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partRightOblique
+      , partRightAscender
+      ]
+
+glyphDownEt :: Given Config => Glyph
+glyphDownEt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partLeftDescender # reflectTriangle
+      ]
+
+glyphUpIt :: Given Config => Glyph
+glyphUpIt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partRightOblique
+      , partLeftDescender
+      ]
+
+glyphDownIt :: Given Config => Glyph
+glyphDownIt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partLeftAscender # reflectTriangle
+      ]
+
+glyphUpOt :: Given Config => Glyph
+glyphUpOt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partRightOblique
+      , partRightAscender
+      ]
+
+glyphDownOt :: Given Config => Glyph
+glyphDownOt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partRightChippedOblique # reflectTriangle
+      , partRightDescender # reflectTriangle
+      ]
+
+glyphUpUt :: Given Config => Glyph
+glyphUpUt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partLeftChippedOblique
+      , partLeftDescender
+      ]
+
+glyphDownUt :: Given Config => Glyph
+glyphDownUt = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partLeftAscender # reflectTriangle
       ]
 
 glyphSpace :: Given Config => Glyph
