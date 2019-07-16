@@ -41,7 +41,10 @@ inputFonts fonts = do
   parseFonts fonts input
 
 parseFonts :: Map String Font -> String -> IO [Font]
-parseFonts fonts string = return . Map.elems $ Map.filterWithKey check fonts
+parseFonts fonts string = 
+  if null string
+    then return . Map.elems $ fonts
+    else return . Map.elems $ Map.filterWithKey check fonts
   where
     check key font = key =~ ("^" <> string <> "$")
 
