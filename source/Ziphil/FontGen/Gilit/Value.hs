@@ -48,7 +48,7 @@ overshoot :: Given Config => Double
 overshoot = 20
 
 gap :: Given Config => Double
-gap = 70
+gap = 80
 
 thickness :: Given Config => Double
 thickness = 70
