@@ -7,6 +7,7 @@ module Ziphil.FontGen.Gilit.Value
   , triangleWidth
   , triangleHeight
   , ascenderHeight
+  , diamondGap
   , spaceWidth
   )
 where
@@ -31,6 +32,9 @@ triangleHeight = 500
 -- フォントのデザインの統一感のため、この値はアセンダー部分の高さとしても利用されます。
 ascenderHeight :: Given Config => Double
 ascenderHeight = 250
+
+diamondGap :: Given Config => Double
+diamondGap = 70
 
 spaceWidth :: Given Config => Double
 spaceWidth = triangleWidth * 0.5

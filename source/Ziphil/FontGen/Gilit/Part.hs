@@ -4,6 +4,8 @@
 module Ziphil.FontGen.Gilit.Part
   ( partLeftOblique
   , partRightOblique
+  , partLeftShortOblique
+  , partRightShortOblique
   , partLeftChippedOblique
   , partRightChippedOblique
   , partBase
@@ -12,6 +14,7 @@ module Ziphil.FontGen.Gilit.Part
   , partRightAscender
   , partLeftDescender
   , partRightDescender
+  , partDiamond
   , obliqueAngle
   , ascent
   , descent
@@ -68,6 +71,33 @@ partLeftOblique = makePart trails # moveOriginBy (originX &| originY)
 
 partRightOblique :: Given Config => Part
 partRightOblique = partLeftOblique # reflectSide
+
+trailRightLeftShortOblique :: Given Config => PartTrail
+trailRightLeftShortOblique = origin ~~ (x &| y)
+  where
+    x = y / tanA obliqueAngle
+    y = triangleHeight - diamondGap * sinA obliqueAngle + thickness / 2 - thickness / (cosA obliqueAngle * 2)
+
+trailLeftLeftShortOblique :: Given Config => PartTrail
+trailLeftLeftShortOblique = origin ~~ (x &| y)
+  where
+    x = y / tanA obliqueAngle
+    y = -triangleHeight + diamondGap * sinA obliqueAngle - thickness / 2
+
+partLeftShortOblique :: Given Config => Part
+partLeftShortOblique = makePart trails # moveOriginBy (originX &| originY)
+  where
+    trails =
+      [ trailBottomLeftOblique
+      , trailRightLeftShortOblique
+      , trailTopLeftOblique
+      , trailLeftLeftShortOblique
+      ]
+    originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
+    originY = thickness / 2
+
+partRightShortOblique :: Given Config => Part
+partRightShortOblique = partLeftShortOblique # reflectSide
 
 trailBottomLeftChippedOblique :: Given Config => PartTrail
 trailBottomLeftChippedOblique = origin ~~ (x &| 0)
@@ -194,6 +224,18 @@ partLeftDescender = makePart trails # moveOriginBy (originX &| 0)
 
 partRightDescender :: Given Config => Part
 partRightDescender = partLeftDescender # reflectSide
+
+partDiamond :: Given Config => Part
+partDiamond = makePart trails # moveOriginBy (originX &| originY)
+  where
+    trails =
+      [ trailBottomLeftAscender
+      , trailBottomLeftAscender # reflectY # backward
+      , trailBottomLeftAscender # rotateHalfTurn
+      , trailBottomLeftAscender # reflectX # backward
+      ]
+    originX = -triangleWidth / 2
+    originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
 
 ascent :: Given Config => Double
 ascent = triangleHeight + ascenderHeight + thickness / (cosA obliqueAngle * 4)
