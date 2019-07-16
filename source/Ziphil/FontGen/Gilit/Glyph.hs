@@ -248,7 +248,7 @@ glyphDownOt :: Given Config => Glyph
 glyphDownOt = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partChippedBase # reflectTriangle
+      [ partRightChippedBase # reflectTriangle
       , partRightChippedOblique # reflectTriangle
       , partRightChippedDescender # reflectTriangle
       ]
@@ -257,7 +257,7 @@ glyphUpUt :: Given Config => Glyph
 glyphUpUt = makeGlyphWithSpacing' singleSpacing parts
   where
     parts = 
-      [ partChippedBase
+      [ partLeftChippedBase
       , partLeftChippedOblique
       , partLeftChippedDescender
       ]

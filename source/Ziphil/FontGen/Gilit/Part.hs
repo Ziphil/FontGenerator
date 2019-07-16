@@ -9,6 +9,8 @@ module Ziphil.FontGen.Gilit.Part
   , partLeftChippedOblique
   , partRightChippedOblique
   , partBase
+  , partLeftChippedBase
+  , partRightChippedBase
   , partChippedBase
   , partLeftAscender
   , partRightAscender
@@ -166,6 +168,26 @@ partBase = makePart trails # moveOriginBy (originX &| originY)
       ]
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
+
+trailBottomLeftChippedBase :: Given Config => PartTrail
+trailBottomLeftChippedBase = origin ~~ (x &| 0)
+  where
+    x = triangleWidth + thickness / sinA obliqueAngle
+
+partLeftChippedBase :: Given Config => Part
+partLeftChippedBase = makePart trails # moveOriginBy (originX &| 0)
+  where
+    trails =
+      [ trailChip
+      , trailBottomLeftChippedBase
+      , trailRightBase
+      , trailTopBase
+      , trailChip # reflectY # backward
+      ]
+    originX = thickness / (sinA obliqueAngle * 2)
+
+partRightChippedBase :: Given Config => Part
+partRightChippedBase = partLeftChippedBase # reflectSide
 
 partChippedBase :: Given Config => Part
 partChippedBase = makePart trails # moveOriginBy (originX &| 0)
