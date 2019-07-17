@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -28,6 +29,7 @@ import Data.Default.Class
 import Data.FontGen.GlyphType
 import Data.List
 import qualified Data.Map as Map
+import qualified Data.Text as Text
 import Data.Version
 
 
@@ -87,10 +89,12 @@ extendedFamily :: Getter Font String
 extendedFamily = to $ intercalate " " . stretchModifiers
 
 postScriptName :: Getter Font String
-postScriptName = to $ intercalate "" . modifiers
+postScriptName = to $ filter (/= ' ') . intercalate "" . modifiers
 
 fullName :: Getter Font String
 fullName = to $ intercalate " " . modifiers
 
 dirName :: Getter Font String
-dirName = to $ map toLower . intercalate "-" . modifiers
+dirName = to $ map toLower . replace' " " "-" . intercalate "-" . modifiers
+  where
+    replace' before after = Text.unpack . Text.replace before after . Text.pack
