@@ -15,12 +15,12 @@ main = Interface.main generateOption renderOption
     generateOption = def
     renderOption = with &~ do
       strings .= 
-        [ "gûbùmês e tél a kîn!"
-        , "pâríqèz a vâháx?"
-        , "lì ʻfày cali jôdòg."
-        , "«â, s'e yer-fitul….»"
-        , "a 2·4 te 31:05:2019."
-        , "cates — omêl — a'l."
+        [ " gÛbÙmêS e TéL a KîN! "
+        , " PâRíQèZ a VâHáX? "
+        , " lÌ ʻfÀy CaLi JÔdÒg. "
+        , " «â, S'e YeR-fItUl….» "
+        , " A 2·4 tE 31:05:2019. "
+        , " cAtEs — OmêL — a'L. "
         ]
       fileName .= "test"
       lineGap .= 200
