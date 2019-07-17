@@ -12,7 +12,7 @@
 このリポジトリは Haskell のビルドツールである [Stack](https://www.haskellstack.org/) のプロジェクトになっています。
 適当な方法で Stack をインストールしてください。
 
-### FontFotge と Python の準備
+### FontForge と Python の準備
 フォントファイルの生成には [FontForge](https://fontforge.github.io/) の Python スクリプティング機能を使います。
 Python 上で `import fontforge` が通るようになっていれば問題ありません。
 
