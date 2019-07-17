@@ -38,10 +38,23 @@ glyphs = makeGlyphs list
       , 'y' >- glyphUpYes, 'Y' >- glyphDownYes
       , 'h' >- glyphUpHes, 'H' >- glyphDownHes
       , 'a' >- glyphUpAt, 'A' >- glyphDownAt
+      , 'á' >- glyphUpAt, 'Á' >- glyphDownAt
+      , 'à' >- glyphUpAt, 'À' >- glyphDownAt
+      , 'â' >- glyphUpAt, 'Â' >- glyphDownAt
       , 'e' >- glyphUpEt, 'E' >- glyphDownEt
+      , 'é' >- glyphUpEt, 'É' >- glyphDownEt
+      , 'è' >- glyphUpEt, 'È' >- glyphDownEt
+      , 'ê' >- glyphUpEt, 'Ê' >- glyphDownEt
       , 'i' >- glyphUpIt, 'I' >- glyphDownIt
+      , 'í' >- glyphUpIt, 'Í' >- glyphDownIt
+      , 'ì' >- glyphUpIt, 'Ì' >- glyphDownIt
+      , 'î' >- glyphUpIt, 'Î' >- glyphDownIt
       , 'o' >- glyphUpOt, 'O' >- glyphDownOt
+      , 'ò' >- glyphUpOt, 'Ò' >- glyphDownOt
+      , 'û' >- glyphUpOt, 'Ô' >- glyphDownOt
       , 'u' >- glyphUpUt, 'U' >- glyphDownUt
+      , 'ù' >- glyphUpUt, 'Ù' >- glyphDownUt
+      , 'û' >- glyphUpUt, 'Û' >- glyphDownUt
       , ' ' >- glyphSpace
       ]
 
