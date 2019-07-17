@@ -369,9 +369,9 @@ glyphUpNes :: Given Config => Glyph
 glyphUpNes = makeGlyphWithSpacing' doubleSpacing parts
   where
     parts = 
-      [ partLeftOblique
-      , partRightChippedOblique
-      , partRightOblique # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      [ partBase
+      , partRightCenterOblique
+      , partBase # reflectTriangle # translate (triangleWidth / 2 &| 0)
       ]
 
 glyphDownNes :: Given Config => Glyph
@@ -387,9 +387,9 @@ glyphUpMes :: Given Config => Glyph
 glyphUpMes = makeGlyphWithSpacing' doubleTransphoneSpacing parts
   where
     parts = 
-      [ partLeftOblique
-      , partRightChippedOblique
-      , partRightOblique # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      [ partBase
+      , partRightCenterOblique
+      , partBase # reflectTriangle # translate (triangleWidth / 2 &| 0)
       , partTransphone # reflectTriangle # translate (triangleWidth / 2 &| 0)
       ]
 
