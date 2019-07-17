@@ -95,6 +95,6 @@ fullName :: Getter Font String
 fullName = to $ intercalate " " . modifiers
 
 dirName :: Getter Font String
-dirName = to $ map toLower . replace' " " "-" . intercalate "-" . modifiers
+dirName = to $ map toLower . replace' " " "_" . intercalate "_" . modifiers
   where
     replace' before after = Text.unpack . Text.replace before after . Text.pack
