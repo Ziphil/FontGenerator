@@ -74,7 +74,7 @@ glyphUpKal = makeGlyphWithSpacing' singleSpacing parts
       [ partBase
       , partLeftOblique
       , partRightOblique
-      , partRightAscender
+      , partLeftAscender
       ]
 
 glyphDownKal :: Given Config => Glyph
@@ -110,7 +110,7 @@ glyphUpPal = makeGlyphWithSpacing' singleSpacing parts
       [ partBase
       , partLeftOblique
       , partRightOblique
-      , partLeftAscender
+      , partRightAscender
       ]
 
 glyphDownPal :: Given Config => Glyph
@@ -140,7 +140,7 @@ glyphDownCal = makeGlyphWithSpacing' singleSpacing parts
       [ partBase # reflectTriangle
       , partLeftOblique # reflectTriangle
       , partRightOblique # reflectTriangle
-      , partLeftAscender # reflectTriangle
+      , partRightAscender # reflectTriangle
       ]
 
 glyphUpLes :: Given Config => Glyph
@@ -160,7 +160,7 @@ glyphDownLes = makeGlyphWithSpacing' singleSpacing parts
       [ partBase # reflectTriangle
       , partLeftOblique # reflectTriangle
       , partRightOblique # reflectTriangle
-      , partRightAscender # reflectTriangle
+      , partLeftAscender # reflectTriangle
       ]
 
 glyphUpYes :: Given Config => Glyph
