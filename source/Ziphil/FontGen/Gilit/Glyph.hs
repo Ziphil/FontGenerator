@@ -29,8 +29,12 @@ glyphs = makeGlyphs list
       , 'b' >- glyphUpBol, 'B' >- glyphDownBol
       , 'c' >- glyphUpCal, 'C' >- glyphDownCal
       , 'q' >- glyphUpQol, 'Q' >- glyphDownQol
+      , 'x' >- glyphUpXal, 'X' >- glyphDownXal
+      , 'j' >- glyphUpJol, 'J' >- glyphDownJol
       , 'l' >- glyphUpLes, 'L' >- glyphDownLes
       , 'r' >- glyphUpRes, 'R' >- glyphDownRes
+      , 'n' >- glyphUpNes, 'N' >- glyphDownNes
+      , 'm' >- glyphUpMes, 'M' >- glyphDownMes
       , 'y' >- glyphUpYes, 'Y' >- glyphDownYes
       , 'h' >- glyphUpHes, 'H' >- glyphDownHes
       , 'a' >- glyphUpAt, 'A' >- glyphDownAt
@@ -273,6 +277,52 @@ glyphDownQol = makeGlyphWithSpacing' singleTransphoneSpacing parts
       , partTransphone # reflectTriangle
       ]
 
+glyphUpXal :: Given Config => Glyph
+glyphUpXal = makeGlyphWithSpacing' doubleSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partLeftCutOblique
+      , partRightCenterOblique
+      , partChippedBase # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      , partRightCutOblique # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      ]
+
+glyphDownXal :: Given Config => Glyph
+glyphDownXal = makeGlyphWithSpacing' doubleSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partLeftCutOblique # reflectTriangle
+      , partRightCenterOblique # reflectTriangle
+      , partChippedBase # translate (triangleWidth / 2 &| 0)
+      , partRightCutOblique # translate (triangleWidth / 2 &| 0)
+      ]
+
+glyphUpJol :: Given Config => Glyph
+glyphUpJol = makeGlyphWithSpacing' doubleTransphoneSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partLeftCutOblique
+      , partRightCenterOblique
+      , partChippedBase # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      , partRightCutOblique # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      , partTransphone # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      ]
+
+glyphDownJol :: Given Config => Glyph
+glyphDownJol = makeGlyphWithSpacing' doubleTransphoneSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partLeftCutOblique # reflectTriangle
+      , partRightCenterOblique # reflectTriangle
+      , partChippedBase # translate (triangleWidth / 2 &| 0)
+      , partRightCutOblique # translate (triangleWidth / 2 &| 0)
+      , partTransphone # translate (triangleWidth / 2 &| 0)
+      ]
+
 glyphUpLes :: Given Config => Glyph
 glyphUpLes = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -313,6 +363,44 @@ glyphDownRes = makeGlyphWithSpacing' singleTransphoneSpacing parts
       , partRightOblique # reflectTriangle
       , partLeftAscender # reflectTriangle
       , partTransphone # reflectTriangle
+      ]
+
+glyphUpNes :: Given Config => Glyph
+glyphUpNes = makeGlyphWithSpacing' doubleSpacing parts
+  where
+    parts = 
+      [ partLeftOblique
+      , partRightChippedOblique
+      , partRightOblique # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      ]
+
+glyphDownNes :: Given Config => Glyph
+glyphDownNes = makeGlyphWithSpacing' doubleSpacing parts
+  where
+    parts = 
+      [ partLeftOblique # reflectTriangle
+      , partRightChippedOblique # reflectTriangle
+      , partRightOblique # translate (triangleWidth / 2 &| 0)
+      ]
+
+glyphUpMes :: Given Config => Glyph
+glyphUpMes = makeGlyphWithSpacing' doubleTransphoneSpacing parts
+  where
+    parts = 
+      [ partLeftOblique
+      , partRightChippedOblique
+      , partRightOblique # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      , partTransphone # reflectTriangle # translate (triangleWidth / 2 &| 0)
+      ]
+
+glyphDownMes :: Given Config => Glyph
+glyphDownMes = makeGlyphWithSpacing' doubleTransphoneSpacing parts
+  where
+    parts = 
+      [ partLeftOblique # reflectTriangle
+      , partRightChippedOblique # reflectTriangle
+      , partRightOblique # translate (triangleWidth / 2 &| 0)
+      , partTransphone # translate (triangleWidth / 2 &| 0)
       ]
 
 glyphUpYes :: Given Config => Glyph
