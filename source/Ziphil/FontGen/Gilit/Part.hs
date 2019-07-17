@@ -24,6 +24,8 @@ module Ziphil.FontGen.Gilit.Part
   , partRightChippedDescender
   , partTransphone
   , partDiamond
+  , partLeftWedge
+  , partRightWedge
   , obliqueAngle
   , horizontalTransphoneGap
   , horizontalGap
@@ -350,6 +352,21 @@ partDiamond = makePart trails # moveOriginBy (originX &| originY)
       ]
     originX = -triangleWidth / 2
     originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
+
+partLeftWedge :: Given Config => Part
+partLeftWedge = makePart trails # moveOriginBy (originX &| originY)
+  where
+    trails =
+      [ trailCut
+      , trailCut # reflectY # backward
+      , trailCut # rotateHalfTurn
+      , trailCut # reflectX # backward
+      ]
+    originX = -triangleWidth / 2 + wedgeGap * cosA obliqueAngle + thickness / (sinA obliqueAngle * 2)
+    originY = -triangleHeight - wedgeGap * sinA obliqueAngle
+
+partRightWedge :: Given Config => Part
+partRightWedge = partLeftWedge # reflectSide
 
 horizontalGap :: Given Config => Double
 horizontalGap = gap / sinA obliqueAngle

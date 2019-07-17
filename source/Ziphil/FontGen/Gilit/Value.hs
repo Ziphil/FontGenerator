@@ -9,6 +9,7 @@ module Ziphil.FontGen.Gilit.Value
   , ascenderHeight
   , transphoneGap
   , diamondGap
+  , wedgeGap
   , spaceWidth
   )
 where
@@ -41,6 +42,9 @@ transphoneGap = thickness * 1.1
 
 diamondGap :: Given Config => Double
 diamondGap = thickness * 1
+
+wedgeGap :: Given Config => Double
+wedgeGap = thickness * 1
 
 spaceWidth :: Given Config => Double
 spaceWidth = triangleWidth * 0.5

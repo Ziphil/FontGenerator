@@ -502,6 +502,7 @@ glyphUpOt = makeGlyphWithSpacing' singleSpacing parts
       [ partBase
       , partRightOblique
       , partRightAscender
+      , partLeftWedge
       ]
 
 glyphDownOt :: Given Config => Glyph
@@ -529,6 +530,7 @@ glyphDownUt = makeGlyphWithSpacing' singleSpacing parts
       [ partBase # reflectTriangle
       , partLeftOblique # reflectTriangle
       , partLeftAscender # reflectTriangle
+      , partRightWedge # reflectTriangle
       ]
 
 glyphSpace :: Given Config => Glyph
