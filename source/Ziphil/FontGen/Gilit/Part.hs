@@ -18,9 +18,13 @@ module Ziphil.FontGen.Gilit.Part
   , partRightDescender
   , partLeftChippedDescender
   , partRightChippedDescender
+  , partTransphone
   , partDiamond
   , obliqueAngle
+  , horizontalTransphoneGap
   , horizontalGap
+  , defaultLeftX
+  , widthDifference
   , ascent
   , descent
   , em
@@ -38,9 +42,6 @@ import Ziphil.FontGen.Gilit.Value
 
 obliqueAngle :: Given Config => Angle Double
 obliqueAngle = atan2A triangleHeight (triangleWidth / 2)
-
-horizontalGap :: Given Config => Double
-horizontalGap = gap / sinA obliqueAngle
 
 trailCut :: Given Config => PartTrail
 trailCut = origin ~~ (x &| y)
@@ -275,6 +276,27 @@ partLeftChippedDescender = makePart trails # moveOriginBy (originX &| 0)
 partRightChippedDescender :: Given Config => Part
 partRightChippedDescender = partLeftChippedDescender # reflectSide
 
+horizontalTransphoneGap :: Given Config => Double
+horizontalTransphoneGap = transphoneGap / sinA obliqueAngle
+
+trailRightTransphone :: Given Config => PartTrail
+trailRightTransphone = origin ~~ (x &| y)
+  where
+    x = -y / tanA obliqueAngle
+    y = triangleHeight + thickness
+
+partTransphone :: Given Config => Part
+partTransphone = makePart trails # moveOriginBy (originX &| originY)
+  where
+    trails =
+      [ trailHorizontalCut
+      , trailRightTransphone
+      , trailHorizontalCut # backward
+      , trailRightTransphone # backward
+      ]
+    originX = -triangleWidth - horizontalTransphoneGap - thickness / (sinA obliqueAngle * 2) - thickness / (tanA obliqueAngle * 2)
+    originY = thickness / 2
+
 partDiamond :: Given Config => Part
 partDiamond = makePart trails # moveOriginBy (originX &| originY)
   where
@@ -286,6 +308,15 @@ partDiamond = makePart trails # moveOriginBy (originX &| originY)
       ]
     originX = -triangleWidth / 2
     originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
+
+horizontalGap :: Given Config => Double
+horizontalGap = gap / sinA obliqueAngle
+
+defaultLeftX :: Given Config => Double
+defaultLeftX = triangleWidth / 4 - horizontalGap / 2 - thickness / (sinA obliqueAngle * 2)
+
+widthDifference :: Given Config => Double
+widthDifference = triangleWidth / 2 - horizontalGap - thickness / (sinA obliqueAngle)
 
 ascent :: Given Config => Double
 ascent = triangleHeight + ascenderHeight + thickness / (cosA obliqueAngle * 4)

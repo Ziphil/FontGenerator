@@ -7,6 +7,7 @@ module Ziphil.FontGen.Gilit.Value
   , triangleWidth
   , triangleHeight
   , ascenderHeight
+  , transphoneGap
   , diamondGap
   , spaceWidth
   )
@@ -22,7 +23,7 @@ thickness = 80
 -- 文字と文字の間隔を表します。
 -- ただし、隣り合う三角形の斜辺部に垂直な方向の距離であり、水平距離ではありません。
 gap :: Given Config => Double
-gap = thickness * 1.2
+gap = thickness * 1.1
 
 triangleWidth :: Given Config => Double
 triangleWidth = 500
@@ -34,6 +35,9 @@ triangleHeight = 500
 -- フォントのデザインの統一感のため、この値はアセンダー部分の高さとしても利用されます。
 ascenderHeight :: Given Config => Double
 ascenderHeight = 250
+
+transphoneGap :: Given Config => Double
+transphoneGap = thickness * 1.1
 
 diamondGap :: Given Config => Double
 diamondGap = thickness * 1

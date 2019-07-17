@@ -18,13 +18,21 @@ glyphs = makeGlyphs list
   where
     list =
       [ 's' >- glyphUpSal, 'S' >- glyphDownSal
+      , 'z' >- glyphUpZol, 'Z' >- glyphDownZol
       , 't' >- glyphUpTal, 'T' >- glyphDownTal
+      , 'd' >- glyphUpDol, 'D' >- glyphDownDol
       , 'k' >- glyphUpKal, 'K' >- glyphDownKal
+      , 'g' >- glyphUpGol, 'G' >- glyphDownGol
       , 'f' >- glyphUpFal, 'F' >- glyphDownFal
+      , 'v' >- glyphUpVol, 'V' >- glyphDownVol
       , 'p' >- glyphUpPal, 'P' >- glyphDownPal
+      , 'b' >- glyphUpBol, 'B' >- glyphDownBol
       , 'c' >- glyphUpCal, 'C' >- glyphDownCal
+      , 'q' >- glyphUpQol, 'Q' >- glyphDownQol
       , 'l' >- glyphUpLes, 'L' >- glyphDownLes
+      , 'r' >- glyphUpRes, 'R' >- glyphDownRes
       , 'y' >- glyphUpYes, 'Y' >- glyphDownYes
+      , 'h' >- glyphUpHes, 'H' >- glyphDownHes
       , 'a' >- glyphUpAt, 'A' >- glyphDownAt
       , 'e' >- glyphUpEt, 'E' >- glyphDownEt
       , 'i' >- glyphUpIt, 'I' >- glyphDownIt
@@ -51,6 +59,26 @@ glyphDownSal = makeGlyphWithSpacing' singleSpacing parts
       , partRightOblique # reflectTriangle
       ]
 
+glyphUpZol :: Given Config => Glyph
+glyphUpZol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftShortOblique
+      , partRightShortOblique
+      , partDiamond
+      , partTransphone
+      ]
+
+glyphDownZol :: Given Config => Glyph
+glyphDownZol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partTransphone # reflectTriangle
+      ]
+
 glyphUpTal :: Given Config => Glyph
 glyphUpTal = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -65,6 +93,24 @@ glyphDownTal = makeGlyphWithSpacing' singleSpacing parts
     parts = 
       [ partBase # reflectTriangle
       , partLeftOblique # reflectTriangle
+      ]
+
+glyphUpDol :: Given Config => Glyph
+glyphUpDol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftOblique
+      , partTransphone
+      ]
+
+glyphDownDol :: Given Config => Glyph
+glyphDownDol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partTransphone # reflectTriangle
       ]
 
 glyphUpKal :: Given Config => Glyph
@@ -87,6 +133,28 @@ glyphDownKal = makeGlyphWithSpacing' singleSpacing parts
       , partRightChippedDescender # reflectTriangle
       ]
 
+glyphUpGol :: Given Config => Glyph
+glyphUpGol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftOblique
+      , partRightOblique
+      , partLeftAscender
+      , partTransphone
+      ]
+
+glyphDownGol :: Given Config => Glyph
+glyphDownGol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partRightChippedOblique # reflectTriangle
+      , partRightChippedDescender # reflectTriangle
+      , partTransphone # reflectTriangle
+      ]
+
 glyphUpFal :: Given Config => Glyph
 glyphUpFal = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -101,6 +169,24 @@ glyphDownFal = makeGlyphWithSpacing' singleSpacing parts
     parts = 
       [ partBase # reflectTriangle
       , partRightOblique # reflectTriangle
+      ]
+
+glyphUpVol :: Given Config => Glyph
+glyphUpVol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partRightOblique
+      , partTransphone
+      ]
+
+glyphDownVol :: Given Config => Glyph
+glyphDownVol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partTransphone # reflectTriangle
       ]
 
 glyphUpPal :: Given Config => Glyph
@@ -123,6 +209,28 @@ glyphDownPal = makeGlyphWithSpacing' singleSpacing parts
       , partLeftChippedDescender # reflectTriangle
       ]
 
+glyphUpBol :: Given Config => Glyph
+glyphUpBol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase
+      , partLeftOblique
+      , partRightOblique
+      , partRightAscender
+      , partTransphone
+      ]
+
+glyphDownBol :: Given Config => Glyph
+glyphDownBol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partChippedBase # reflectTriangle
+      , partLeftChippedOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partLeftChippedDescender # reflectTriangle
+      , partTransphone # reflectTriangle
+      ]
+
 glyphUpCal :: Given Config => Glyph
 glyphUpCal = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -141,6 +249,28 @@ glyphDownCal = makeGlyphWithSpacing' singleSpacing parts
       , partLeftOblique # reflectTriangle
       , partRightOblique # reflectTriangle
       , partRightAscender # reflectTriangle
+      ]
+
+glyphUpQol :: Given Config => Glyph
+glyphUpQol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partLeftChippedOblique
+      , partRightOblique
+      , partLeftChippedDescender
+      , partTransphone
+      ]
+
+glyphDownQol :: Given Config => Glyph
+glyphDownQol = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partRightAscender # reflectTriangle
+      , partTransphone # reflectTriangle
       ]
 
 glyphUpLes :: Given Config => Glyph
@@ -163,6 +293,28 @@ glyphDownLes = makeGlyphWithSpacing' singleSpacing parts
       , partLeftAscender # reflectTriangle
       ]
 
+glyphUpRes :: Given Config => Glyph
+glyphUpRes = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partChippedBase
+      , partLeftOblique
+      , partRightChippedOblique
+      , partRightChippedDescender
+      , partTransphone
+      ]
+
+glyphDownRes :: Given Config => Glyph
+glyphDownRes = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftOblique # reflectTriangle
+      , partRightOblique # reflectTriangle
+      , partLeftAscender # reflectTriangle
+      , partTransphone # reflectTriangle
+      ]
+
 glyphUpYes :: Given Config => Glyph
 glyphUpYes = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -179,6 +331,26 @@ glyphDownYes = makeGlyphWithSpacing' singleSpacing parts
       , partLeftShortOblique # reflectTriangle
       , partRightShortOblique # reflectTriangle
       , partDiamond # reflectTriangle
+      ]
+
+glyphUpHes :: Given Config => Glyph
+glyphUpHes = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partLeftOblique
+      , partRightOblique
+      , partTransphone
+      ]
+
+glyphDownHes :: Given Config => Glyph
+glyphDownHes = makeGlyphWithSpacing' singleTransphoneSpacing parts
+  where
+    parts = 
+      [ partBase # reflectTriangle
+      , partLeftShortOblique # reflectTriangle
+      , partRightShortOblique # reflectTriangle
+      , partDiamond # reflectTriangle
+      , partTransphone # reflectTriangle
       ]
 
 glyphUpAt :: Given Config => Glyph

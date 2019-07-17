@@ -4,6 +4,7 @@
 module Ziphil.FontGen.Gilit.GlyphUtil
   ( metrics
   , singleSpacing
+  , singleTransphoneSpacing
   , makeGlyphWithSpacing'
   , reflectTriangle
   )
@@ -27,8 +28,13 @@ metrics = with &~ do
 
 singleSpacing :: Given Config => WidthSpacing
 singleSpacing = with &~ do
-  leftX .= triangleWidth / 4 - horizontalGap / 2 - thickness / (sinA obliqueAngle * 2)
-  fixedWidth .= triangleWidth / 2 + horizontalGap + thickness / (sinA obliqueAngle)
+  leftX .= defaultLeftX
+  fixedWidth .= triangleWidth - widthDifference
+
+singleTransphoneSpacing :: Given Config => WidthSpacing
+singleTransphoneSpacing = with &~ do
+  leftX .= defaultLeftX
+  fixedWidth .= triangleWidth + horizontalTransphoneGap + thickness / (sinA obliqueAngle) - widthDifference
 
 -- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。
