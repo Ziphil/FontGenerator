@@ -33,4 +33,9 @@ fonts = Map.fromList list
       , ("Vbe", Vekos.boldExtendedFont)
       , ("Vte", Vekos.thinExtendedFont)
       , ("Gr", Gilit.regularFont)
+      , ("Gb", Gilit.boldFont)
+      , ("Gre", Gilit.regularExtendedFont)
+      , ("Gbe", Gilit.boldExtendedFont)
+      , ("Gsre", Gilit.regularExtendedSprawledFont)
+      , ("Gsbe", Gilit.boldExtendedSprawledFont)
       ]

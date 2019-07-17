@@ -3,6 +3,11 @@
 
 module Ziphil.FontGen.Gilit
   ( regularFont
+  , boldFont
+  , regularExtendedFont
+  , boldExtendedFont
+  , regularExtendedSprawledFont
+  , boldExtendedSprawledFont
   )
 where
 
@@ -28,4 +33,58 @@ regularFont :: Font
 regularFont = with &~ commonState &~ do
   style .= with &~ do
     weight .= Regular
-  config .= with
+  config .= with &~ do
+    weightConst .= 1
+    stretchRatio .= 1
+    ascenderRatio .= 0.5
+
+boldFont :: Font
+boldFont = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Bold
+  config .= with &~ do
+    weightConst .= 1.5
+    stretchRatio .= 1
+    ascenderRatio .= 0.5
+
+regularExtendedFont :: Font
+regularExtendedFont = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Regular
+    stretch .= Extended
+  config .= with &~ do
+    weightConst .= 1
+    stretchRatio .= 1.5
+    ascenderRatio .= 0.5
+
+boldExtendedFont :: Font
+boldExtendedFont = with &~ commonState &~ do
+  style .= with &~ do
+    weight .= Bold
+    stretch .= Extended
+  config .= with &~ do
+    weightConst .= 1.5
+    stretchRatio .= 1.5
+    ascenderRatio .= 0.5
+
+regularExtendedSprawledFont :: Font
+regularExtendedSprawledFont = with &~ commonState &~ do
+  family <>= " Sprawled"
+  style .= with &~ do
+    weight .= Regular
+    stretch .= Extended
+  config .= with &~ do
+    weightConst .= 1
+    stretchRatio .= 1.5
+    ascenderRatio .= 1
+
+boldExtendedSprawledFont :: Font
+boldExtendedSprawledFont = with &~ commonState &~ do
+  family <>= " Sprawled"
+  style .= with &~ do
+    weight .= Bold
+    stretch .= Extended
+  config .= with &~ do
+    weightConst .= 1.5
+    stretchRatio .= 1.5
+    ascenderRatio .= 1
