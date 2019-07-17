@@ -6,6 +6,8 @@ module Ziphil.FontGen.Gilit
   , boldFont
   , regularExtendedFont
   , boldExtendedFont
+  , regularTriangleFont
+  , boldTriangleFont
   , regularExtendedSprawledFont
   , boldExtendedSprawledFont
   )
@@ -65,6 +67,26 @@ boldExtendedFont = with &~ commonState &~ do
   config .= with &~ do
     weightConst .= 1.5
     stretchRatio .= 1.5
+    ascenderRatio .= 0.5
+
+regularTriangleFont :: Font
+regularTriangleFont = with &~ commonState &~ do
+  family <>= " Triangle"
+  style .= with &~ do
+    weight .= Regular
+  config .= with &~ do
+    weightConst .= 1
+    stretchRatio .= 2 / sqrt 3
+    ascenderRatio .= 0.5
+
+boldTriangleFont :: Font
+boldTriangleFont = with &~ commonState &~ do
+  family <>= " Triangle"
+  style .= with &~ do
+    weight .= Bold
+  config .= with &~ do
+    weightConst .= 1.5
+    stretchRatio .= 2 / sqrt 3
     ascenderRatio .= 0.5
 
 regularExtendedSprawledFont :: Font

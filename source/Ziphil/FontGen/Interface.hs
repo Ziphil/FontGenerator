@@ -36,6 +36,8 @@ fonts = Map.fromList list
       , ("Gb", Gilit.boldFont)
       , ("Gre", Gilit.regularExtendedFont)
       , ("Gbe", Gilit.boldExtendedFont)
+      , ("Gtr", Gilit.regularTriangleFont)
+      , ("Gtb", Gilit.boldTriangleFont)
       , ("Gsre", Gilit.regularExtendedSprawledFont)
       , ("Gsbe", Gilit.boldExtendedSprawledFont)
       ]
