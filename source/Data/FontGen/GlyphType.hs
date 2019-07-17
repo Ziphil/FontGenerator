@@ -100,8 +100,8 @@ class ReformEnvelope m s where
 
 -- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
 -- 具体的には、左右にスペーシングとして設定された一定量の余白を追加します。
-reformEnvelopeSpacing :: Metrics -> FixedSpacing -> Glyph -> Glyph
-reformEnvelopeSpacing metrics spacing glyph = rectEnvelope base size glyph
+reformEnvelopeFixed :: Metrics -> FixedSpacing -> Glyph -> Glyph
+reformEnvelopeFixed metrics spacing glyph = rectEnvelope base size glyph
   where
     base = (0 - spacing ^. leftBearing &| 0 - metrics ^. metricDescent)
     size = (width glyph + spacing ^. leftBearing + spacing ^. rightBearing &| metrics ^. metricEm)
@@ -115,7 +115,7 @@ reformEnvelopeWidth metrics spacing glyph = rectEnvelope base size glyph
     size = (spacing ^. fixedWidth &| metrics ^. metricEm)
 
 instance ReformEnvelope Metrics FixedSpacing where
-  reformEnvelope = reformEnvelopeSpacing
+  reformEnvelope = reformEnvelopeFixed
 
 instance ReformEnvelope Metrics WidthSpacing where
   reformEnvelope = reformEnvelopeWidth
