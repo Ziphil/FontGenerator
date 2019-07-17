@@ -2,15 +2,15 @@
 
 
 module Ziphil.FontGen.Vekos
-  ( regularFont
-  , boldFont
-  , thinFont
-  , regularCondensedFont
-  , boldCondensedFont
-  , thinCondensedFont
-  , regularExtendedFont
-  , boldExtendedFont
-  , thinExtendedFont
+  ( fontRegular
+  , fontBold
+  , fontThin
+  , fontCondensedRegular
+  , fontCondensedBold
+  , fontCondensedThin
+  , fontExtendedRegular
+  , fontExtendedBold
+  , fontExtendedThin
   )
 where
 
@@ -32,32 +32,32 @@ commonState = do
   copyright .= "Copyright 2019 Ziphil"
   version .= makeVersion [1, 1, 0]
 
-regularFont :: Font
-regularFont = with &~ commonState &~ do
+fontRegular :: Font
+fontRegular = with &~ commonState &~ do
   style .= with &~ do
     weight .= Regular
   config .= with &~ do
     weightConst .= 1
     stretchConst .= 1
 
-boldFont :: Font
-boldFont = with &~ commonState &~ do
+fontBold :: Font
+fontBold = with &~ commonState &~ do
   style .= with &~ do
     weight .= Bold
   config .= with &~ do
     weightConst .= 1.5
     stretchConst .= 1
 
-thinFont :: Font
-thinFont = with &~ commonState &~ do
+fontThin :: Font
+fontThin = with &~ commonState &~ do
   style .= with &~ do
     weight .= Thin
   config .= with &~ do
     weightConst .= 0.5
     stretchConst .= 1
 
-regularCondensedFont :: Font
-regularCondensedFont = with &~ commonState &~ do
+fontCondensedRegular :: Font
+fontCondensedRegular = with &~ commonState &~ do
   style .= with &~ do
     weight .= Regular
     stretch .= Condensed
@@ -65,8 +65,8 @@ regularCondensedFont = with &~ commonState &~ do
     weightConst .= 1
     stretchConst .= 0.85
 
-boldCondensedFont :: Font
-boldCondensedFont = with &~ commonState &~ do
+fontCondensedBold :: Font
+fontCondensedBold = with &~ commonState &~ do
   style .= with &~ do
     weight .= Bold
     stretch .= Condensed
@@ -74,8 +74,8 @@ boldCondensedFont = with &~ commonState &~ do
     weightConst .= 1.5
     stretchConst .= 0.85
 
-thinCondensedFont :: Font
-thinCondensedFont = with &~ commonState &~ do
+fontCondensedThin :: Font
+fontCondensedThin = with &~ commonState &~ do
   style .= with &~ do
     weight .= Thin
     stretch .= Condensed
@@ -83,8 +83,8 @@ thinCondensedFont = with &~ commonState &~ do
     weightConst .= 0.5
     stretchConst .= 0.85
 
-regularExtendedFont :: Font
-regularExtendedFont = with &~ commonState &~ do
+fontExtendedRegular :: Font
+fontExtendedRegular = with &~ commonState &~ do
   style .= with &~ do
     weight .= Regular
     stretch .= Extended
@@ -92,8 +92,8 @@ regularExtendedFont = with &~ commonState &~ do
     weightConst .= 1
     stretchConst .= 1.25
 
-boldExtendedFont :: Font
-boldExtendedFont = with &~ commonState &~ do
+fontExtendedBold :: Font
+fontExtendedBold = with &~ commonState &~ do
   style .= with &~ do
     weight .= Bold
     stretch .= Extended
@@ -101,8 +101,8 @@ boldExtendedFont = with &~ commonState &~ do
     weightConst .= 1.5
     stretchConst .= 1.25
 
-thinExtendedFont :: Font
-thinExtendedFont = with &~ commonState &~ do
+fontExtendedThin :: Font
+fontExtendedThin = with &~ commonState &~ do
   style .= with &~ do
     weight .= Thin
     stretch .= Extended

@@ -2,14 +2,14 @@
 
 
 module Ziphil.FontGen.Gilit
-  ( regularFont
-  , boldFont
-  , regularExtendedFont
-  , boldExtendedFont
-  , regularTriangleFont
-  , boldTriangleFont
-  , regularExtendedSprawledFont
-  , boldExtendedSprawledFont
+  ( fontRegular
+  , fontBold
+  , fontExtendedRegular
+  , fontExtendedBold
+  , fontTriangleRegular
+  , fontTriangleBold
+  , fontSprawledExtendedRegular
+  , fontSprawledExtendedBold
   )
 where
 
@@ -31,8 +31,8 @@ commonState = do
   copyright .= "Copyright 2019 Ziphil"
   version .= makeVersion [0, 0, 0]
 
-regularFont :: Font
-regularFont = with &~ commonState &~ do
+fontRegular :: Font
+fontRegular = with &~ commonState &~ do
   style .= with &~ do
     weight .= Regular
   config .= with &~ do
@@ -40,8 +40,8 @@ regularFont = with &~ commonState &~ do
     stretchRatio .= 1
     ascenderRatio .= 0.5
 
-boldFont :: Font
-boldFont = with &~ commonState &~ do
+fontBold :: Font
+fontBold = with &~ commonState &~ do
   style .= with &~ do
     weight .= Bold
   config .= with &~ do
@@ -49,8 +49,8 @@ boldFont = with &~ commonState &~ do
     stretchRatio .= 1
     ascenderRatio .= 0.5
 
-regularExtendedFont :: Font
-regularExtendedFont = with &~ commonState &~ do
+fontExtendedRegular :: Font
+fontExtendedRegular = with &~ commonState &~ do
   style .= with &~ do
     weight .= Regular
     stretch .= Extended
@@ -59,8 +59,8 @@ regularExtendedFont = with &~ commonState &~ do
     stretchRatio .= 1.5
     ascenderRatio .= 0.5
 
-boldExtendedFont :: Font
-boldExtendedFont = with &~ commonState &~ do
+fontExtendedBold :: Font
+fontExtendedBold = with &~ commonState &~ do
   style .= with &~ do
     weight .= Bold
     stretch .= Extended
@@ -69,8 +69,8 @@ boldExtendedFont = with &~ commonState &~ do
     stretchRatio .= 1.5
     ascenderRatio .= 0.5
 
-regularTriangleFont :: Font
-regularTriangleFont = with &~ commonState &~ do
+fontTriangleRegular :: Font
+fontTriangleRegular = with &~ commonState &~ do
   family <>= " Triangle"
   style .= with &~ do
     weight .= Regular
@@ -79,8 +79,8 @@ regularTriangleFont = with &~ commonState &~ do
     stretchRatio .= 2 / sqrt 3
     ascenderRatio .= 0.5
 
-boldTriangleFont :: Font
-boldTriangleFont = with &~ commonState &~ do
+fontTriangleBold :: Font
+fontTriangleBold = with &~ commonState &~ do
   family <>= " Triangle"
   style .= with &~ do
     weight .= Bold
@@ -89,8 +89,8 @@ boldTriangleFont = with &~ commonState &~ do
     stretchRatio .= 2 / sqrt 3
     ascenderRatio .= 0.5
 
-regularExtendedSprawledFont :: Font
-regularExtendedSprawledFont = with &~ commonState &~ do
+fontSprawledExtendedRegular :: Font
+fontSprawledExtendedRegular = with &~ commonState &~ do
   family <>= " Sprawled"
   style .= with &~ do
     weight .= Regular
@@ -100,8 +100,8 @@ regularExtendedSprawledFont = with &~ commonState &~ do
     stretchRatio .= 1.5
     ascenderRatio .= 1
 
-boldExtendedSprawledFont :: Font
-boldExtendedSprawledFont = with &~ commonState &~ do
+fontSprawledExtendedBold :: Font
+fontSprawledExtendedBold = with &~ commonState &~ do
   family <>= " Sprawled"
   style .= with &~ do
     weight .= Bold
