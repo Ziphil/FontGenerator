@@ -6,6 +6,7 @@ module Ziphil.FontGen.Gilit.Value
   , extraDescent
   , thickness
   , maxThickness
+  , maxObliqueAngle
   , gap
   , triangleHeight
   , triangleWidth
@@ -33,11 +34,16 @@ thickness = weightConst' * 80
     weightConst' = given ^. weightConst
 
 -- 同じファミリーにおけるストローク幅の最大値を表します。
--- このフォントは、グリフの設計上、ストローク幅によってアセンダーやディセンダーの高さが異なります。
+-- このフォントは、グリフの設計上、ストロークの幅や三角形部分の幅によってアセンダーやディセンダーの高さが異なります。
 -- したがって、フォントサイズを同じにすると、グリフ全体が拡大縮小され、ウェイトによって三角形部分の大きさが変わる可能性があります。
 -- これを防ぐため、フォントファイルに登録されるアセントやディセントはこの値を用いて計算され、ウェイトを通して固定されます。
 maxThickness :: Given Config => Double
 maxThickness = 140
+
+-- 同じファミリーにおける三角形の斜辺の角度の最大値を表します。
+-- 上記と同じ理由のため、フォントファイルに登録されるアセントやディセントはこの値を用いて計算されます。
+maxObliqueAngle :: Given Config => Angle Double
+maxObliqueAngle = atanA 2
 
 -- 文字と文字の間隔を表します。
 -- ただし、隣り合う三角形の斜辺部に垂直な方向の距離であり、水平距離ではありません。

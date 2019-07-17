@@ -378,10 +378,10 @@ widthDifference :: Given Config => Double
 widthDifference = triangleWidth / 2 - horizontalGap - thickness / (sinA obliqueAngle)
 
 ascent :: Given Config => Double
-ascent = triangleHeight + ascenderHeight + maxThickness / (cosA obliqueAngle * 4)
+ascent = triangleHeight + ascenderHeight + maxThickness / (cosA maxObliqueAngle * 4)
 
 descent :: Given Config => Double
-descent = ascenderHeight + maxThickness / (cosA obliqueAngle * 4)
+descent = ascenderHeight + maxThickness / (cosA maxObliqueAngle * 4)
 
 em :: Given Config => Double
 em = ascent + descent
