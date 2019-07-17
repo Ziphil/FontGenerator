@@ -7,6 +7,7 @@ module Ziphil.FontGen.Interface.Generate
 where
 
 import Control.Monad
+import Data.Char
 import Data.FontGen
 import Data.FontGen.FontType
 import Data.FontGen.Render
@@ -19,24 +20,24 @@ import Ziphil.FontGen.Interface.Util
 
 main :: GenerateOption -> RenderOption -> Map String Font -> IO ()
 main generateOption renderOption fonts = do
-  simple <- inputSimple
+  complete <- inputComplete
   fonts <- inputFonts fonts
   flushStrLn ""
-  mainLoop generateOption renderOption simple $ makeIndexedFonts fonts
+  mainLoop generateOption renderOption complete $ makeIndexedFonts fonts
 
-inputSimple :: IO Bool
-inputSimple = do
-  flushStr $ colorInput "<?> Simple -> "
+inputComplete :: IO Bool
+inputComplete = do
+  flushStr $ colorInput "<?> Generate -> "
   input <- getLine
-  case input of
-    "" -> return True
+  case map toUpper input of
+    "" -> return False
     'Y' : _ -> return True
     'N' : _ -> return False
-    _ -> return True
+    _ -> return False
 
 inputFonts :: Map String Font -> IO [Font]
 inputFonts fonts = do
-  flushStr $ colorInput "<?> Name -> "
+  flushStr $ colorInput "<?> Code -> "
   input <- getLine
   parseFonts fonts input
 
@@ -56,8 +57,8 @@ makeIndexedFonts fonts = zipWith make fonts [1 ..]
     make font index = (font, (index, length fonts))
 
 mainLoop :: GenerateOption -> RenderOption -> Bool -> [IndexedFont] -> IO ()
-mainLoop generateOption renderOption simple indexedFonts = do
-  unless simple . void $ do
+mainLoop generateOption renderOption complete indexedFonts = do
+  when complete . void $ do
     prepareProgress "Generating"
     mapM (generateAll' generateOption) indexedFonts
   prepareProgress "Rendering"
