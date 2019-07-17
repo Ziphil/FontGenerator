@@ -9,7 +9,7 @@
 ## 下準備
 
 ### Haskell と Stack の準備
-このリポジトリは Haskell のビルドツールである [Stack](https://docs.haskellstack.org/en/stable/README/) のプロジェクトになっています。
+このリポジトリは Haskell のビルドツールである [Stack](https://www.haskellstack.org/) のプロジェクトになっています。
 適当な方法で Stack をインストールしてください。
 
 ### FontFotge と Python の準備
