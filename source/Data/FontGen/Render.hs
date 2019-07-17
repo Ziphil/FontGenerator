@@ -15,6 +15,7 @@ module Data.FontGen.Render
   , generateAll
   , RenderOption, strings, fileName, lineGap, scaleRate
   , renderStrings
+  , renderAll
   )
 where
 
@@ -189,3 +190,8 @@ renderStrings option font = flip renderDiagram diagram =<< path
     path = outputFile font (option ^. fileName) "svg"
     diagram = scale (option ^. scaleRate) rawDiagram
     rawDiagram = vsep (option ^. lineGap) $ map (makeStringDiagram font) $ option ^. strings
+
+renderAll :: RenderOption -> Font -> IO ()
+renderAll option font = do
+  ensureOutputDir font
+  renderStrings option font

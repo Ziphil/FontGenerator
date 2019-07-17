@@ -61,7 +61,7 @@ mainLoop generateOption renderOption simple indexedFonts = do
     prepareProgress "Generating"
     mapM (generateAll' generateOption) indexedFonts
   prepareProgress "Rendering"
-  mapM (renderStrings' renderOption) indexedFonts
+  mapM (renderAll' renderOption) indexedFonts
   flushStrLn $ colorMessage "@ Done."
 
 generateAll' :: GenerateOption -> IndexedFont -> IO ()
@@ -69,10 +69,10 @@ generateAll' option (font, progress) = do
   updateProgress "Generating" (font ^. fullName) progress
   generateAll option font
 
-renderStrings' :: RenderOption -> IndexedFont -> IO ()
-renderStrings' option (font, progress) = do
+renderAll' :: RenderOption -> IndexedFont -> IO ()
+renderAll' option (font, progress) = do
   updateProgress "Rendering" (font ^. fullName) progress
-  renderStrings option font
+  renderAll option font
 
 prepareProgress :: String -> IO ()
 prepareProgress message = do
