@@ -60,6 +60,7 @@ glyphs = makeGlyphs list
       , '!' >- glyphDek
       , '?' >- glyphDek
       , '\'' >- glyphNok
+      , 'ʻ' >- glyphNok
       , ' ' >- glyphSpace
       ]
 
