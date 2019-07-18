@@ -578,6 +578,4 @@ glyphNok = makeGlyphWithSpacing' spacing parts
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing []
   where
-    spacing = with &~ do
-      leftX .= 0
-      fixedWidth .= spaceWidth
+    spacing = with & fixedWidth .~ spaceWidth

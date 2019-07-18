@@ -516,6 +516,4 @@ glyphClosingRakut = makeGlyph' parts
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing []
   where
-    spacing = with &~ do
-      leftBearing .= spaceWidth
-      rightBearing .= 0
+    spacing = with & leftBearing .~ spaceWidth
