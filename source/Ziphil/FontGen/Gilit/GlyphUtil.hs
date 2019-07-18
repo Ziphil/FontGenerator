@@ -3,6 +3,7 @@
 
 module Ziphil.FontGen.Gilit.GlyphUtil
   ( metrics
+  , spacingBy
   , singleSpacing
   , singleTransphoneSpacing
   , doubleSpacing
@@ -28,25 +29,22 @@ metrics = with &~ do
   metricAscent .= actualAscent
   metricDescent .= actualDescent
 
-singleSpacing :: Given Config => WidthSpacing
-singleSpacing = with &~ do
+spacingBy :: Given Config => Double -> WidthSpacing
+spacingBy width = with &~ do
   leftX .= defaultLeftX
-  fixedWidth .= triangleWidth - widthDifference
+  fixedWidth .= width - widthDifference
+
+singleSpacing :: Given Config => WidthSpacing
+singleSpacing = spacingBy $ triangleWidth
 
 singleTransphoneSpacing :: Given Config => WidthSpacing
-singleTransphoneSpacing = with &~ do
-  leftX .= defaultLeftX
-  fixedWidth .= triangleWidth + horizontalTransphoneGap + thickness / (sinA obliqueAngle) - widthDifference
+singleTransphoneSpacing = spacingBy $ triangleWidth + horizontalTransphoneGap + thickness / sinA obliqueAngle
 
 doubleSpacing :: Given Config => WidthSpacing
-doubleSpacing = with &~ do
-  leftX .= defaultLeftX
-  fixedWidth .= triangleWidth * 3 / 2 - widthDifference
+doubleSpacing = spacingBy $ triangleWidth * 3 / 2
 
 doubleTransphoneSpacing :: Given Config => WidthSpacing
-doubleTransphoneSpacing = with &~ do
-  leftX .= defaultLeftX
-  fixedWidth .= triangleWidth * 3 / 2 + horizontalTransphoneGap + thickness / (sinA obliqueAngle) - widthDifference
+doubleTransphoneSpacing = spacingBy $ triangleWidth * 3 / 2 + horizontalTransphoneGap + thickness / sinA obliqueAngle
 
 -- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。

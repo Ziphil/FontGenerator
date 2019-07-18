@@ -55,6 +55,11 @@ glyphs = makeGlyphs list
       , 'u' >- glyphUpUt, 'U' >- glyphDownUt
       , 'ù' >- glyphUpUt, 'Ù' >- glyphDownUt
       , 'û' >- glyphUpUt, 'Û' >- glyphDownUt
+      , ',' >- glyphTadek
+      , '.' >- glyphDek
+      , '!' >- glyphDek
+      , '?' >- glyphDek
+      , '\'' >- glyphNok
       , ' ' >- glyphSpace
       ]
 
@@ -543,6 +548,31 @@ glyphDownUt = makeGlyphWithSpacing' singleSpacing parts
       , partLeftOblique # reflectTriangle
       , partLeftAscender # reflectTriangle
       ]
+
+glyphTadek :: Given Config => Glyph
+glyphTadek = makeGlyphWithSpacing' spacing parts
+  where
+    parts =
+      [ partDot
+      ]
+    spacing = spacingBy $ triangleWidth / 2
+
+glyphDek :: Given Config => Glyph
+glyphDek = makeGlyphWithSpacing' spacing parts
+  where
+    parts =
+      [ partDot
+      , partDot # translate (thickness / sinA obliqueAngle &| 0)
+      ]
+    spacing = spacingBy $ triangleWidth / 2 + thickness / sinA obliqueAngle
+
+glyphNok :: Given Config => Glyph
+glyphNok = makeGlyphWithSpacing' spacing parts
+  where
+    parts =
+      [ partDot
+      ]
+    spacing = spacingBy $ triangleWidth / 2
 
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing []
