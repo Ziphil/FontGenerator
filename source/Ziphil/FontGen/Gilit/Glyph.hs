@@ -51,7 +51,7 @@ glyphs = makeGlyphs list
       , 'î' >- glyphUpIt, 'Î' >- glyphDownIt
       , 'o' >- glyphUpOt, 'O' >- glyphDownOt
       , 'ò' >- glyphUpOt, 'Ò' >- glyphDownOt
-      , 'û' >- glyphUpOt, 'Ô' >- glyphDownOt
+      , 'ô' >- glyphUpOt, 'Ô' >- glyphDownOt
       , 'u' >- glyphUpUt, 'U' >- glyphDownUt
       , 'ù' >- glyphUpUt, 'Ù' >- glyphDownUt
       , 'û' >- glyphUpUt, 'Û' >- glyphDownUt
