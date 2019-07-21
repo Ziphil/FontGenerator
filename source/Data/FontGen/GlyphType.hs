@@ -5,15 +5,15 @@
 
 
 module Data.FontGen.GlyphType
-  ( PartSegment
+  ( PartTrailElem
   , PartTrail
-  , PartPath
+  , PartElem
   , Part
   , Glyph
   , Glyphs
-  , makePath
+  , makeTrail
   , makePart
-  , concatPath
+  , concatPart
   , makeGlyphs
   , (>-)
   , Metrics, metricEm, metricAscent, metricDescent
@@ -23,6 +23,7 @@ module Data.FontGen.GlyphType
   )
 where
 
+import Control.Monad.State
 import Data.Default.Class
 import Data.FontGen.Util
 import Data.Map (Map)
@@ -31,28 +32,29 @@ import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
 
-type PartSegment = Segment Closed V2 Double
-type PartTrail = Trail V2 Double
-type PartPath = Path V2 Double
+type PartTrailElem = Trail V2 Double
+type PartTrail = State [PartTrailElem] ()
 
-type Part = [PartPath]
+type PartElem = Path V2 Double
+type Part = State [PartElem] ()
 
 type Glyph = Diagram B
 type Glyphs = Map Char Glyph
 
--- トレイルのリストからパスを生成します。
--- 生成の際に自動的にパスを閉じるので、トレイルの始点と終点は同じ点であるようにしてください。
-makePath :: [PartTrail] -> PartPath
-makePath = pathFromTrail . closeTrail . mconcat
+-- トレイルからトレイルを生成します。
+-- トレイルを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
+makeTrail :: PartTrail -> PartTrail
+makeTrail = id
 
 -- トレイルのリストから 1 つのパスから成るパーツを生成します。
 -- 生成の際に自動的にパスを閉じるので、トレイルの始点と終点は同じ点であるようにしてください。
-makePart :: [PartTrail] -> Part
-makePart = (: []) . makePath
+makePart :: PartTrail -> Part
+makePart trails = modify (++ [pathFromTrail . closeTrail . mconcat $ execState trails []])
 
--- パスのリストからそれらを全て結合した 1 つのパスから成るパーツを生成します。
-concatPath :: [PartPath] -> Part
-concatPath = (: []) . mconcat
+-- 複数のパーツを結合して 1 つのパスから成るパーツにします。
+-- 中に空洞がある形をしたパーツを作成するのに利用できます。
+concatPart :: Part -> Part
+concatPart parts = modify (++ [mconcat $ execState parts []])
 
 makeGlyphs :: [(Char, Glyph)] -> Glyphs
 makeGlyphs = Map.fromList
@@ -122,5 +124,5 @@ instance ReformEnvelope Metrics WidthSpacing where
 
 -- パーツのリストからグリフを生成します。
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
-makeGlyph :: ReformEnvelope m s => m -> s -> [Part] -> Glyph
-makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . concat
+makeGlyph :: ReformEnvelope m s => m -> s -> Part -> Glyph
+makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . flip execState []

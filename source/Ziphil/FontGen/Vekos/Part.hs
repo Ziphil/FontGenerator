@@ -79,24 +79,21 @@ trailInnerBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| heigh
 -- k, p, c, l, a などの文字に共通する丸い部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partBowl :: Given Config => Part
-partBowl = concatPath paths # moveOriginBy (originX &| 0)
+partBowl = concatPart parts # moveOriginBy (originX &| 0)
   where
-    outerTrails =
-      [ trailOuterBowl # reflectY
-      , trailOuterBowl # rotateHalfTurn # backward
-      , trailOuterBowl # reflectX
-      , trailOuterBowl # backward
-      ]
-    innerTrails =
-      [ trailInnerBowl # reflectY
-      , trailInnerBowl # rotateHalfTurn # backward
-      , trailInnerBowl # reflectX
-      , trailInnerBowl # backward
-      ]
-    paths =
-      [ makePath outerTrails
-      , makePath innerTrails # backward # translate (thicknessX &| 0)
-      ]
+    outerTrails = do
+      trailOuterBowl # reflectY
+      trailOuterBowl # rotateHalfTurn # backward
+      trailOuterBowl # reflectX
+      trailOuterBowl # backward
+    innerTrails = do
+      trailInnerBowl # reflectY
+      trailInnerBowl # rotateHalfTurn # backward
+      trailInnerBowl # reflectX
+      trailInnerBowl # backward
+    parts = do
+      makePart outerTrails
+      makePart innerTrails # backward # translate (thicknessX &| 0)
     originX = bowlWidth / 2
 
 -- l の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
@@ -131,23 +128,21 @@ trailCut = origin ~~ (width &| 0)
 partLesTail :: Given Config => Part
 partLesTail = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailLeftLesTail
-      , trailCut
-      , trailRightLesTail # backward
-      , origin ~~ (-thicknessX + lesTailCorrection &| 0)
-      ]
+    trails = do
+      trailLeftLesTail
+      trailCut
+      trailRightLesTail # backward
+      makeTrail $ origin ~~ (-thicknessX + lesTailCorrection &| 0)
     originX = -lesTailCorrection
 
 -- l の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partLes :: Given Config => Part
-partLes = concat parts
+partLes = parts
   where
-    parts =
-      [ partBowl
-      , partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
-      ]
+    parts = do
+      partBowl
+      partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
 
 -- y の文字の下半分にある曲線を、上端から下端への向きで生成します。
 trailYesLeg :: Given Config => PartTrail
@@ -162,18 +157,17 @@ trailYesLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (bend &| -height)
 partYes :: Given Config => Part
 partYes = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailYesLeg
-      , trailCut
-      , trailYesLeg # backward
-      , trailInnerBowl
-      , trailInnerBowl # reflectX # backward
-      , trailYesLeg # reflectX
-      , trailCut
-      , trailYesLeg # reflectX # backward
-      , trailOuterBowl # reflectX
-      , trailOuterBowl # backward
-      ]
+    trails = do
+      trailYesLeg
+      trailCut
+      trailYesLeg # backward
+      trailInnerBowl
+      trailInnerBowl # reflectX # backward
+      trailYesLeg # reflectX
+      trailCut
+      trailYesLeg # reflectX # backward
+      trailOuterBowl # reflectX
+      trailOuterBowl # backward
     originX = bowlWidth / 2
 
 talWidth :: Given Config => Double
@@ -202,18 +196,17 @@ trailInnerTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| h
 partTal :: Given Config => Part
 partTal = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailOuterBowl # reflectY
-      , trailOuterTalBeak # reflectY # backward
-      , trailCut # backward
-      , trailInnerTalBeak # reflectY
-      , trailInnerBowl # reflectY # backward
-      , trailInnerBowl
-      , trailInnerTalBeak # backward
-      , trailCut
-      , trailOuterTalBeak
-      , trailOuterBowl # backward
-      ]
+    trails = do
+      trailOuterBowl # reflectY
+      trailOuterTalBeak # reflectY # backward
+      trailCut # backward
+      trailInnerTalBeak # reflectY
+      trailInnerBowl # reflectY # backward
+      trailInnerBowl
+      trailInnerTalBeak # backward
+      trailCut
+      trailOuterTalBeak
+      trailOuterBowl # backward
     originX = talWidth / 2
 
 narrowBowlWidth :: Given Config => Double
@@ -254,35 +247,31 @@ trailInnerNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &|
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
 -- 原点は全体の中央にあります。
 partNarrowBowl :: Given Config => Part
-partNarrowBowl = concatPath paths # moveOriginBy (originX &| 0)
+partNarrowBowl = concatPart parts # moveOriginBy (originX &| 0)
   where
-    outerTrails =
-      [ trailOuterLeftNarrowBowl # reflectY
-      , trailOuterRightNarrowBowl # rotateHalfTurn # backward
-      , trailOuterRightNarrowBowl # reflectX
-      , trailOuterLeftNarrowBowl # backward
-      ]
-    innerTrails =
-      [ trailInnerNarrowBowl # reflectY
-      , trailInnerNarrowBowl # rotateHalfTurn # backward
-      , trailInnerNarrowBowl # reflectX
-      , trailInnerNarrowBowl # backward
-      ]
-    paths =
-      [ makePath outerTrails
-      , makePath innerTrails # backward # translate (thicknessX &| 0)
-      ]
+    outerTrails = do
+      trailOuterLeftNarrowBowl # reflectY
+      trailOuterRightNarrowBowl # rotateHalfTurn # backward
+      trailOuterRightNarrowBowl # reflectX
+      trailOuterLeftNarrowBowl # backward
+    innerTrails = do
+      trailInnerNarrowBowl # reflectY
+      trailInnerNarrowBowl # rotateHalfTurn # backward
+      trailInnerNarrowBowl # reflectX
+      trailInnerNarrowBowl # backward
+    parts = do
+      makePart outerTrails
+      makePart innerTrails # backward # translate (thicknessX &| 0)
     originX = narrowBowlVirtualWidth / 2
 
 -- x の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partXal :: Given Config => Part
-partXal = concat parts # moveOriginBy (originX &| 0)
+partXal = parts # moveOriginBy (originX &| 0)
   where
-    parts =
-      [ partNarrowBowl
-      , partNarrowBowl # reflectX # translate (narrowBowlVirtualWidth - thicknessX &| 0)
-      ]
+    parts = do
+      partNarrowBowl
+      partNarrowBowl # reflectX # translate (narrowBowlVirtualWidth - thicknessX &| 0)
     originX = xalWidth / 2 - narrowBowlVirtualWidth / 2
 
 nesWidth :: Given Config => Double
@@ -319,20 +308,19 @@ trailBottomSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| b
 partNes :: Given Config => Part
 partNes = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailOuterLeftNarrowBowl # reflectY
-      , trailBottomSpine
-      , trailInnerNarrowBowl # reflectX # backward
-      , trailNesLeg
-      , trailCut
-      , trailNesLeg # backward
-      , trailOuterLeftNarrowBowl # reflectX
-      , trailTopSpine # backward
-      , trailInnerNarrowBowl # reflectY # backward
-      , trailNesLeg # rotateHalfTurn
-      , trailCut # backward
-      , trailNesLeg # rotateHalfTurn # backward
-      ]
+    trails = do
+      trailOuterLeftNarrowBowl # reflectY
+      trailBottomSpine
+      trailInnerNarrowBowl # reflectX # backward
+      trailNesLeg
+      trailCut
+      trailNesLeg # backward
+      trailOuterLeftNarrowBowl # reflectX
+      trailTopSpine # backward
+      trailInnerNarrowBowl # reflectY # backward
+      trailNesLeg # rotateHalfTurn
+      trailCut # backward
+      trailNesLeg # rotateHalfTurn # backward
     originX = nesWidth / 2
 
 -- i の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
@@ -358,16 +346,15 @@ trailRightItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -h
 partIt :: Given Config => Part
 partIt = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailLeftItTail
-      , trailCut
-      , trailRightItTail # backward
-      , trailInnerBowl
-      , trailInnerTalBeak # backward
-      , trailCut
-      , trailOuterTalBeak
-      , trailOuterBowl # backward
-      ]
+    trails = do
+      trailLeftItTail
+      trailCut
+      trailRightItTail # backward
+      trailInnerBowl
+      trailInnerTalBeak # backward
+      trailCut
+      trailOuterTalBeak
+      trailOuterBowl # backward
     originX = talWidth / 2
 
 -- u の文字のディセンダーと接続する部分の外側の曲線を、上端から下端への向きで生成します。
@@ -412,16 +399,15 @@ trailRightUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| heig
 partUpperUt :: Given Config => Part
 partUpperUt = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailOuterLink
-      , origin ~~ (0 &| thicknessY - linkLowerCorrection)
-      , trailInnerLink # backward
-      , trailInnerBowl
-      , trailInnerTalBeak # backward
-      , trailCut
-      , trailOuterTalBeak
-      , trailOuterBowl # backward
-      ]
+    trails = do
+      trailOuterLink
+      makeTrail $ origin ~~ (0 &| thicknessY - linkLowerCorrection)
+      trailInnerLink # backward
+      trailInnerBowl
+      trailInnerTalBeak # backward
+      trailCut
+      trailOuterTalBeak
+      trailOuterBowl # backward
     originX = talWidth / 2
 
 -- u の文字のディセンダーを生成します。
@@ -430,37 +416,34 @@ partUpperUt = makePart trails # moveOriginBy (originX &| 0)
 partUtTail :: Given Config => Part
 partUtTail = makePart trails
   where
-    trails =
-      [ trailLeftUtTail # backward
-      , trailCut
-      , trailRightUtTail
-      , origin ~~ (0 &| thicknessY - linkUpperCorrection)
-      ]
+    trails = do
+      trailLeftUtTail # backward
+      trailCut
+      trailRightUtTail
+      makeTrail $ origin ~~ (0 &| thicknessY - linkUpperCorrection)
 
 -- u の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partUt :: Given Config => Part
-partUt = concat parts
+partUt = parts
   where
-    parts =
-      [ partUpperUt
-      , partUtTail # translate (-talWidth / 2 + linkWidth &| -mean / 2 + thicknessY - linkUpperCorrection)
-      ]
+    parts = do
+      partUpperUt
+      partUtTail # translate (-talWidth / 2 + linkWidth &| -mean / 2 + thicknessY - linkUpperCorrection)
 
 -- 6 の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partRac :: Given Config => Part
-partRac = concat parts
+partRac = parts
   where
-    parts =
-      [ partYes # rotateHalfTurn
-      , partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
-      ]
+    parts = do
+      partYes # rotateHalfTurn
+      partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
 
 solidusLength :: Given Config => Double
 solidusLength = rawLength * 2 - thicknessX
   where
-    rawLength = distance origin $ head $ intersectPointsP line (head partBowl)
+    rawLength = distance origin $ head $ intersectPointsP line (head $ [] &~ partBowl)
     line = origin ~~ (bowlWidth / 2 &| solidusGrade)
 
 solidusThickness :: Given Config => Double
@@ -488,24 +471,22 @@ trailSolidusCut = origin ~~ (0 &| -length)
 partSolidus :: Given Config => Part
 partSolidus = makePart trails # moveOriginBy (originX &| originY) # rotate solidusAngle
   where
-    trails =
-      [ trailSolidusCut
-      , trailSolidus
-      , trailSolidusCut # backward
-      , trailSolidus # backward
-      ]
+    trails = do
+      trailSolidusCut
+      trailSolidus
+      trailSolidusCut # backward
+      trailSolidus # backward
     originX = solidusLength / 2
     originY = -solidusThickness / 2
 
 -- 0 の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partNuf :: Given Config => Part
-partNuf = concat parts
+partNuf = parts
   where
-    parts =
-      [ partBowl
-      , partSolidus
-      ]
+    parts = do
+      partBowl
+      partSolidus
 
 xefHalfVirtualWidth :: Given Config => Double
 xefHalfVirtualWidth = narrowBowlVirtualWidth / 2 + xefBeakWidth
@@ -537,29 +518,27 @@ trailInnerXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| he
 partXefHalf :: Given Config => Part
 partXefHalf = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailOuterRightNarrowBowl # reflectX
-      , trailOuterXefBeak # backward
-      , trailCut
-      , trailInnerXefBeak
-      , trailInnerNarrowBowl # reflectX # backward
-      , trailInnerNarrowBowl # rotateHalfTurn
-      , trailInnerXefBeak # reflectY # backward
-      , trailCut # backward
-      , trailOuterXefBeak # reflectY
-      , trailOuterRightNarrowBowl # rotateHalfTurn # backward
-      ]
+    trails = do
+      trailOuterRightNarrowBowl # reflectX
+      trailOuterXefBeak # backward
+      trailCut
+      trailInnerXefBeak
+      trailInnerNarrowBowl # reflectX # backward
+      trailInnerNarrowBowl # rotateHalfTurn
+      trailInnerXefBeak # reflectY # backward
+      trailCut # backward
+      trailOuterXefBeak # reflectY
+      trailOuterRightNarrowBowl # rotateHalfTurn # backward
     originX = -xefHalfVirtualWidth / 2 + narrowBowlCorrection
 
 -- 5 の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partXef :: Given Config => Part
-partXef = concat parts # moveOriginBy (originX &| 0)
+partXef = parts # moveOriginBy (originX &| 0)
   where
-    parts =
-      [ partXefHalf
-      , partXefHalf # reflectX # translate (xefHalfVirtualWidth - thicknessX &| 0)
-      ]
+    parts = do
+      partXefHalf
+      partXefHalf # reflectX # translate (xefHalfVirtualWidth - thicknessX &| 0)
     originX = xefWidth / 2 - xefHalfVirtualWidth / 2
 
 tasWidth :: Given Config => Double
@@ -612,20 +591,19 @@ trailTasShoulderStraight = origin ~~ (0 &| height)
 partTasFrame :: Given Config => Part
 partTasFrame = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailOuterBowl # reflectY
-      , trailOuterTasShoulder # backward
-      , trailTasShoulderStraight
-      , trailCut # backward
-      , trailTasShoulderStraight # backward
-      , trailInnerTasShoulder
-      , trailInnerBowl # reflectY # backward
-      , trailInnerBowl
-      , trailInnerTasBeak # backward
-      , trailCut
-      , trailOuterTasBeak
-      , trailOuterBowl # backward
-      ]
+    trails = do
+      trailOuterBowl # reflectY
+      trailOuterTasShoulder # backward
+      trailTasShoulderStraight
+      trailCut # backward
+      trailTasShoulderStraight # backward
+      trailInnerTasShoulder
+      trailInnerBowl # reflectY # backward
+      trailInnerBowl
+      trailInnerTasBeak # backward
+      trailCut
+      trailOuterTasBeak
+      trailOuterBowl # backward
     originX = tasWidth / 2
 
 -- 1 の文字の横線の部分の直線を、左端から右端への向きで生成します。
@@ -645,22 +623,20 @@ trailVerticalCut = origin ~~ (0 &| -height)
 partTasCrossbar :: Given Config => Part
 partTasCrossbar = makePart trails
   where
-    trails =
-      [ trailVerticalCut
-      , trailTasCrossbar
-      , trailVerticalCut # backward
-      , trailTasCrossbar # backward
-      ]
+    trails = do
+      trailVerticalCut
+      trailTasCrossbar
+      trailVerticalCut # backward
+      trailTasCrossbar # backward
 
 -- 1 の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partTas :: Given Config => Part
-partTas = concat parts
+partTas = parts
   where
-    parts =
-      [ partTasFrame
-      , partTasCrossbar # translate (thicknessX / 2 - tasWidth / 2 &| tasCrossbarAltitude - mean / 2 + thicknessY / 2)
-      ]
+    parts = do
+      partTasFrame
+      partTasCrossbar # translate (thicknessX / 2 - tasWidth / 2 &| tasCrossbarAltitude - mean / 2 + thicknessY / 2)
 
 -- 3 の文字の左上にある丸い部分の外側の曲線を、左端から上端への向きで生成します。
 trailOuterYusBowl :: Given Config => PartTrail
@@ -717,20 +693,19 @@ trailYusShoulderStraight = origin ~~ (width &| 0)
 partYusFrame :: Given Config => Part
 partYusFrame = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailOuterYusShoulder
-      , trailYusShoulderStraight
-      , trailVerticalCut # backward
-      , trailYusShoulderStraight # backward
-      , trailInnerYusShoulder # backward
-      , trailInnerYusBowl
-      , trailInnerYusBowl # reflectX # backward
-      , trailYusLeg
-      , trailCut
-      , trailYusLeg # backward
-      , trailOuterYusBowl # reflectX
-      , trailOuterYusBowl # backward
-      ]
+    trails = do
+      trailOuterYusShoulder
+      trailYusShoulderStraight
+      trailVerticalCut # backward
+      trailYusShoulderStraight # backward
+      trailInnerYusShoulder # backward
+      trailInnerYusBowl
+      trailInnerYusBowl # reflectX # backward
+      trailYusLeg
+      trailCut
+      trailYusLeg # backward
+      trailOuterYusBowl # reflectX
+      trailOuterYusBowl # backward
     originX = yusWidth / 2
 
 -- 3 の文字の縦線の部分の直線を、上端から下端への向きで生成します。
@@ -750,22 +725,20 @@ trailYusCrossbarCut = origin ~~ (width &| 0)
 partYusCrossbar :: Given Config => Part
 partYusCrossbar = makePart trails
   where
-    trails =
-      [ trailYusCrossbar
-      , trailYusCrossbarCut
-      , trailYusCrossbar # backward
-      , trailYusCrossbarCut # backward
-      ]
+    trails = do
+      trailYusCrossbar
+      trailYusCrossbarCut
+      trailYusCrossbar # backward
+      trailYusCrossbarCut # backward
 
 -- 3 の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
 partYus :: Given Config => Part
-partYus = concat parts
+partYus = parts
   where
-    parts =
-      [ partYusFrame
-      , partYusCrossbar # translate (yusCrossbarLatitude - yusWidth / 2 - thicknessX * yusCrossbarThicknessRatio / 2 &| mean / 2 - thicknessX / 2)
-      ]
+    parts = do
+      partYusFrame
+      partYusCrossbar # translate (yusCrossbarLatitude - yusWidth / 2 - thicknessX * yusCrossbarThicknessRatio / 2 &| mean / 2 - thicknessX / 2)
 
 -- 変音符の右に飛び出るように曲がる曲線の上半分を、下端から上端への向きで生成します。
 trailTransphone :: Given Config => PartTrail
@@ -786,14 +759,13 @@ trailTransphoneCut = origin ~~ (width &| 0)
 partTransphone :: Given Config => Part
 partTransphone = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails = 
-      [ trailTransphone
-      , trailTransphone # reflectY # backward
-      , trailTransphoneCut
-      , trailTransphone # reflectY
-      , trailTransphone # backward
-      , trailTransphoneCut # backward
-      ]
+    trails = do
+      trailTransphone
+      trailTransphone # reflectY # backward
+      trailTransphoneCut
+      trailTransphone # reflectY
+      trailTransphone # backward
+      trailTransphoneCut # backward
     originX = transphoneBend
     originY = -mean / 2
   
@@ -826,14 +798,13 @@ trailAcuteCut = origin ~~ (width &| 0)
 partAcute :: Given Config => Part
 partAcute = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailAcuteCut
-      , trailInnerAcute
-      , trailInnerAcute # reflectX # backward
-      , trailAcuteCut
-      , trailOuterAcute # reflectX
-      , trailOuterAcute # backward
-      ]
+    trails = do
+      trailAcuteCut
+      trailInnerAcute
+      trailInnerAcute # reflectX # backward
+      trailAcuteCut
+      trailOuterAcute # reflectX
+      trailOuterAcute # backward
     originX = acuteWidth / 2
 
 -- サーカムフレックスアクセントの外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
@@ -857,24 +828,21 @@ trailInnerCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &|
 -- サーカムフレックスアクセントと同じ形を生成します。
 -- 原点は下部中央にあります。
 partCircumflex :: Given Config => Part
-partCircumflex = concatPath paths # moveOriginBy (originX &| originY)
+partCircumflex = concatPart parts # moveOriginBy (originX &| originY)
   where
-    outerTrails =
-      [ trailOuterCircumflex # reflectY
-      , trailOuterCircumflex # rotateHalfTurn # backward
-      , trailOuterCircumflex # reflectX
-      , trailOuterCircumflex # backward
-      ]
-    innerTrails =
-      [ trailInnerCircumflex # reflectY
-      , trailInnerCircumflex # rotateHalfTurn # backward
-      , trailInnerCircumflex # reflectX
-      , trailInnerCircumflex # backward
-      ]
-    paths =
-      [ makePath outerTrails
-      , makePath innerTrails # backward # translate (circumflexThicknessX &| 0)
-      ]
+    outerTrails = do
+      trailOuterCircumflex # reflectY
+      trailOuterCircumflex # rotateHalfTurn # backward
+      trailOuterCircumflex # reflectX
+      trailOuterCircumflex # backward
+    innerTrails = do
+      trailInnerCircumflex # reflectY
+      trailInnerCircumflex # rotateHalfTurn # backward
+      trailInnerCircumflex # reflectX
+      trailInnerCircumflex # backward
+    parts = do
+      makePart outerTrails
+      makePart innerTrails # backward # translate (circumflexThicknessX &| 0)
     originX = circumflexWidth / 2
     originY = -circumflexHeight / 2
 
@@ -889,9 +857,8 @@ trailDot = circle radius # rotateHalfTurn
 partDot :: Given Config => Part
 partDot = makePart trails # moveOriginBy (0 &| originY)
   where
-    trails =
-      [ trailDot
-      ]
+    trails = do
+      trailDot
     originY = -dotWidth / 2 + overshoot
 
 -- カルタックなどに含まれるベースラインより上に浮いた円を生成します。
@@ -900,9 +867,8 @@ partDot = makePart trails # moveOriginBy (0 &| originY)
 partFloatingDot :: Given Config => Part
 partFloatingDot = makePart trails
   where
-    trails =
-      [ trailDot
-      ]
+    trails = do
+      trailDot
 
 -- バデックの棒状の部分の直線を、上端から下端への向きで生成します。
 trailBadekStem :: Given Config => PartTrail
@@ -915,12 +881,11 @@ trailBadekStem = origin ~~ (0 &| -height)
 partBadekStem :: Given Config => Part
 partBadekStem = makePart trails
   where
-    trails =
-      [ trailCut
-      , trailBadekStem # backward
-      , trailCut # backward
-      , trailBadekStem
-      ]
+    trails = do
+      trailCut
+      trailBadekStem # backward
+      trailCut # backward
+      trailBadekStem
 
 -- パデックの棒状の部分の左側の曲線を、上端から下端への向きで生成します。
 trailLeftPadekStem :: Given Config => PartTrail
@@ -945,12 +910,11 @@ trailRightPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &
 partPadekStem :: Given Config => Part
 partPadekStem = makePart trails
   where
-    trails =
-      [ trailCut
-      , trailRightPadekStem # backward
-      , trailCut # backward
-      , trailLeftPadekStem
-      ]
+    trails = do
+      trailCut
+      trailRightPadekStem # backward
+      trailCut # backward
+      trailLeftPadekStem
 
 -- ノークの棒状の部分の縦の曲線を、上端から下端への向きで生成します。
 trailNokStem :: Given Config => PartTrail
@@ -963,12 +927,11 @@ trailNokStem = origin ~~ (0 &| -height)
 partNok :: Given Config => Part
 partNok = makePart trails
   where
-    trails =
-      [ trailNokStem
-      , trailCut
-      , trailNokStem # backward
-      , trailCut # backward
-      ]
+    trails = do
+      trailNokStem
+      trailCut
+      trailNokStem # backward
+      trailCut # backward
 
 -- ディカックの棒状の部分の曲線を、上端から下端への向きで生成します。
 trailDikakStem :: Given Config => PartTrail
@@ -983,12 +946,11 @@ trailDikakStem = origin ~> zero ~~ (0 &| leftCont) <~ (-bend &| -height)
 partDikak :: Given Config => Part
 partDikak = makePart trails
   where
-    trails =
-      [ trailDikakStem
-      , trailCut
-      , trailDikakStem # backward
-      , trailCut # backward
-      ]
+    trails = do
+      trailDikakStem
+      trailCut
+      trailDikakStem # backward
+      trailCut # backward
 
 -- フェークの直線を、左端から右端への向きで生成します。
 trailFekHorizontal :: Given Config => PartTrail
@@ -1001,12 +963,11 @@ trailFekHorizontal = origin ~~ (width &| 0)
 partFek :: Given Config => Part
 partFek = makePart trails
   where
-    trails =
-      [ trailVerticalCut
-      , trailFekHorizontal
-      , trailVerticalCut # backward
-      , trailFekHorizontal # backward
-      ]
+    trails = do
+      trailVerticalCut
+      trailFekHorizontal
+      trailVerticalCut # backward
+      trailFekHorizontal # backward
 
 -- フォーハックの直線を、左端から右端への向きで生成します。
 trailFohakHorizontal :: Given Config => PartTrail
@@ -1019,12 +980,11 @@ trailFohakHorizontal = origin ~~ (width &| 0)
 partFohak :: Given Config => Part
 partFohak = makePart trails
   where
-    trails =
-      [ trailVerticalCut
-      , trailFohakHorizontal
-      , trailVerticalCut # backward
-      , trailFohakHorizontal # backward
-      ]
+    trails = do
+      trailVerticalCut
+      trailFohakHorizontal
+      trailVerticalCut # backward
+      trailFohakHorizontal # backward
 
 -- ダッシュの直線を、左端から右端への向きで生成します。
 trailDashHorizontal :: Given Config => PartTrail
@@ -1037,12 +997,11 @@ trailDashHorizontal = origin ~~ (width &| 0)
 partDash :: Given Config => Part
 partDash = makePart trails
   where
-    trails =
-      [ trailVerticalCut
-      , trailDashHorizontal
-      , trailVerticalCut # backward
-      , trailDashHorizontal # backward
-      ]
+    trails = do
+      trailVerticalCut
+      trailDashHorizontal
+      trailVerticalCut # backward
+      trailDashHorizontal # backward
 
 -- ラクットの縦向きの棒状の部分の直線を、上端から下端への向きで生成します。
 trailRakutVertical :: Given Config => PartTrail
@@ -1061,34 +1020,31 @@ trailRakutHorizontal = origin ~~ (width &| 0)
 partRakutVertical :: Given Config => Part
 partRakutVertical = makePart trails
   where
-    trails =
-      [ trailRakutVertical
-      , trailCut
-      , trailRakutVertical # backward
-      , trailCut # backward
-      ]
+    trails = do
+      trailRakutVertical
+      trailCut
+      trailRakutVertical # backward
+      trailCut # backward
 
 -- ラクットの横向きの棒状の部分を生成します。
 -- 原点は左上の角にあります。
 partRakutHorizontal :: Given Config => Part
 partRakutHorizontal = makePart trails
   where
-    trails =
-      [ trailVerticalCut
-      , trailRakutHorizontal
-      , trailVerticalCut # backward
-      , trailRakutHorizontal # backward
-      ]
+    trails = do
+      trailVerticalCut
+      trailRakutHorizontal
+      trailVerticalCut # backward
+      trailRakutHorizontal # backward
 
 -- 開きラクットと同じ形を生成します。
 -- 原点は左上の角にあります。
 partOpeningRakut :: Given Config => Part
-partOpeningRakut = concat parts
+partOpeningRakut = parts
   where
-    parts =
-      [ partRakutVertical
-      , partRakutHorizontal
-      ]
+    parts = do
+      partRakutVertical
+      partRakutHorizontal
 
 ascent :: Given Config => Double
 ascent = mean + descent

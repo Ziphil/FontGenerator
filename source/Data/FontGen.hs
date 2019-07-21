@@ -2,13 +2,15 @@
 
 
 module Data.FontGen
-  ( module Data.FontGen.GlyphType
+  ( module Control.Monad.State 
+  , module Data.FontGen.GlyphType
   , module Data.FontGen.Util
   , module Diagrams.TwoD.Segment
   , module Diagrams.Prelude
   )
 where
 
+import Control.Monad.State
 import Data.FontGen.GlyphType
 import Data.FontGen.Util
 import Diagrams.TwoD.Segment

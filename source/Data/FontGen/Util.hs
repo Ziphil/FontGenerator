@@ -20,6 +20,7 @@ module Data.FontGen.Util
   , SegmentLike (..)
   , (~~)
   , (&~)
+  , skip
   )
 where
 
@@ -109,12 +110,12 @@ instance PointLike (EndPoint v n) where
   pointLike point = point :~> Nothing
 
 -- 3 次ベジエ曲線の始点側の端点と制御点を生成します。
-infix 1 ~>
+infix 2 ~>
 (~>) :: Point v n -> v n -> EndPoint v n
 point ~> cont = point :~> Just cont
 
 -- 3 次ベジエ曲線の終点側の端点と制御点を生成します。
-infix 1 <~
+infix 2 <~
 (<~) :: v n -> Point v n -> EndPoint v n
 cont <~ point = point :~> Just cont
 
@@ -158,7 +159,7 @@ makeBezier3 initPoint initCont termPoint termCont = segmentLike $ at segment ini
 -- 始点側と終点側それぞれの端点と制御点の情報から、3 次ベジエ曲線を生成します。
 -- 始点と終点がともに制御点をもたない場合は、単に始点と終点を結ぶ直線を生成します。
 -- 生成される値が原点をもつ場合、その原点は始点に設定されます。
-infix 0 ~~
+infix 1 ~~
 (~~) :: (InSpace v n s, SegmentLike s) => EndPoint v n -> EndPoint v n -> s
 initPoint :~> initCont ~~ termPoint :~> termCont =
   if isNothing initCont && isNothing termCont
@@ -170,3 +171,24 @@ initPoint :~> initCont ~~ termPoint :~> termCont =
 infixl 8 &~
 (&~) :: s -> State s a -> s
 val &~ state = execState state val
+
+skip :: Monad m => m ()
+skip = return ()
+
+type instance V (State s a) = V s
+type instance N (State s a) = N s
+
+instance HasOrigin t => HasOrigin (State [t] ()) where
+  moveOriginTo point state = modify (++ (moveOriginTo point $ execState state []))
+
+instance Transformable t => Transformable (State [t] ()) where
+  transform op state = modify (++ (transform op $ execState state []))
+
+instance Backwardable t => Backwardable (State [t] ()) where
+  backward state = modify (++ (backward $ execState state []))
+
+instance TrailLike t => TrailLike (State [t] ()) where
+  trailLike loc = modify (++ [trailLike loc])
+
+instance SegmentLike t => SegmentLike (State [t] ()) where
+  segmentLike loc = modify (++ [segmentLike loc])

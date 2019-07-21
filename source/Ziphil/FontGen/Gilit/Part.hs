@@ -73,12 +73,11 @@ trailLeftLeftOblique = origin ~~ (x &| y)
 partLeftOblique :: Given Config => Part
 partLeftOblique = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailHorizontalCut
-      , trailRightLeftOblique
-      , trailCut # reflectY # backward
-      , trailLeftLeftOblique
-      ]
+    trails = do
+      trailHorizontalCut
+      trailRightLeftOblique
+      trailCut # reflectY # backward
+      trailLeftLeftOblique
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
@@ -100,12 +99,11 @@ trailLeftLeftShortOblique = origin ~~ (x &| y)
 partLeftShortOblique :: Given Config => Part
 partLeftShortOblique = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailHorizontalCut
-      , trailRightLeftShortOblique
-      , trailCut # reflectY # backward
-      , trailLeftLeftShortOblique
-      ]
+    trails = do
+      trailHorizontalCut
+      trailRightLeftShortOblique
+      trailCut # reflectY # backward
+      trailLeftLeftShortOblique
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
@@ -132,13 +130,12 @@ trailChip = origin ~~ (x &| y)
 partLeftChippedOblique :: Given Config => Part
 partLeftChippedOblique = makePart trails # moveOriginBy (originX &| 0) 
   where
-    trails =
-      [ trailChip
-      , trailHorizontalChippedCut
-      , trailRightLeftOblique
-      , trailCut # reflectY # backward
-      , trailLeftLeftChippedOblique
-      ]
+    trails = do
+      trailChip
+      trailHorizontalChippedCut
+      trailRightLeftOblique
+      trailCut # reflectY # backward
+      trailLeftLeftChippedOblique
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedOblique :: Given Config => Part
@@ -153,13 +150,12 @@ trailLeftLeftCutOblique = origin ~~ (x &| y)
 partLeftCutOblique :: Given Config => Part
 partLeftCutOblique = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailHorizontalCut
-      , trailRightLeftOblique
-      , trailChip # rotateHalfTurn
-      , trailHorizontalChippedCut # backward
-      , trailLeftLeftCutOblique
-      ]
+    trails = do
+      trailHorizontalCut
+      trailRightLeftOblique
+      trailChip # rotateHalfTurn
+      trailHorizontalChippedCut # backward
+      trailLeftLeftCutOblique
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
@@ -169,14 +165,13 @@ partRightCutOblique = partLeftCutOblique # reflectSide
 partLeftCenterOblique :: Given Config => Part
 partLeftCenterOblique = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailChip
-      , trailHorizontalChippedCut
-      , trailRightLeftOblique
-      , trailChip # rotateHalfTurn
-      , trailHorizontalChippedCut # backward
-      , trailRightLeftOblique # backward
-      ]
+    trails = do
+      trailChip
+      trailHorizontalChippedCut
+      trailRightLeftOblique
+      trailChip # rotateHalfTurn
+      trailHorizontalChippedCut # backward
+      trailRightLeftOblique # backward
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightCenterOblique :: Given Config => Part
@@ -207,12 +202,11 @@ trailLeftBase = origin ~~ (x &| y)
 partBase :: Given Config => Part
 partBase = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailBottomBase
-      , trailRightBase
-      , trailTopBase
-      , trailLeftBase
-      ]
+    trails = do
+      trailBottomBase
+      trailRightBase
+      trailTopBase
+      trailLeftBase
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
@@ -224,13 +218,12 @@ trailBottomLeftChippedBase = origin ~~ (x &| 0)
 partLeftChippedBase :: Given Config => Part
 partLeftChippedBase = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailChip
-      , trailBottomLeftChippedBase
-      , trailRightBase
-      , trailTopBase
-      , trailChip # reflectY # backward
-      ]
+    trails = do
+      trailChip
+      trailBottomLeftChippedBase
+      trailRightBase
+      trailTopBase
+      trailChip # reflectY # backward
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedBase :: Given Config => Part
@@ -239,14 +232,13 @@ partRightChippedBase = partLeftChippedBase # reflectSide
 partChippedBase :: Given Config => Part
 partChippedBase = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails =
-      [ trailChip
-      , trailTopBase # backward
-      , trailChip # reflectX # backward
-      , trailChip # rotateHalfTurn
-      , trailTopBase
-      , trailChip # reflectY # backward
-      ]
+    trails = do
+      trailChip
+      trailTopBase # backward
+      trailChip # reflectX # backward
+      trailChip # rotateHalfTurn
+      trailTopBase
+      trailChip # reflectY # backward
     originX = thickness / (sinA obliqueAngle * 2)
 
 trailRightLeftAscender :: Given Config => PartTrail
@@ -258,12 +250,11 @@ trailRightLeftAscender = origin ~~ (x &| y)
 partLeftAscender :: Given Config => Part
 partLeftAscender = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailCut
-      , trailRightLeftAscender
-      , trailCut # backward
-      , trailRightLeftAscender # backward
-      ]
+    trails = do
+      trailCut
+      trailRightLeftAscender
+      trailCut # backward
+      trailRightLeftAscender # backward
     originX = -triangleWidth / 2
     originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
 
@@ -285,12 +276,11 @@ trailRightLeftDescender = origin ~~ (x &| y)
 partLeftDescender :: Given Config => Part
 partLeftDescender = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailLeftLeftDescender
-      , trailCut
-      , trailRightLeftDescender
-      , trailHorizontalCut # backward
-      ]
+    trails = do
+      trailLeftLeftDescender
+      trailCut
+      trailRightLeftDescender
+      trailHorizontalCut # backward
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = -thickness / 2
 
@@ -306,13 +296,12 @@ trailLeftLeftChippedDescender = origin ~~ (x &| y)
 partLeftChippedDescender :: Given Config => Part
 partLeftChippedDescender = makePart trails # moveOriginBy (originX &| 0)
   where
-    trails = 
-      [ trailLeftLeftChippedDescender
-      , trailCut
-      , trailRightLeftDescender
-      , trailHorizontalChippedCut # backward
-      , trailChip
-      ]
+    trails = do 
+      trailLeftLeftChippedDescender
+      trailCut
+      trailRightLeftDescender
+      trailHorizontalChippedCut # backward
+      trailChip
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedDescender :: Given Config => Part
@@ -330,36 +319,33 @@ trailRightTransphone = origin ~~ (x &| y)
 partTransphone :: Given Config => Part
 partTransphone = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailHorizontalCut
-      , trailRightTransphone
-      , trailHorizontalCut # backward
-      , trailRightTransphone # backward
-      ]
+    trails = do
+      trailHorizontalCut
+      trailRightTransphone
+      trailHorizontalCut # backward
+      trailRightTransphone # backward
     originX = -triangleWidth - horizontalTransphoneGap - thickness / (sinA obliqueAngle * 2) - thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
 partDiamond :: Given Config => Part
 partDiamond = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailCut
-      , trailCut # reflectY # backward
-      , trailCut # rotateHalfTurn
-      , trailCut # reflectX # backward
-      ]
+    trails = do
+      trailCut
+      trailCut # reflectY # backward
+      trailCut # rotateHalfTurn
+      trailCut # reflectX # backward
     originX = -triangleWidth / 2
     originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
 
 partDot :: Given Config => Part
 partDot = makePart trails # moveOriginBy (originX &| originY)
   where
-    trails =
-      [ trailCut
-      , trailCut # reflectY # backward
-      , trailCut # rotateHalfTurn
-      , trailCut # reflectX # backward
-      ]
+    trails = do
+      trailCut
+      trailCut # reflectY # backward
+      trailCut # rotateHalfTurn
+      trailCut # reflectX # backward
     originX = -triangleWidth / 4
     originY = -triangleHeight / 2 + thickness / (cosA obliqueAngle * 2)
 
