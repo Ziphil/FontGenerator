@@ -2,7 +2,8 @@
 
 
 module Ziphil.FontGen.Gilit.PartFunc
-  ( reflectSide
+  ( reflectX'
+  , transpose
   )
 where
 
@@ -12,5 +13,9 @@ import Ziphil.FontGen.Gilit.Config
 import Ziphil.FontGen.Gilit.Value
 
 
-reflectSide :: Given Config => Part -> Part
-reflectSide = reflectX >>> moveOriginBy (-triangleWidth &| 0)
+reflectX' :: Given Config => Part -> Part
+reflectX' = reflectX >>> moveOriginBy (-triangleWidth &| 0)
+
+-- 上に尖った三角形状の文字のパーツを反転させ、下に尖った三角形状の文字のパーツに変換します。
+transpose :: Given Config => Part -> Part
+transpose = reflectY >>> moveOriginBy (0 &| -triangleHeight)

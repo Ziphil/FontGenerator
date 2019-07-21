@@ -82,7 +82,7 @@ partLeftOblique = makePart rims # moveOriginBy (originX &| originY)
     originY = thickness / 2
 
 partRightOblique :: Given Config => Part
-partRightOblique = partLeftOblique # reflectSide
+partRightOblique = partLeftOblique # reflectX'
 
 rimRightLeftShortOblique :: Given Config => Rim
 rimRightLeftShortOblique = origin ~~ (x &| y)
@@ -108,7 +108,7 @@ partLeftShortOblique = makePart rims # moveOriginBy (originX &| originY)
     originY = thickness / 2
 
 partRightShortOblique :: Given Config => Part
-partRightShortOblique = partLeftShortOblique # reflectSide
+partRightShortOblique = partLeftShortOblique # reflectX'
 
 rimHorizontalChippedCut :: Given Config => Rim
 rimHorizontalChippedCut = origin ~~ (x &| 0)
@@ -139,7 +139,7 @@ partLeftChippedOblique = makePart rims # moveOriginBy (originX &| 0)
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedOblique :: Given Config => Part
-partRightChippedOblique = partLeftChippedOblique # reflectSide
+partRightChippedOblique = partLeftChippedOblique # reflectX'
 
 rimLeftLeftCutOblique :: Given Config => Rim
 rimLeftLeftCutOblique = origin ~~ (x &| y)
@@ -160,7 +160,7 @@ partLeftCutOblique = makePart rims # moveOriginBy (originX &| originY)
     originY = thickness / 2
 
 partRightCutOblique :: Given Config => Part
-partRightCutOblique = partLeftCutOblique # reflectSide
+partRightCutOblique = partLeftCutOblique # reflectX'
 
 partLeftCenterOblique :: Given Config => Part
 partLeftCenterOblique = makePart rims # moveOriginBy (originX &| 0)
@@ -175,7 +175,7 @@ partLeftCenterOblique = makePart rims # moveOriginBy (originX &| 0)
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightCenterOblique :: Given Config => Part
-partRightCenterOblique = partLeftCenterOblique # reflectSide
+partRightCenterOblique = partLeftCenterOblique # reflectX'
 
 rimBottomBase :: Given Config => Rim
 rimBottomBase = origin ~~ (x &| 0)
@@ -227,7 +227,7 @@ partLeftChippedBase = makePart rims # moveOriginBy (originX &| 0)
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedBase :: Given Config => Part
-partRightChippedBase = partLeftChippedBase # reflectSide
+partRightChippedBase = partLeftChippedBase # reflectX'
 
 partChippedBase :: Given Config => Part
 partChippedBase = makePart rims # moveOriginBy (originX &| 0)
@@ -259,7 +259,7 @@ partLeftAscender = makePart rims # moveOriginBy (originX &| originY)
     originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
 
 partRightAscender :: Given Config => Part
-partRightAscender = partLeftAscender # reflectSide
+partRightAscender = partLeftAscender # reflectX'
 
 rimLeftLeftDescender :: Given Config => Rim
 rimLeftLeftDescender = origin ~~ (x &| y)
@@ -285,7 +285,7 @@ partLeftDescender = makePart rims # moveOriginBy (originX &| originY)
     originY = -thickness / 2
 
 partRightDescender :: Given Config => Part
-partRightDescender = partLeftDescender # reflectSide
+partRightDescender = partLeftDescender # reflectX'
 
 rimLeftLeftChippedDescender :: Given Config => Rim
 rimLeftLeftChippedDescender = origin ~~ (x &| y)
@@ -305,7 +305,7 @@ partLeftChippedDescender = makePart rims # moveOriginBy (originX &| 0)
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedDescender :: Given Config => Part
-partRightChippedDescender = partLeftChippedDescender # reflectSide
+partRightChippedDescender = partLeftChippedDescender # reflectX'
 
 horizontalTransphoneGap :: Given Config => Double
 horizontalTransphoneGap = transphoneGap / sinA obliqueAngle
