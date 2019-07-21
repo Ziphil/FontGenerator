@@ -11,6 +11,7 @@ module Data.FontGen.GlyphType
   , Part
   , Glyph
   , Glyphs
+  , GlyphsState
   , makeRim
   , makePart
   , concatPart
@@ -39,7 +40,9 @@ type PartElem = Path V2 Double
 type Part = State [PartElem] ()
 
 type Glyph = Diagram B
+
 type Glyphs = Map Char Glyph
+type GlyphsState = State Glyphs ()
 
 -- リムからリムを生成します。
 -- リムを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
@@ -56,8 +59,8 @@ makePart rims = modify (++ [pathFromTrail . closeTrail . mconcat $ execState rim
 concatPart :: Part -> Part
 concatPart parts = modify (++ [mconcat $ execState parts []])
 
-makeGlyphs :: [(Char, Glyph)] -> Glyphs
-makeGlyphs = Map.fromList
+makeGlyphs :: GlyphsState -> Glyphs
+makeGlyphs = flip execState Map.empty
 
 class ToChar c where
   toChar :: c -> Char
@@ -68,10 +71,10 @@ instance ToChar Char where
 instance ToChar Int where
   toChar = toEnum
 
--- グリフマップを生成する際に文字とグリフのタプルを作るユーティリティ演算子です。
+-- グリフマップにグリフを更新する状態を生成します。
 infix 0 >-
-(>-) :: ToChar c => c -> g -> (Char, g)
-thing >- glyph = (toChar thing, glyph)
+(>-) :: ToChar c => c -> Glyph -> GlyphsState
+thing >- glyph = modify $ Map.insert (toChar thing) glyph
 
 data Metrics = Metrics {_metricEm :: Double, _metricAscent :: Double, _metricDescent :: Double}
   deriving (Eq, Show)

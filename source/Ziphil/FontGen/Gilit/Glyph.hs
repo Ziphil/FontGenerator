@@ -17,53 +17,52 @@ import Ziphil.FontGen.Gilit.Value
 glyphs :: Given Config => Glyphs
 glyphs = makeGlyphs list
   where
-    list =
-      [ 's' >- glyphUpSal, 'S' >- glyphDownSal
-      , 'z' >- glyphUpZol, 'Z' >- glyphDownZol
-      , 't' >- glyphUpTal, 'T' >- glyphDownTal
-      , 'd' >- glyphUpDol, 'D' >- glyphDownDol
-      , 'k' >- glyphUpKal, 'K' >- glyphDownKal
-      , 'g' >- glyphUpGol, 'G' >- glyphDownGol
-      , 'f' >- glyphUpFal, 'F' >- glyphDownFal
-      , 'v' >- glyphUpVol, 'V' >- glyphDownVol
-      , 'p' >- glyphUpPal, 'P' >- glyphDownPal
-      , 'b' >- glyphUpBol, 'B' >- glyphDownBol
-      , 'c' >- glyphUpCal, 'C' >- glyphDownCal
-      , 'q' >- glyphUpQol, 'Q' >- glyphDownQol
-      , 'x' >- glyphUpXal, 'X' >- glyphDownXal
-      , 'j' >- glyphUpJol, 'J' >- glyphDownJol
-      , 'l' >- glyphUpLes, 'L' >- glyphDownLes
-      , 'r' >- glyphUpRes, 'R' >- glyphDownRes
-      , 'n' >- glyphUpNes, 'N' >- glyphDownNes
-      , 'm' >- glyphUpMes, 'M' >- glyphDownMes
-      , 'y' >- glyphUpYes, 'Y' >- glyphDownYes
-      , 'h' >- glyphUpHes, 'H' >- glyphDownHes
-      , 'a' >- glyphUpAt, 'A' >- glyphDownAt
-      , 'á' >- glyphUpAt, 'Á' >- glyphDownAt
-      , 'à' >- glyphUpAt, 'À' >- glyphDownAt
-      , 'â' >- glyphUpAt, 'Â' >- glyphDownAt
-      , 'e' >- glyphUpEt, 'E' >- glyphDownEt
-      , 'é' >- glyphUpEt, 'É' >- glyphDownEt
-      , 'è' >- glyphUpEt, 'È' >- glyphDownEt
-      , 'ê' >- glyphUpEt, 'Ê' >- glyphDownEt
-      , 'i' >- glyphUpIt, 'I' >- glyphDownIt
-      , 'í' >- glyphUpIt, 'Í' >- glyphDownIt
-      , 'ì' >- glyphUpIt, 'Ì' >- glyphDownIt
-      , 'î' >- glyphUpIt, 'Î' >- glyphDownIt
-      , 'o' >- glyphUpOt, 'O' >- glyphDownOt
-      , 'ò' >- glyphUpOt, 'Ò' >- glyphDownOt
-      , 'ô' >- glyphUpOt, 'Ô' >- glyphDownOt
-      , 'u' >- glyphUpUt, 'U' >- glyphDownUt
-      , 'ù' >- glyphUpUt, 'Ù' >- glyphDownUt
-      , 'û' >- glyphUpUt, 'Û' >- glyphDownUt
-      , ',' >- glyphTadek
-      , '.' >- glyphDek
-      , '!' >- glyphDek
-      , '?' >- glyphDek
-      , '\'' >- glyphNok
-      , 'ʻ' >- glyphNok
-      , ' ' >- glyphSpace
-      ]
+    list = do
+      's' >- glyphUpSal; 'S' >- glyphDownSal
+      'z' >- glyphUpZol; 'Z' >- glyphDownZol
+      't' >- glyphUpTal; 'T' >- glyphDownTal
+      'd' >- glyphUpDol; 'D' >- glyphDownDol
+      'k' >- glyphUpKal; 'K' >- glyphDownKal
+      'g' >- glyphUpGol; 'G' >- glyphDownGol
+      'f' >- glyphUpFal; 'F' >- glyphDownFal
+      'v' >- glyphUpVol; 'V' >- glyphDownVol
+      'p' >- glyphUpPal; 'P' >- glyphDownPal
+      'b' >- glyphUpBol; 'B' >- glyphDownBol
+      'c' >- glyphUpCal; 'C' >- glyphDownCal
+      'q' >- glyphUpQol; 'Q' >- glyphDownQol
+      'x' >- glyphUpXal; 'X' >- glyphDownXal
+      'j' >- glyphUpJol; 'J' >- glyphDownJol
+      'l' >- glyphUpLes; 'L' >- glyphDownLes
+      'r' >- glyphUpRes; 'R' >- glyphDownRes
+      'n' >- glyphUpNes; 'N' >- glyphDownNes
+      'm' >- glyphUpMes; 'M' >- glyphDownMes
+      'y' >- glyphUpYes; 'Y' >- glyphDownYes
+      'h' >- glyphUpHes; 'H' >- glyphDownHes
+      'a' >- glyphUpAt; 'A' >- glyphDownAt
+      'á' >- glyphUpAt; 'Á' >- glyphDownAt
+      'à' >- glyphUpAt; 'À' >- glyphDownAt
+      'â' >- glyphUpAt; 'Â' >- glyphDownAt
+      'e' >- glyphUpEt; 'E' >- glyphDownEt
+      'é' >- glyphUpEt; 'É' >- glyphDownEt
+      'è' >- glyphUpEt; 'È' >- glyphDownEt
+      'ê' >- glyphUpEt; 'Ê' >- glyphDownEt
+      'i' >- glyphUpIt; 'I' >- glyphDownIt
+      'í' >- glyphUpIt; 'Í' >- glyphDownIt
+      'ì' >- glyphUpIt; 'Ì' >- glyphDownIt
+      'î' >- glyphUpIt; 'Î' >- glyphDownIt
+      'o' >- glyphUpOt; 'O' >- glyphDownOt
+      'ò' >- glyphUpOt; 'Ò' >- glyphDownOt
+      'ô' >- glyphUpOt; 'Ô' >- glyphDownOt
+      'u' >- glyphUpUt; 'U' >- glyphDownUt
+      'ù' >- glyphUpUt; 'Ù' >- glyphDownUt
+      'û' >- glyphUpUt; 'Û' >- glyphDownUt
+      ',' >- glyphTadek
+      '.' >- glyphDek
+      '!' >- glyphDek
+      '?' >- glyphDek
+      '\'' >- glyphNok
+      'ʻ' >- glyphNok
+      ' ' >- glyphSpace
 
 glyphUpSal :: Given Config => Glyph
 glyphUpSal = makeGlyphWithSpacing' singleSpacing parts

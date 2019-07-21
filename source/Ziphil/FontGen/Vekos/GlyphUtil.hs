@@ -13,6 +13,7 @@ where
 import Control.Arrow
 import Data.Char
 import Data.FontGen
+import qualified Data.Map as Map
 import Data.Reflection
 import Ziphil.FontGen.Vekos.Config
 import Ziphil.FontGen.Vekos.Part
@@ -41,5 +42,5 @@ makeGlyphWithSpacing' :: Given Config => FixedSpacing -> Part -> Glyph
 makeGlyphWithSpacing' = makeGlyph metrics
 
 -- 対応する大文字がある場合に、その大文字にも同じグリフを割り当てるようにして、グリフマップを生成します。
-makeGlyphs' :: [(Char, Glyph)] -> Glyphs
-makeGlyphs' list = makeGlyphs $ list ++ map (first toUpper) list
+makeGlyphs' :: GlyphsState -> Glyphs
+makeGlyphs' = uncurry Map.union . (Map.mapKeys toUpper &&& id) . makeGlyphs
