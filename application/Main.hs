@@ -21,6 +21,7 @@ main = Interface.main generateOption renderOption
         , " «â, S'e YeR-fItUl….» "
         , " A 2·4 tE 31:05:2019. "
         , " cAtEs — OmêL — a'L. "
+        , " zA sWA Re Lwe "
         ]
       fileName .= "test"
       lineGap .= 200
