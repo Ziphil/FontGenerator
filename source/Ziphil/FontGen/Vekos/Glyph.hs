@@ -27,6 +27,7 @@ glyphs = makeGlyphs' list
       , 'f' >- glyphFal, 'v' >- glyphVol
       , 'x' >- glyphXal, 'j' >- glyphJol
       , 'n' >- glyphNes, 'm' >- glyphMes
+      , 'w' >- glyphTransphone
       , 'a' >- glyphAt, 'á' >- glyphAtAcute, 'à' >- glyphAtGrave, 'â' >- glyphAtCircumflex
       , 'e' >- glyphEt, 'é' >- glyphEtAcute, 'è' >- glyphEtGrave, 'ê' >- glyphEtCircumflex
       , 'i' >- glyphIt, 'í' >- glyphItAcute, 'ì' >- glyphItGrave, 'î' >- glyphItCircumflex
@@ -194,6 +195,16 @@ glyphMes = makeGlyph' parts
       [ partNes # translate (nesWidth / 2 &| mean / 2)
       , partTransphone # translate (nesWidth + transphoneGap &| mean / 2)
       ]
+
+glyphTransphone :: Given Config => Glyph
+glyphTransphone = makeGlyphWithSpacing' spacing parts
+  where
+    parts =
+      [ partTransphone # translate (transphoneBend &| mean / 2)
+      ]
+    spacing = with &~ do
+      leftBearing .= transphoneGap - transphoneBend - bearing
+      rightBearing .= bearing
 
 glyphAt :: Given Config => Glyph
 glyphAt = makeGlyph' parts
