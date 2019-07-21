@@ -5,13 +5,13 @@
 
 
 module Data.FontGen.GlyphType
-  ( PartTrailElem
-  , PartTrail
+  ( RimElem
+  , Rim
   , PartElem
   , Part
   , Glyph
   , Glyphs
-  , makeTrail
+  , makeRim
   , makePart
   , concatPart
   , makeGlyphs
@@ -32,8 +32,8 @@ import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
 
-type PartTrailElem = Trail V2 Double
-type PartTrail = State [PartTrailElem] ()
+type RimElem = Trail V2 Double
+type Rim = State [RimElem] ()
 
 type PartElem = Path V2 Double
 type Part = State [PartElem] ()
@@ -41,15 +41,15 @@ type Part = State [PartElem] ()
 type Glyph = Diagram B
 type Glyphs = Map Char Glyph
 
--- トレイルからトレイルを生成します。
--- トレイルを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
-makeTrail :: PartTrail -> PartTrail
-makeTrail = id
+-- リムからリムを生成します。
+-- リムを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
+makeRim :: Rim -> Rim
+makeRim = id
 
--- トレイルのリストから 1 つのパスから成るパーツを生成します。
--- 生成の際に自動的にパスを閉じるので、トレイルの始点と終点は同じ点であるようにしてください。
-makePart :: PartTrail -> Part
-makePart trails = modify (++ [pathFromTrail . closeTrail . mconcat $ execState trails []])
+-- リムのリストから 1 つのパスから成るパーツを生成します。
+-- 生成の際に自動的にパスを閉じるので、リムの始点と終点は同じ点であるようにしてください。
+makePart :: Rim -> Part
+makePart rims = modify (++ [pathFromTrail . closeTrail . mconcat $ execState rims []])
 
 -- 複数のパーツを結合して 1 つのパスから成るパーツにします。
 -- 中に空洞がある形をしたパーツを作成するのに利用できます。
