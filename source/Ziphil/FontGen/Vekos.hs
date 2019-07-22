@@ -11,6 +11,8 @@ module Ziphil.FontGen.Vekos
   , fontExtendedRegular
   , fontExtendedBold
   , fontExtendedThin
+  , fontHighRegular
+  , fontHighBold
   )
 where
 
@@ -109,3 +111,23 @@ fontExtendedThin = with &~ commonState &~ do
   config .= with &~ do
     weightConst .= 0.5
     stretchConst .= 1.25
+
+fontHighRegular :: Font
+fontHighRegular = with &~ commonState &~ do
+  family <>= " High"
+  style .= with &~ do
+    weight .= Regular
+  config .= with &~ do
+    weightConst .= 1
+    stretchConst .= 1
+    contrastRatio .= 0.2
+
+fontHighBold :: Font
+fontHighBold = with &~ commonState &~ do
+  family <>= " High"
+  style .= with &~ do
+    weight .= Bold
+  config .= with &~ do
+    weightConst .= 1.5
+    stretchConst .= 1
+    contrastRatio .= 0.2

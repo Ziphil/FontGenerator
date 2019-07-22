@@ -7,7 +7,7 @@
 
 
 module Ziphil.FontGen.Vekos.Config
-  ( Config, weightConst, stretchConst
+  ( Config, weightConst, stretchConst, contrastRatio
   , Given
   , give
   , given
@@ -19,13 +19,13 @@ import Data.Reflection (Given)
 import qualified Data.Reflection as Reflection
 
 
-data Config = Config {_weightConst :: Double, _stretchConst :: Double}
+data Config = Config {_weightConst :: Double, _stretchConst :: Double, _contrastRatio :: Double}
   deriving (Eq, Show)
 
 makeFieldsNoPrefix ''Config
 
 instance Default Config where
-  def = Config 1 1
+  def = Config 1 1 0.75
 
 give :: Config -> (Given Config => r) -> r
 give = Reflection.give

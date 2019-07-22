@@ -105,7 +105,9 @@ thicknessX = weightConst' * 100
     weightConst' = given ^. weightConst
 
 thicknessY :: Given Config => Double
-thicknessY = thicknessX * 0.75
+thicknessY = thicknessX * contrastRatio'
+  where
+    contrastRatio' = given ^. contrastRatio
 
 bowlWidth :: Given Config => Double
 bowlWidth = (weightConst' * 80 + 370) * stretchConst'
@@ -229,7 +231,9 @@ acuteThicknessX = min (weightConst' * 90) (weightConst' * 40 + 35)
     weightConst' = given ^. weightConst
 
 acuteThicknessY :: Given Config => Double
-acuteThicknessY = acuteThicknessX * 0.75
+acuteThicknessY = acuteThicknessX * contrastRatio'
+  where
+    contrastRatio' = given ^. contrastRatio
 
 acuteWidth :: Given Config => Double
 acuteWidth = bowlWidth * 0.6
@@ -243,7 +247,9 @@ circumflexThicknessX = min (weightConst' * 90) (weightConst' * 40 + 35)
     weightConst' = given ^. weightConst
 
 circumflexThicknessY :: Given Config => Double
-circumflexThicknessY = circumflexThicknessX * 0.75
+circumflexThicknessY = circumflexThicknessX * contrastRatio'
+  where
+    contrastRatio' = given ^. contrastRatio
 
 circumflexWidth :: Given Config => Double
 circumflexWidth = bowlWidth * 0.5

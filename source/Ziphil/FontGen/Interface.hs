@@ -32,6 +32,8 @@ fonts = Map.fromList list
       , ("Ver", Vekos.fontExtendedRegular)
       , ("Veb", Vekos.fontExtendedBold)
       , ("Vet", Vekos.fontExtendedThin)
+      , ("Vhr", Vekos.fontHighRegular)
+      , ("Vhb", Vekos.fontHighBold)
       , ("Gr", Gilit.fontRegular)
       , ("Gb", Gilit.fontBold)
       , ("Ger", Gilit.fontExtendedRegular)
