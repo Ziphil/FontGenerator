@@ -505,7 +505,8 @@ glyphTadek = makeGlyphWithSpacing' spacing parts
   where
     parts = do
       partDot
-    spacing = spacingBy $ triangleWidth / 2
+    spacing = defaultSpacing &~ do
+      fixedWidth += triangleWidth / 2
 
 glyphDek :: Given Config => Glyph
 glyphDek = makeGlyphWithSpacing' spacing parts
@@ -513,14 +514,16 @@ glyphDek = makeGlyphWithSpacing' spacing parts
     parts = do
       partDot
       partDot # translate (thickness / sinA obliqueAngle &| 0)
-    spacing = spacingBy $ triangleWidth / 2 + thickness / sinA obliqueAngle
+    spacing = defaultSpacing &~ do
+      fixedWidth += triangleWidth / 2 + thickness / sinA obliqueAngle
 
 glyphNok :: Given Config => Glyph
 glyphNok = makeGlyphWithSpacing' spacing parts
   where
     parts = do
       partDot
-    spacing = spacingBy $ triangleWidth / 2
+    spacing = defaultSpacing &~ do
+      fixedWidth += triangleWidth / 2
 
 glyphSpace :: Given Config => Glyph
 glyphSpace = makeGlyphWithSpacing' spacing skip
