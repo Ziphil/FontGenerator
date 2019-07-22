@@ -15,17 +15,15 @@ module Data.FontGen.GlyphType
   , makeRim
   , makePart
   , concatPart
-  , makeGlyphs
-  , (>-)
-  , Metrics, metricEm, metricAscent, metricDescent
-  , FixedSpacing, leftBearing, rightBearing
-  , WidthSpacing, leftX, fixedWidth
   , makeGlyph
+  , (>-)
+  , makeGlyphs
   )
 where
 
 import Control.Monad.State
 import Data.Default.Class
+import Data.FontGen.Metrics
 import Data.FontGen.MonoidState
 import Data.FontGen.Util
 import Data.Map (Map)
@@ -60,47 +58,6 @@ makePart rims = add [pathFromTrail . closeTrail . mconcat $ execMonoidState' rim
 concatPart :: Part -> Part
 concatPart parts = add [mconcat $ execMonoidState' parts]
 
-makeGlyphs :: GlyphsState -> Glyphs
-makeGlyphs = flip execState Map.empty
-
-class ToChar c where
-  toChar :: c -> Char
-
-instance ToChar Char where
-  toChar = id
-
-instance ToChar Int where
-  toChar = toEnum
-
--- グリフマップにグリフを更新する状態を生成します。
-infix 0 >-
-(>-) :: ToChar c => c -> Glyph -> GlyphsState
-thing >- glyph = modify $ Map.insert (toChar thing) glyph
-
-data Metrics = Metrics {_metricEm :: Double, _metricAscent :: Double, _metricDescent :: Double}
-  deriving (Eq, Show)
-
-makeFieldsNoPrefix ''Metrics
-
-instance Default Metrics where
-  def = Metrics 1000 750 250
-
-data FixedSpacing = FixedSpacing {_leftBearing :: Double, _rightBearing :: Double}
-  deriving (Eq, Show)
-
-makeFieldsNoPrefix ''FixedSpacing
-
-instance Default FixedSpacing where
-  def = FixedSpacing 0 0
-
-data WidthSpacing = WidthSpacing {_leftX :: Double, _fixedWidth :: Double}
-  deriving (Eq, Show)
-
-makeFieldsNoPrefix ''WidthSpacing
-
-instance Default WidthSpacing where
-  def = WidthSpacing 0 0
-
 class ReformEnvelope m s where
   reformEnvelope :: m -> s -> Glyph -> Glyph
 
@@ -130,3 +87,20 @@ instance ReformEnvelope Metrics WidthSpacing where
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
 makeGlyph :: ReformEnvelope m s => m -> s -> Part -> Glyph
 makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . execMonoidState'
+
+class ToChar c where
+  toChar :: c -> Char
+
+instance ToChar Char where
+  toChar = id
+
+instance ToChar Int where
+  toChar = toEnum
+
+-- グリフマップにグリフを更新する状態を生成します。
+infix 0 >-
+(>-) :: ToChar c => c -> Glyph -> GlyphsState
+thing >- glyph = modify $ Map.insert (toChar thing) glyph
+
+makeGlyphs :: GlyphsState -> Glyphs
+makeGlyphs = flip execState Map.empty

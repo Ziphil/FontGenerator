@@ -23,6 +23,7 @@ import Control.Monad
 import Data.Char
 import Data.FontGen.FontType
 import Data.FontGen.GlyphType
+import Data.FontGen.Metrics
 import Data.FontGen.Util
 import Data.FileEmbed
 import Data.List

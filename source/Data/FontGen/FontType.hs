@@ -27,6 +27,7 @@ import Control.Lens
 import Data.Char
 import Data.Default.Class
 import Data.FontGen.GlyphType
+import Data.FontGen.Metrics
 import Data.List
 import qualified Data.Map as Map
 import qualified Data.Text as Text
