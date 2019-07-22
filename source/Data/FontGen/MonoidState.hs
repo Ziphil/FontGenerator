@@ -15,7 +15,7 @@ where
 
 
 -- モノイドの値を次々に演算していくという操作を行う状態を表す型です。
--- Function, Applicative, Monoid のインスタンスはタプルと全く同じです。
+-- Functor, Applicative, Monad のインスタンスはタプルと全く同じです。
 data MonoidState s a = s :&& a
 
 fmapMonoid :: (a -> b) -> MonoidState s a -> MonoidState s b
