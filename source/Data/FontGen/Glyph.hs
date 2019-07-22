@@ -11,7 +11,6 @@ module Data.FontGen.Glyph
   , Part
   , Glyph
   , Glyphs
-  , GlyphsState
   , makeRim
   , makePart
   , concatPart
@@ -41,7 +40,6 @@ type Part = MonoidState [PartElem] ()
 type Glyph = Diagram B
 
 type Glyphs = Map Char Glyph
-type GlyphsState = State Glyphs ()
 
 -- リムからリムを生成します。
 -- リムを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
@@ -99,8 +97,8 @@ instance ToChar Int where
 
 -- グリフマップにグリフを更新する状態を生成します。
 infix 0 >-
-(>-) :: ToChar c => c -> Glyph -> GlyphsState
+(>-) :: ToChar c => c -> Glyph -> State Glyphs ()
 thing >- glyph = modify $ Map.insert (toChar thing) glyph
 
-makeGlyphs :: GlyphsState -> Glyphs
+makeGlyphs :: State Glyphs a -> Glyphs
 makeGlyphs = flip execState Map.empty
