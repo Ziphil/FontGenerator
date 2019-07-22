@@ -4,7 +4,7 @@
 {-# LANGUAGE TemplateHaskell #-}
 
 
-module Data.FontGen.GlyphType
+module Data.FontGen.Glyph
   ( RimElem
   , Rim
   , PartElem

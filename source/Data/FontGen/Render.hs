@@ -21,8 +21,8 @@ where
 
 import Control.Monad
 import Data.Char
-import Data.FontGen.FontType
-import Data.FontGen.GlyphType
+import Data.FontGen.Font
+import Data.FontGen.Glyph
 import Data.FontGen.Metrics
 import Data.FontGen.Util
 import Data.FileEmbed

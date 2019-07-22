@@ -15,7 +15,7 @@ where
 
 import Control.Monad.State
 import Data.FontGen
-import Data.FontGen.FontType
+import Data.FontGen.Font
 import Data.Version
 import Ziphil.FontGen.Gilit.Config
 import qualified Ziphil.FontGen.Gilit.Glyph as Glyph

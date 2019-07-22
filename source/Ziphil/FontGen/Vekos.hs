@@ -16,7 +16,7 @@ where
 
 import Control.Monad.State
 import Data.FontGen
-import Data.FontGen.FontType
+import Data.FontGen.Font
 import Data.Version
 import Ziphil.FontGen.Vekos.Config
 import qualified Ziphil.FontGen.Vekos.Glyph as Glyph

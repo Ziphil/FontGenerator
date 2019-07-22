@@ -9,7 +9,7 @@ where
 import Control.Monad
 import Data.Char
 import Data.FontGen
-import Data.FontGen.FontType
+import Data.FontGen.Font
 import Data.FontGen.Render
 import Data.Map (Map)
 import qualified Data.Map as Map

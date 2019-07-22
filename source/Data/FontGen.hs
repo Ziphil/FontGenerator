@@ -3,7 +3,7 @@
 
 module Data.FontGen
   ( module Control.Monad.State 
-  , module Data.FontGen.GlyphType
+  , module Data.FontGen.Glyph
   , module Data.FontGen.Metrics
   , module Data.FontGen.MonoidState
   , module Data.FontGen.Util
@@ -13,7 +13,7 @@ module Data.FontGen
 where
 
 import Control.Monad.State
-import Data.FontGen.GlyphType
+import Data.FontGen.Glyph
 import Data.FontGen.Metrics
 import Data.FontGen.MonoidState
 import Data.FontGen.Util

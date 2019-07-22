@@ -7,7 +7,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 
 
-module Data.FontGen.FontType
+module Data.FontGen.Font
   ( Weight (..)
   , Slope (..)
   , Stretch (..)
@@ -26,7 +26,7 @@ where
 import Control.Lens
 import Data.Char
 import Data.Default.Class
-import Data.FontGen.GlyphType
+import Data.FontGen.Glyph
 import Data.FontGen.Metrics
 import Data.List
 import qualified Data.Map as Map
