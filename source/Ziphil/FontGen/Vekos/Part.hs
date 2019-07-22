@@ -443,7 +443,7 @@ partRac = parts
 solidusLength :: Given Config => Double
 solidusLength = rawLength * 2 - thicknessX
   where
-    rawLength = distance origin $ head $ intersectPointsP line (head $ [] &~ partBowl)
+    rawLength = distance origin $ head $ intersectPointsP line (head $ execMonoidState' partBowl)
     line = origin ~~ (bowlWidth / 2 &| solidusGrade)
 
 solidusThickness :: Given Config => Double

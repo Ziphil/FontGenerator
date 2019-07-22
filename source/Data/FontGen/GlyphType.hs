@@ -26,6 +26,7 @@ where
 
 import Control.Monad.State
 import Data.Default.Class
+import Data.FontGen.MonoidState
 import Data.FontGen.Util
 import Data.Map (Map)
 import qualified Data.Map as Map
@@ -34,10 +35,10 @@ import Diagrams.Prelude
 
 
 type RimElem = Trail V2 Double
-type Rim = State [RimElem] ()
+type Rim = MonoidState [RimElem] ()
 
 type PartElem = Path V2 Double
-type Part = State [PartElem] ()
+type Part = MonoidState [PartElem] ()
 
 type Glyph = Diagram B
 
@@ -52,12 +53,12 @@ makeRim = id
 -- リムのリストから 1 つのパスから成るパーツを生成します。
 -- 生成の際に自動的にパスを閉じるので、リムの始点と終点は同じ点であるようにしてください。
 makePart :: Rim -> Part
-makePart rims = modify (++ [pathFromTrail . closeTrail . mconcat $ execState rims []])
+makePart rims = add [pathFromTrail . closeTrail . mconcat $ execMonoidState' rims]
 
 -- 複数のパーツを結合して 1 つのパスから成るパーツにします。
 -- 中に空洞がある形をしたパーツを作成するのに利用できます。
 concatPart :: Part -> Part
-concatPart parts = modify (++ [mconcat $ execState parts []])
+concatPart parts = add [mconcat $ execMonoidState' parts]
 
 makeGlyphs :: GlyphsState -> Glyphs
 makeGlyphs = flip execState Map.empty
@@ -128,4 +129,4 @@ instance ReformEnvelope Metrics WidthSpacing where
 -- パーツのリストからグリフを生成します。
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
 makeGlyph :: ReformEnvelope m s => m -> s -> Part -> Glyph
-makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . flip execState []
+makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . execMonoidState'

@@ -26,6 +26,7 @@ where
 
 import Control.Applicative
 import Control.Monad.State
+import Data.FontGen.MonoidState
 import Data.Maybe
 import Diagrams.Prelude hiding ((<~), (~~), (&~), origin)
 
@@ -175,20 +176,20 @@ val &~ state = execState state val
 skip :: Monad m => m ()
 skip = return ()
 
-type instance V (State s a) = V s
-type instance N (State s a) = N s
+type instance V (MonoidState s a) = V s
+type instance N (MonoidState s a) = N s
 
-instance HasOrigin t => HasOrigin (State [t] ()) where
-  moveOriginTo point state = modify (++ (moveOriginTo point $ execState state []))
+instance (Monoid t, HasOrigin t) => HasOrigin (MonoidState t ()) where
+  moveOriginTo point state = add (moveOriginTo point $ execMonoidState' state)
 
-instance Transformable t => Transformable (State [t] ()) where
-  transform op state = modify (++ (transform op $ execState state []))
+instance (Monoid t, Transformable t) => Transformable (MonoidState t ()) where
+  transform op state = add (transform op $ execMonoidState' state)
 
-instance Backwardable t => Backwardable (State [t] ()) where
-  backward state = modify (++ (backward $ execState state []))
+instance (Monoid t, Backwardable t) => Backwardable (MonoidState t ()) where
+  backward state = add (backward $ execMonoidState' state)
 
-instance TrailLike t => TrailLike (State [t] ()) where
-  trailLike loc = modify (++ [trailLike loc])
+instance TrailLike t => TrailLike (MonoidState [t] ()) where
+  trailLike loc = add [trailLike loc]
 
-instance SegmentLike t => SegmentLike (State [t] ()) where
-  segmentLike loc = modify (++ [segmentLike loc])
+instance SegmentLike t => SegmentLike (MonoidState [t] ()) where
+  segmentLike loc = add [segmentLike loc]
