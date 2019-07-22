@@ -76,9 +76,14 @@ transphoneGap = thickness * 1.1
 acuteRatio :: Given Config => Double
 acuteRatio = 1.3
 
+-- 三角形部分とアクセント記号の鉛直方向の間隔を表します。
+-- 三角形の尖っている方にアキュートアクセントが付く場合、この値は尖っている部分の先端とアクセント記号の底辺部分との間隔です。
+-- 三角形の底辺の方にアキュートアクセントが付く場合、この値は両方の底辺の間の間隔です。
+-- アキュートアクセント以外のアクセント記号については、実際の間隔はアクセント記号側のオーバーシュートの分だけ小さくなります。
 diacriticGap :: Given Config => Double
 diacriticGap = triangleHeight * 0.15
 
+-- アクセント記号のオーバーシュートについて、三角形部分のオーバーシュートに対する比率を表します。
 diacriticOvershootRatio :: Given Config => Double
 diacriticOvershootRatio = 0.3
 
