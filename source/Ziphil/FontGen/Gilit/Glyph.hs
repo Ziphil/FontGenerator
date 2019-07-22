@@ -38,6 +38,7 @@ glyphs = makeGlyphs list
       'm' >- glyphUpMes; 'M' >- glyphDownMes
       'y' >- glyphUpYes; 'Y' >- glyphDownYes
       'h' >- glyphUpHes; 'H' >- glyphDownHes
+      'w' >- glyphUpTransphone; 'W' >- glyphDownTransphone
       'a' >- glyphUpAt; 'A' >- glyphDownAt
       'á' >- glyphUpAtAcute; 'Á' >- glyphDownAtAcute
       'à' >- glyphUpAtGrave; 'À' >- glyphDownAtGrave
@@ -419,6 +420,22 @@ glyphDownHes = makeGlyphWithSpacing' singleTransphoneSpacing parts
       partRightShortOblique # transpose
       partDiamond # transpose
       partTransphone # transpose
+
+glyphUpTransphone :: Given Config => Glyph
+glyphUpTransphone = makeGlyphWithSpacing' spacing parts
+  where
+    parts = do
+      partTransphone # transpose # translate (-triangleWidth / 2 - horizontalTransphoneGap - thickness / sinA obliqueAngle &| 0)
+    spacing = defaultSpacing &~ do
+      fixedWidth += triangleWidth / 2
+
+glyphDownTransphone :: Given Config => Glyph
+glyphDownTransphone = makeGlyphWithSpacing' spacing parts
+  where
+    parts = do
+      partTransphone # translate (-triangleWidth / 2 - horizontalTransphoneGap - thickness / sinA obliqueAngle &| 0)
+    spacing = defaultSpacing &~ do
+      fixedWidth += triangleWidth / 2
 
 glyphUpAt :: Given Config => Glyph
 glyphUpAt = makeGlyphWithSpacing' singleSpacing parts
