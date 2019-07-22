@@ -39,23 +39,23 @@ glyphs = makeGlyphs list
       'y' >- glyphUpYes; 'Y' >- glyphDownYes
       'h' >- glyphUpHes; 'H' >- glyphDownHes
       'a' >- glyphUpAt; 'A' >- glyphDownAt
-      'á' >- glyphUpAt; 'Á' >- glyphDownAt
-      'à' >- glyphUpAt; 'À' >- glyphDownAt
-      'â' >- glyphUpAt; 'Â' >- glyphDownAt
-      'e' >- glyphUpEt; 'E' >- glyphDownEt
-      'é' >- glyphUpEt; 'É' >- glyphDownEt
-      'è' >- glyphUpEt; 'È' >- glyphDownEt
-      'ê' >- glyphUpEt; 'Ê' >- glyphDownEt
+      'á' >- glyphUpAtAcute; 'Á' >- glyphDownAtAcute
+      'à' >- glyphUpAtGrave; 'À' >- glyphDownAtGrave
+      'â' >- glyphUpAtCircumflex; 'Â' >- glyphDownAtCircumflex
+      'e' >- glyphUpEt; 'E' >- glyphDownEtCircumflex
+      'é' >- glyphUpEtAcute; 'É' >- glyphDownEtAcute
+      'è' >- glyphUpEtGrave; 'È' >- glyphDownEtGrave
+      'ê' >- glyphUpEtCircumflex; 'Ê' >- glyphDownEtCircumflex
       'i' >- glyphUpIt; 'I' >- glyphDownIt
-      'í' >- glyphUpIt; 'Í' >- glyphDownIt
-      'ì' >- glyphUpIt; 'Ì' >- glyphDownIt
-      'î' >- glyphUpIt; 'Î' >- glyphDownIt
+      'í' >- glyphUpItAcute; 'Í' >- glyphDownItAcute
+      'ì' >- glyphUpItGrave; 'Ì' >- glyphDownItGrave
+      'î' >- glyphUpItCircumflex; 'Î' >- glyphDownItCircumflex
       'o' >- glyphUpOt; 'O' >- glyphDownOt
-      'ò' >- glyphUpOt; 'Ò' >- glyphDownOt
-      'ô' >- glyphUpOt; 'Ô' >- glyphDownOt
+      'ò' >- glyphUpOtGrave; 'Ò' >- glyphDownOtGrave
+      'ô' >- glyphUpOtCircumflex; 'Ô' >- glyphDownOtCircumflex
       'u' >- glyphUpUt; 'U' >- glyphDownUt
-      'ù' >- glyphUpUt; 'Ù' >- glyphDownUt
-      'û' >- glyphUpUt; 'Û' >- glyphDownUt
+      'ù' >- glyphUpUtGrave; 'Ù' >- glyphDownUtGrave
+      'û' >- glyphUpUtCircumflex; 'Û' >- glyphDownUtCircumflex
       ',' >- glyphTadek
       '.' >- glyphDek
       '!' >- glyphDek
@@ -436,6 +436,60 @@ glyphDownAt = makeGlyphWithSpacing' singleSpacing parts
       partLeftOblique # transpose
       partRightOblique # transpose
 
+glyphUpAtAcute :: Given Config => Glyph
+glyphUpAtAcute = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partLeftOblique
+      partRightOblique
+      partUpperAcute
+
+glyphDownAtAcute :: Given Config => Glyph
+glyphDownAtAcute = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partRightOblique # transpose
+      partLowerAcute # transpose
+      
+glyphUpAtGrave :: Given Config => Glyph
+glyphUpAtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partLeftOblique
+      partRightOblique
+      partUpperGrave
+
+glyphDownAtGrave :: Given Config => Glyph
+glyphDownAtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partRightOblique # transpose
+      partLowerGrave # transpose
+
+glyphUpAtCircumflex :: Given Config => Glyph
+glyphUpAtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partLeftOblique
+      partRightOblique
+      partUpperCircumflex
+
+glyphDownAtCircumflex :: Given Config => Glyph
+glyphDownAtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partRightOblique # transpose
+      partLowerCircumflex # transpose
+
 glyphUpEt :: Given Config => Glyph
 glyphUpEt = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -451,6 +505,60 @@ glyphDownEt = makeGlyphWithSpacing' singleSpacing parts
       partLeftOblique # transpose
       partRightChippedOblique # transpose
       partRightChippedDescender # transpose
+
+glyphUpEtAcute :: Given Config => Glyph
+glyphUpEtAcute = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partRightOblique
+      partLeftAscender
+      partLowerAcute
+
+glyphDownEtAcute :: Given Config => Glyph
+glyphDownEtAcute = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partLeftOblique # transpose
+      partRightChippedOblique # transpose
+      partRightChippedDescender # transpose
+      partUpperAcute # transpose
+
+glyphUpEtGrave :: Given Config => Glyph
+glyphUpEtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partRightOblique
+      partLeftAscender
+      partLowerGrave
+
+glyphDownEtGrave :: Given Config => Glyph
+glyphDownEtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partLeftOblique # transpose
+      partRightChippedOblique # transpose
+      partRightChippedDescender # transpose
+      partUpperGrave # transpose
+
+glyphUpEtCircumflex :: Given Config => Glyph
+glyphUpEtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partRightOblique
+      partLeftAscender
+      partLowerCircumflex
+
+glyphDownEtCircumflex :: Given Config => Glyph
+glyphDownEtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partLeftOblique # transpose
+      partRightChippedOblique # transpose
+      partRightChippedDescender # transpose
+      partUpperCircumflex # transpose
 
 glyphUpIt :: Given Config => Glyph
 glyphUpIt = makeGlyphWithSpacing' singleSpacing parts
@@ -468,6 +576,60 @@ glyphDownIt = makeGlyphWithSpacing' singleSpacing parts
       partLeftOblique # transpose
       partRightAscender # transpose
 
+glyphUpItAcute :: Given Config => Glyph
+glyphUpItAcute = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partLeftChippedOblique
+      partRightOblique
+      partLeftChippedDescender
+      partUpperAcute
+
+glyphDownItAcute :: Given Config => Glyph
+glyphDownItAcute = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partRightAscender # transpose
+      partLowerAcute # transpose
+
+glyphUpItGrave :: Given Config => Glyph
+glyphUpItGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partLeftChippedOblique
+      partRightOblique
+      partLeftChippedDescender
+      partUpperGrave
+
+glyphDownItGrave :: Given Config => Glyph
+glyphDownItGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partRightAscender # transpose
+      partLowerGrave # transpose
+
+glyphUpItCircumflex :: Given Config => Glyph
+glyphUpItCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partLeftChippedOblique
+      partRightOblique
+      partLeftChippedDescender
+      partUpperCircumflex
+
+glyphDownItCircumflex :: Given Config => Glyph
+glyphDownItCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partRightAscender # transpose
+      partLowerCircumflex # transpose
+
 glyphUpOt :: Given Config => Glyph
 glyphUpOt = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -484,6 +646,42 @@ glyphDownOt = makeGlyphWithSpacing' singleSpacing parts
       partRightOblique # transpose
       partLeftDescender # transpose
 
+glyphUpOtGrave :: Given Config => Glyph
+glyphUpOtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partRightOblique
+      partRightAscender
+      partLowerGrave
+
+glyphDownOtGrave :: Given Config => Glyph
+glyphDownOtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partChippedBase # transpose
+      partRightOblique # transpose
+      partLeftDescender # transpose
+      partUpperGrave # transpose
+
+glyphUpOtCircumflex :: Given Config => Glyph
+glyphUpOtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase
+      partRightOblique
+      partRightAscender
+      partLowerCircumflex
+
+glyphDownOtCircumflex :: Given Config => Glyph
+glyphDownOtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partChippedBase # transpose
+      partRightOblique # transpose
+      partLeftDescender # transpose
+      partUpperCircumflex # transpose
+
 glyphUpUt :: Given Config => Glyph
 glyphUpUt = makeGlyphWithSpacing' singleSpacing parts
   where
@@ -499,6 +697,42 @@ glyphDownUt = makeGlyphWithSpacing' singleSpacing parts
       partBase # transpose
       partLeftOblique # transpose
       partLeftAscender # transpose
+
+glyphUpUtGrave :: Given Config => Glyph
+glyphUpUtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partChippedBase
+      partLeftOblique
+      partRightDescender
+      partUpperGrave
+
+glyphDownUtGrave :: Given Config => Glyph
+glyphDownUtGrave = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partLeftAscender # transpose
+      partLowerGrave # transpose
+
+glyphUpUtCircumflex :: Given Config => Glyph
+glyphUpUtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partChippedBase
+      partLeftOblique
+      partRightDescender
+      partUpperCircumflex
+
+glyphDownUtCircumflex :: Given Config => Glyph
+glyphDownUtCircumflex = makeGlyphWithSpacing' singleSpacing parts
+  where
+    parts = do
+      partBase # transpose
+      partLeftOblique # transpose
+      partLeftAscender # transpose
+      partLowerCircumflex # transpose
 
 glyphTadek :: Given Config => Glyph
 glyphTadek = makeGlyphWithSpacing' spacing parts

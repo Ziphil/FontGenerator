@@ -23,8 +23,14 @@ module Ziphil.FontGen.Gilit.Part
   , partRightDescender
   , partLeftChippedDescender
   , partRightChippedDescender
-  , partTransphone
   , partDiamond
+  , partTransphone
+  , partUpperAcute
+  , partUpperGrave
+  , partUpperCircumflex
+  , partLowerAcute
+  , partLowerGrave
+  , partLowerCircumflex
   , partDot
   , obliqueAngle
   , horizontalTransphoneGap
@@ -308,6 +314,17 @@ partLeftChippedDescender = makePart rims # moveOriginBy (originX &| 0)
 partRightChippedDescender :: Given Config => Part
 partRightChippedDescender = partLeftChippedDescender # reflectX'
 
+partDiamond :: Given Config => Part
+partDiamond = makePart rims # moveOriginBy (originX &| originY)
+  where
+    rims = do
+      rimCut
+      rimCut # reflectY # backward
+      rimCut # rotateHalfTurn
+      rimCut # reflectX # backward
+    originX = -triangleWidth / 2
+    originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
+
 horizontalTransphoneGap :: Given Config => Double
 horizontalTransphoneGap = transphoneGap / sinA obliqueAngle
 
@@ -328,8 +345,42 @@ partTransphone = makePart rims # moveOriginBy (originX &| originY)
     originX = -triangleWidth - horizontalTransphoneGap - thickness / (sinA obliqueAngle * 2) - thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
-partDiamond :: Given Config => Part
-partDiamond = makePart rims # moveOriginBy (originX &| originY)
+overshoot :: Given Config => Double
+overshoot = thickness / (cosA obliqueAngle * 2) - thickness / 2
+
+rimUpperAcuteCut :: Given Config => Rim
+rimUpperAcuteCut = origin ~~ (x &| y)
+  where
+    x = thickness * acuteRatio / (sinA obliqueAngle * 2)
+    y = thickness * acuteRatio / (cosA obliqueAngle * 2)
+
+rimUpperAcuteHorizontalCut :: Given Config => Rim
+rimUpperAcuteHorizontalCut = origin ~~ (x &| 0)
+  where
+    x = thickness * acuteRatio / sinA obliqueAngle
+
+partUpperAcute :: Given Config => Part
+partUpperAcute = makePart rims # moveOriginBy (originX &| originY)
+  where
+    rims = do
+      rimUpperAcuteCut # backward
+      rimUpperAcuteHorizontalCut
+      rimUpperAcuteCut # reflectX
+    originX = -triangleWidth / 2
+    originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) - thickness * acuteRatio / (cosA obliqueAngle * 2)
+
+partUpperGrave :: Given Config => Part
+partUpperGrave = makePart rims # moveOriginBy (originX &| originY)
+  where
+    rims = do
+      rimUpperAcuteCut
+      rimUpperAcuteHorizontalCut # backward
+      rimUpperAcuteCut # reflectX # backward
+    originX = -triangleWidth / 2
+    originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) + overshoot * diacriticOvershootRatio
+
+partUpperCircumflex :: Given Config => Part
+partUpperCircumflex = makePart rims # moveOriginBy (originX &| originY)
   where
     rims = do
       rimCut
@@ -337,7 +388,38 @@ partDiamond = makePart rims # moveOriginBy (originX &| originY)
       rimCut # rotateHalfTurn
       rimCut # reflectX # backward
     originX = -triangleWidth / 2
-    originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
+    originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) + overshoot * diacriticOvershootRatio
+
+partLowerAcute :: Given Config => Part
+partLowerAcute = makePart rims # moveOriginBy (originX &| originY)
+  where
+    rims = do
+      rimUpperAcuteCut
+      rimUpperAcuteHorizontalCut # backward
+      rimUpperAcuteCut # reflectX # backward
+    originX = -triangleWidth / 2
+    originY = diacriticGap + thickness / 2 + thickness * acuteRatio / (cosA obliqueAngle * 2)
+
+partLowerGrave :: Given Config => Part
+partLowerGrave = makePart rims # moveOriginBy (originX &| originY)
+  where
+    rims = do
+      rimUpperAcuteCut # backward
+      rimUpperAcuteHorizontalCut
+      rimUpperAcuteCut # reflectX
+    originX = -triangleWidth / 2
+    originY = diacriticGap + thickness / 2 - overshoot * diacriticOvershootRatio
+
+partLowerCircumflex :: Given Config => Part
+partLowerCircumflex = makePart rims # moveOriginBy (originX &| originY)
+  where
+    rims = do
+      rimCut
+      rimCut # reflectY # backward
+      rimCut # rotateHalfTurn
+      rimCut # reflectX # backward
+    originX = -triangleWidth / 2
+    originY = diacriticGap + thickness / 2 + thickness / cosA obliqueAngle - overshoot * diacriticOvershootRatio
 
 partDot :: Given Config => Part
 partDot = makePart rims # moveOriginBy (originX &| originY)

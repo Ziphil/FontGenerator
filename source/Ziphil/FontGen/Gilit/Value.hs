@@ -11,8 +11,11 @@ module Ziphil.FontGen.Gilit.Value
   , triangleHeight
   , triangleWidth
   , ascenderHeight
-  , transphoneGap
   , diamondGap
+  , transphoneGap
+  , acuteRatio
+  , diacriticGap
+  , diacriticOvershootRatio
   , spaceWidth
   )
 where
@@ -64,11 +67,20 @@ ascenderHeight = triangleHeight * ascenderRatio'
   where
     ascenderRatio' = given ^. ascenderRatio
 
+diamondGap :: Given Config => Double
+diamondGap = thickness * 1
+
 transphoneGap :: Given Config => Double
 transphoneGap = thickness * 1.1
 
-diamondGap :: Given Config => Double
-diamondGap = thickness * 1
+acuteRatio :: Given Config => Double
+acuteRatio = 1.3
+
+diacriticGap :: Given Config => Double
+diacriticGap = triangleHeight * 0.15
+
+diacriticOvershootRatio :: Given Config => Double
+diacriticOvershootRatio = 0.3
 
 spaceWidth :: Given Config => Double
 spaceWidth = triangleWidth * 0.5
