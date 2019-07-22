@@ -28,7 +28,7 @@ module Ziphil.FontGen.Gilit.Part
   , partDot
   , obliqueAngle
   , horizontalTransphoneGap
-  , defaultLeftX
+  , defaultLeftEnd
   , widthDifference
   , ascent
   , descent
@@ -350,8 +350,8 @@ partDot = makePart rims # moveOriginBy (originX &| originY)
     originX = -triangleWidth / 4
     originY = -triangleHeight / 2 + thickness / (cosA obliqueAngle * 2)
 
-defaultLeftX :: Given Config => Double
-defaultLeftX = triangleWidth / 4 - gap / (sinA obliqueAngle * 2) - thickness / (sinA obliqueAngle * 2)
+defaultLeftEnd :: Given Config => Double
+defaultLeftEnd = triangleWidth / 4 - gap / (sinA obliqueAngle * 2) - thickness / (sinA obliqueAngle * 2)
 
 widthDifference :: Given Config => Double
 widthDifference = triangleWidth / 2 - gap / sinA obliqueAngle - thickness / sinA obliqueAngle

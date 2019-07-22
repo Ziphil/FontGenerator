@@ -8,7 +8,7 @@
 module Data.FontGen.Metrics
   ( MetricsPoly, metricEm, metricAscent, metricDescent
   , FixedSpacingPoly, leftBearing, rightBearing
-  , WidthSpacingPoly, leftX, fixedWidth
+  , WidthSpacingPoly, leftEnd, fixedWidth
   , Metrics
   , FixedSpacing
   , WidthSpacing
@@ -48,7 +48,7 @@ instance Additive FixedSpacingPoly where
 instance Num n => Default (FixedSpacingPoly n) where
   def = FixedSpacingPoly 0 0
 
-data WidthSpacingPoly n = WidthSpacingPoly {_leftX :: n, _fixedWidth :: n}
+data WidthSpacingPoly n = WidthSpacingPoly {_leftEnd :: n, _fixedWidth :: n}
   deriving (Eq, Show, Functor)
 
 makeFieldsNoPrefix ''WidthSpacingPoly

@@ -30,7 +30,7 @@ metrics = with &~ do
 
 spacingBy :: Given Config => Double -> WidthSpacing
 spacingBy width = with &~ do
-  leftX .= defaultLeftX
+  leftEnd .= defaultLeftEnd
   fixedWidth .= width - widthDifference
 
 singleSpacing :: Given Config => WidthSpacing

@@ -74,7 +74,7 @@ reformEnvelopeFixed metrics spacing glyph = rectEnvelope base size glyph
 reformEnvelopeWidth :: Metrics -> WidthSpacing -> Glyph -> Glyph
 reformEnvelopeWidth metrics spacing glyph = rectEnvelope base size glyph
   where
-    base = (spacing ^. leftX &| 0 - metrics ^. metricDescent)
+    base = (spacing ^. leftEnd &| 0 - metrics ^. metricDescent)
     size = (spacing ^. fixedWidth &| metrics ^. metricEm)
 
 instance ReformEnvelope Metrics FixedSpacing where
