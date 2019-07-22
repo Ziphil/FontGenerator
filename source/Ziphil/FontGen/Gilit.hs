@@ -29,7 +29,7 @@ commonState :: State Font ()
 commonState = do
   family .= "Gilit"
   copyright .= "Copyright 2019 Ziphil"
-  version .= makeVersion [1, 1, 0]
+  version .= makeVersion [1, 2, 0]
 
 fontRegular :: Font
 fontRegular = with &~ commonState &~ do
