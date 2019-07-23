@@ -12,6 +12,7 @@ import Data.FontGen.Render
 import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Ziphil.FontGen.Gilit as Gilit
+import qualified Ziphil.FontGen.Kaleg as Kaleg
 import qualified Ziphil.FontGen.Interface.Generate as Generate
 import qualified Ziphil.FontGen.Vekos as Vekos
 
@@ -42,4 +43,6 @@ fonts = Map.fromList list
       , ("Gtb", Gilit.fontTriangleBold)
       , ("Gser", Gilit.fontSprawledExtendedRegular)
       , ("Gseb", Gilit.fontSprawledExtendedBold)
+      , ("Kr", Kaleg.fontRegular)
+      , ("Kb", Kaleg.fontBold)
       ]
