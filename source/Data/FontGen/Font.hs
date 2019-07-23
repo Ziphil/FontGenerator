@@ -20,15 +20,19 @@ module Data.FontGen.Font
   , postScriptName
   , fullName
   , dirName
+  , Fonts
+  , makeFonts
   )
 where
 
 import Control.Lens
+import Control.Monad.State
 import Data.Char
 import Data.Default.Class
 import Data.FontGen.Glyph
 import Data.FontGen.Metrics
 import Data.List
+import Data.Map (Map)
 import qualified Data.Map as Map
 import qualified Data.Text as Text
 import Data.Version
@@ -99,3 +103,8 @@ dirName :: Getter Font String
 dirName = to $ map toLower . replace' " " "_" . intercalate "_" . modifiers
   where
     replace' before after = Text.unpack . Text.replace before after . Text.pack
+
+type Fonts = Map String Font
+
+makeFonts :: State Fonts () -> Fonts
+makeFonts = flip execState Map.empty

@@ -11,14 +11,13 @@ import Data.Char
 import Data.FontGen
 import Data.FontGen.Font
 import Data.FontGen.Render
-import Data.Map (Map)
 import qualified Data.Map as Map
 import Text.Printf
 import Text.Regex.Posix
 import Ziphil.FontGen.Interface.Util
 
 
-main :: GenerateOption -> RenderOption -> Map String Font -> IO ()
+main :: GenerateOption -> RenderOption -> Fonts -> IO ()
 main generateOption renderOption fonts = do
   complete <- inputComplete
   fonts <- inputFonts fonts
@@ -35,13 +34,13 @@ inputComplete = do
     'N' : _ -> return False
     _ -> return False
 
-inputFonts :: Map String Font -> IO [Font]
+inputFonts :: Fonts -> IO [Font]
 inputFonts fonts = do
   flushStr $ colorInput "<?> Code -> "
   input <- getLine
   parseFonts fonts input
 
-parseFonts :: Map String Font -> String -> IO [Font]
+parseFonts :: Fonts -> String -> IO [Font]
 parseFonts fonts string = 
   if null string
     then return . Map.elems $ fonts

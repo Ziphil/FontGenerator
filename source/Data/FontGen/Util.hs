@@ -21,12 +21,17 @@ module Data.FontGen.Util
   , (~~)
   , (&~)
   , skip
+  , (@~)
+  , (@=)
   )
 where
 
+import qualified Control.Lens as Lens
 import Control.Applicative
 import Control.Monad.State
 import Data.FontGen.MonoidState
+import Data.Map (Map)
+import qualified Data.Map as Map
 import Data.Maybe
 import Diagrams.Prelude hiding ((<~), (~~), (&~), origin)
 
@@ -193,3 +198,11 @@ instance TrailLike t => TrailLike (MonoidState [t] ()) where
 
 instance SegmentLike t => SegmentLike (MonoidState [t] ()) where
   segmentLike loc = add [segmentLike loc]
+
+infixr 4 @~
+(@~) :: At s => Index s -> IxValue s -> s -> s
+key @~ val = Lens.at key ?~ val
+
+infix 4 @=
+(@=) :: (At s, MonadState s m) => Index s -> IxValue s -> m ()
+key @= val = Lens.at key ?= val

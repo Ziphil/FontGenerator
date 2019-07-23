@@ -17,33 +17,33 @@ glyphs :: Given Config => Glyphs
 glyphs = makeGlyphs' list
   where
     list = do
-      'l' >- glyphLes; 'r' >- glyphRes
-      'p' >- glyphPal; 'b' >- glyphBol
-      'c' >- glyphCal; 'q' >- glyphQol
-      'k' >- glyphKal; 'g' >- glyphGol
-      'y' >- glyphYes; 'h' >- glyphHes
-      's' >- glyphSal; 'z' >- glyphZol
-      't' >- glyphTal; 'd' >- glyphDol
-      'f' >- glyphFal; 'v' >- glyphVol
-      'x' >- glyphXal; 'j' >- glyphJol
-      'n' >- glyphNes; 'm' >- glyphMes
-      'w' >- glyphTransphone
-      'a' >- glyphAt; 'á' >- glyphAtAcute; 'à' >- glyphAtGrave; 'â' >- glyphAtCircumflex
-      'e' >- glyphEt; 'é' >- glyphEtAcute; 'è' >- glyphEtGrave; 'ê' >- glyphEtCircumflex
-      'i' >- glyphIt; 'í' >- glyphItAcute; 'ì' >- glyphItGrave; 'î' >- glyphItCircumflex
-      'u' >- glyphUt; 'ù' >- glyphUtGrave; 'û' >- glyphUtCircumflex
-      'o' >- glyphOt; 'ò' >- glyphOtGrave; 'ô' >- glyphOtCircumflex
-      '6' >- glyphRac; '4' >- glyphPav; '2' >- glyphQic; '8' >- glyphKeq
-      '0' >- glyphNuf; '5' >- glyphXef
-      '1' >- glyphTas; '9' >- glyphVun
-      '3' >- glyphYus; '7' >- glyphSiz
-      ',' >- glyphTadek; '.' >- glyphDek
-      '!' >- glyphBadek; '?' >- glyphPadek
-      '\'' >- glyphNok; 'ʻ' >- glyphDikak
-      '·' >- glyphMiddot; ':' >- glyphKaltak
-      '-' >- glyphFek; '…' >- glyphFohak; '—' >- glyphDash
-      '[' >- glyphOpeningRakut; ']' >- glyphClosingRakut; '«' >- glyphOpeningRakut; '»' >- glyphClosingRakut
-      ' ' >- glyphSpace
+      'l' @= glyphLes; 'r' @= glyphRes
+      'p' @= glyphPal; 'b' @= glyphBol
+      'c' @= glyphCal; 'q' @= glyphQol
+      'k' @= glyphKal; 'g' @= glyphGol
+      'y' @= glyphYes; 'h' @= glyphHes
+      's' @= glyphSal; 'z' @= glyphZol
+      't' @= glyphTal; 'd' @= glyphDol
+      'f' @= glyphFal; 'v' @= glyphVol
+      'x' @= glyphXal; 'j' @= glyphJol
+      'n' @= glyphNes; 'm' @= glyphMes
+      'w' @= glyphTransphone
+      'a' @= glyphAt; 'á' @= glyphAtAcute; 'à' @= glyphAtGrave; 'â' @= glyphAtCircumflex
+      'e' @= glyphEt; 'é' @= glyphEtAcute; 'è' @= glyphEtGrave; 'ê' @= glyphEtCircumflex
+      'i' @= glyphIt; 'í' @= glyphItAcute; 'ì' @= glyphItGrave; 'î' @= glyphItCircumflex
+      'u' @= glyphUt; 'ù' @= glyphUtGrave; 'û' @= glyphUtCircumflex
+      'o' @= glyphOt; 'ò' @= glyphOtGrave; 'ô' @= glyphOtCircumflex
+      '6' @= glyphRac; '4' @= glyphPav; '2' @= glyphQic; '8' @= glyphKeq
+      '0' @= glyphNuf; '5' @= glyphXef
+      '1' @= glyphTas; '9' @= glyphVun
+      '3' @= glyphYus; '7' @= glyphSiz
+      ',' @= glyphTadek; '.' @= glyphDek
+      '!' @= glyphBadek; '?' @= glyphPadek
+      '\'' @= glyphNok; 'ʻ' @= glyphDikak
+      '·' @= glyphMiddot; ':' @= glyphKaltak
+      '-' @= glyphFek; '…' @= glyphFohak; '—' @= glyphDash
+      '[' @= glyphOpeningRakut; ']' @= glyphClosingRakut; '«' @= glyphOpeningRakut; '»' @= glyphClosingRakut
+      ' ' @= glyphSpace
 
 glyphLes :: Given Config => Glyph
 glyphLes = makeGlyph' parts

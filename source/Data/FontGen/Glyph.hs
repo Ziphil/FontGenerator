@@ -15,7 +15,6 @@ module Data.FontGen.Glyph
   , makePart
   , concatPart
   , makeGlyph
-  , (>-)
   , makeGlyphs
   )
 where
@@ -86,19 +85,5 @@ instance ReformEnvelope Metrics WidthSpacing where
 makeGlyph :: ReformEnvelope m s => m -> s -> Part -> Glyph
 makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . execMonoidState'
 
-class ToChar c where
-  toChar :: c -> Char
-
-instance ToChar Char where
-  toChar = id
-
-instance ToChar Int where
-  toChar = toEnum
-
--- グリフマップにグリフを更新する状態を生成します。
-infix 0 >-
-(>-) :: ToChar c => c -> Glyph -> State Glyphs ()
-thing >- glyph = modify $ Map.insert (toChar thing) glyph
-
-makeGlyphs :: State Glyphs a -> Glyphs
+makeGlyphs :: State Glyphs () -> Glyphs
 makeGlyphs = flip execState Map.empty

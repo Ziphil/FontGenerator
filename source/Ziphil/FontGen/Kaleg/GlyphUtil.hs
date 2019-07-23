@@ -42,5 +42,5 @@ makeGlyphWithSpacing' :: Given Config => FixedSpacing -> Part -> Glyph
 makeGlyphWithSpacing' = makeGlyph metrics
 
 -- 対応する大文字がある場合に、その大文字にも同じグリフを割り当てるようにして、グリフマップを生成します。
-makeGlyphs' :: State Glyphs a -> Glyphs
+makeGlyphs' :: State Glyphs () -> Glyphs
 makeGlyphs' = uncurry Map.union . (Map.mapKeys toUpper &&& id) . makeGlyphs

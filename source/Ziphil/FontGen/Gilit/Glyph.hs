@@ -18,52 +18,52 @@ glyphs :: Given Config => Glyphs
 glyphs = makeGlyphs list
   where
     list = do
-      's' >- glyphUpSal; 'S' >- glyphDownSal
-      'z' >- glyphUpZol; 'Z' >- glyphDownZol
-      't' >- glyphUpTal; 'T' >- glyphDownTal
-      'd' >- glyphUpDol; 'D' >- glyphDownDol
-      'k' >- glyphUpKal; 'K' >- glyphDownKal
-      'g' >- glyphUpGol; 'G' >- glyphDownGol
-      'f' >- glyphUpFal; 'F' >- glyphDownFal
-      'v' >- glyphUpVol; 'V' >- glyphDownVol
-      'p' >- glyphUpPal; 'P' >- glyphDownPal
-      'b' >- glyphUpBol; 'B' >- glyphDownBol
-      'c' >- glyphUpCal; 'C' >- glyphDownCal
-      'q' >- glyphUpQol; 'Q' >- glyphDownQol
-      'x' >- glyphUpXal; 'X' >- glyphDownXal
-      'j' >- glyphUpJol; 'J' >- glyphDownJol
-      'l' >- glyphUpLes; 'L' >- glyphDownLes
-      'r' >- glyphUpRes; 'R' >- glyphDownRes
-      'n' >- glyphUpNes; 'N' >- glyphDownNes
-      'm' >- glyphUpMes; 'M' >- glyphDownMes
-      'y' >- glyphUpYes; 'Y' >- glyphDownYes
-      'h' >- glyphUpHes; 'H' >- glyphDownHes
-      'w' >- glyphUpTransphone; 'W' >- glyphDownTransphone
-      'a' >- glyphUpAt; 'A' >- glyphDownAt
-      'á' >- glyphUpAtAcute; 'Á' >- glyphDownAtAcute
-      'à' >- glyphUpAtGrave; 'À' >- glyphDownAtGrave
-      'â' >- glyphUpAtCircumflex; 'Â' >- glyphDownAtCircumflex
-      'e' >- glyphUpEt; 'E' >- glyphDownEtCircumflex
-      'é' >- glyphUpEtAcute; 'É' >- glyphDownEtAcute
-      'è' >- glyphUpEtGrave; 'È' >- glyphDownEtGrave
-      'ê' >- glyphUpEtCircumflex; 'Ê' >- glyphDownEtCircumflex
-      'i' >- glyphUpIt; 'I' >- glyphDownIt
-      'í' >- glyphUpItAcute; 'Í' >- glyphDownItAcute
-      'ì' >- glyphUpItGrave; 'Ì' >- glyphDownItGrave
-      'î' >- glyphUpItCircumflex; 'Î' >- glyphDownItCircumflex
-      'o' >- glyphUpOt; 'O' >- glyphDownOt
-      'ò' >- glyphUpOtGrave; 'Ò' >- glyphDownOtGrave
-      'ô' >- glyphUpOtCircumflex; 'Ô' >- glyphDownOtCircumflex
-      'u' >- glyphUpUt; 'U' >- glyphDownUt
-      'ù' >- glyphUpUtGrave; 'Ù' >- glyphDownUtGrave
-      'û' >- glyphUpUtCircumflex; 'Û' >- glyphDownUtCircumflex
-      ',' >- glyphTadek
-      '.' >- glyphDek
-      '!' >- glyphDek
-      '?' >- glyphDek
-      '\'' >- glyphNok
-      'ʻ' >- glyphNok
-      ' ' >- glyphSpace
+      's' @= glyphUpSal; 'S' @= glyphDownSal
+      'z' @= glyphUpZol; 'Z' @= glyphDownZol
+      't' @= glyphUpTal; 'T' @= glyphDownTal
+      'd' @= glyphUpDol; 'D' @= glyphDownDol
+      'k' @= glyphUpKal; 'K' @= glyphDownKal
+      'g' @= glyphUpGol; 'G' @= glyphDownGol
+      'f' @= glyphUpFal; 'F' @= glyphDownFal
+      'v' @= glyphUpVol; 'V' @= glyphDownVol
+      'p' @= glyphUpPal; 'P' @= glyphDownPal
+      'b' @= glyphUpBol; 'B' @= glyphDownBol
+      'c' @= glyphUpCal; 'C' @= glyphDownCal
+      'q' @= glyphUpQol; 'Q' @= glyphDownQol
+      'x' @= glyphUpXal; 'X' @= glyphDownXal
+      'j' @= glyphUpJol; 'J' @= glyphDownJol
+      'l' @= glyphUpLes; 'L' @= glyphDownLes
+      'r' @= glyphUpRes; 'R' @= glyphDownRes
+      'n' @= glyphUpNes; 'N' @= glyphDownNes
+      'm' @= glyphUpMes; 'M' @= glyphDownMes
+      'y' @= glyphUpYes; 'Y' @= glyphDownYes
+      'h' @= glyphUpHes; 'H' @= glyphDownHes
+      'w' @= glyphUpTransphone; 'W' @= glyphDownTransphone
+      'a' @= glyphUpAt; 'A' @= glyphDownAt
+      'á' @= glyphUpAtAcute; 'Á' @= glyphDownAtAcute
+      'à' @= glyphUpAtGrave; 'À' @= glyphDownAtGrave
+      'â' @= glyphUpAtCircumflex; 'Â' @= glyphDownAtCircumflex
+      'e' @= glyphUpEt; 'E' @= glyphDownEtCircumflex
+      'é' @= glyphUpEtAcute; 'É' @= glyphDownEtAcute
+      'è' @= glyphUpEtGrave; 'È' @= glyphDownEtGrave
+      'ê' @= glyphUpEtCircumflex; 'Ê' @= glyphDownEtCircumflex
+      'i' @= glyphUpIt; 'I' @= glyphDownIt
+      'í' @= glyphUpItAcute; 'Í' @= glyphDownItAcute
+      'ì' @= glyphUpItGrave; 'Ì' @= glyphDownItGrave
+      'î' @= glyphUpItCircumflex; 'Î' @= glyphDownItCircumflex
+      'o' @= glyphUpOt; 'O' @= glyphDownOt
+      'ò' @= glyphUpOtGrave; 'Ò' @= glyphDownOtGrave
+      'ô' @= glyphUpOtCircumflex; 'Ô' @= glyphDownOtCircumflex
+      'u' @= glyphUpUt; 'U' @= glyphDownUt
+      'ù' @= glyphUpUtGrave; 'Ù' @= glyphDownUtGrave
+      'û' @= glyphUpUtCircumflex; 'Û' @= glyphDownUtCircumflex
+      ',' @= glyphTadek
+      '.' @= glyphDek
+      '!' @= glyphDek
+      '?' @= glyphDek
+      '\'' @= glyphNok
+      'ʻ' @= glyphNok
+      ' ' @= glyphSpace
 
 glyphUpSal :: Given Config => Glyph
 glyphUpSal = makeGlyphWithSpacing' singleSpacing parts
