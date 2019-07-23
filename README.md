@@ -41,3 +41,30 @@ stack exec font-generator-exe
 
 次に `<?> Code` と聞かれるので、生成したいフォントファイルのコード名を指定してください。
 何も入力しないと全てのフォントを生成します。
+また、正規表現を用いて複数のコードを指定することもできます。
+
+## フォント一覧
+現在生成できるフォントは以下の通りです。
+これらは `source/Ziphil/FontGen/Interface.hs` で定義されています。
+
+| コード | フォント名 |
+|:------:|:----------:|
+| `Vr` | Vekos Regular |
+| `Vb` | Vekos Bold |
+| `Vt` | Vekos Thin |
+| `Vcr` | Vekos Condensed Regular |
+| `Vcb` | Vekos Condensed Bold |
+| `Vct` | Vekos Condensed Thin |
+| `Ver` | Vekos Extended Regular |
+| `Veb` | Vekos Extended Bold |
+| `Vet` | Vekos Extended Thin |
+| `Vhr` | Vekos High Regular |
+| `Vhb` | Vekos High Bold |
+| `Gr` | Gilit Regular |
+| `Gb` | Gilit Bold |
+| `Ger` | Gilit Extended Regular |
+| `Geb` | Gilit Extended Bold |
+| `Gtr` | Gilit Triangle Regular |
+| `Gtb` | Gilit Triangle Bold |
+| `Gser` | Gilit Sprawled Extended Regular |
+| `Gseb` | Gilit Sprawled Extended Bold |
