@@ -43,7 +43,7 @@ glyphs = makeGlyphs list
       'á' @= glyphUpAtAcute; 'Á' @= glyphDownAtAcute
       'à' @= glyphUpAtGrave; 'À' @= glyphDownAtGrave
       'â' @= glyphUpAtCircumflex; 'Â' @= glyphDownAtCircumflex
-      'e' @= glyphUpEt; 'E' @= glyphDownEtCircumflex
+      'e' @= glyphUpEt; 'E' @= glyphDownEt
       'é' @= glyphUpEtAcute; 'É' @= glyphDownEtAcute
       'è' @= glyphUpEtGrave; 'È' @= glyphDownEtGrave
       'ê' @= glyphUpEtCircumflex; 'Ê' @= glyphDownEtCircumflex
