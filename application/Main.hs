@@ -4,13 +4,13 @@
 module Main where
 
 import Data.FontGen
+import qualified Data.FontGen.Interface as Interface
 import Data.FontGen.Render
-import System.FilePath
-import qualified Ziphil.FontGen.Interface as Interface
+import Ziphil.FontGen
 
 
 main :: IO ()
-main = Interface.main generateOption renderOption
+main = Interface.main generateOption renderOption fonts
   where
     generateOption = def
     renderOption = with &~ do

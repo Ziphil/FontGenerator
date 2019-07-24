@@ -1,7 +1,7 @@
 --
 
 
-module Ziphil.FontGen.Interface.Util
+module Data.FontGen.InterfaceUtil
   ( colorMessage
   , colorError
   , colorInput

@@ -1,22 +1,17 @@
 --
 
 
-module Ziphil.FontGen.Interface
-  ( main
+module Ziphil.FontGen
+  ( fonts
   )
 where
 
 import Data.FontGen
 import Data.FontGen.Font
-import Data.FontGen.Render
 import qualified Ziphil.FontGen.Gilit as Gilit
 import qualified Ziphil.FontGen.Kaleg as Kaleg
-import qualified Ziphil.FontGen.Interface.Generate as Generate
 import qualified Ziphil.FontGen.Vekos as Vekos
 
-
-main :: GenerateOption -> RenderOption -> IO ()
-main generateOption renderOption = Generate.main generateOption renderOption fonts
 
 fonts :: Fonts
 fonts = makeFonts list

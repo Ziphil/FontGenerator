@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
 
-module Ziphil.FontGen.Interface.Generate
+module Data.FontGen.Interface
   ( main
   )
 where
@@ -10,11 +10,11 @@ import Control.Monad
 import Data.Char
 import Data.FontGen
 import Data.FontGen.Font
+import Data.FontGen.InterfaceUtil
 import Data.FontGen.Render
 import qualified Data.Map as Map
 import Text.Printf
 import Text.Regex.Posix
-import Ziphil.FontGen.Interface.Util
 
 
 main :: GenerateOption -> RenderOption -> Fonts -> IO ()
