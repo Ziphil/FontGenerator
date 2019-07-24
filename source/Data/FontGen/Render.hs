@@ -1,8 +1,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
-{-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 
@@ -103,8 +101,8 @@ renderDiagram path = renderPretty (toFilePath path) absolute
 renderDiagram' :: Path Rel File -> Double -> Diagram B -> IO ()
 renderDiagram' path glyphWidth = renderPretty' (toFilePath path) option
   where
-    option = SVGOptions absolute Nothing "" [attribute] True
-    attribute = makeAttribute "glyph-width" (Text.pack $ show glyphWidth)
+    option = SVGOptions absolute Nothing (Text.pack "") [attribute] True
+    attribute = makeAttribute (Text.pack "glyph-width") (tshow glyphWidth)
 
 -- Inkscape をコマンドラインから呼び出して、SVG 内の複数のパスを統合します。
 -- 本来は SVG を出力する段階でパスを統合しておくべきですが、ライブラリのバグによって正しくできないので、この方法を取ります。
@@ -128,10 +126,6 @@ renderGlyph option font char glyph = (\path -> renderDiagram' path (width glyph)
 
 renderGlyphs :: GenerateOption -> Font -> IO ()
 renderGlyphs option font = void $ Map.traverseWithKey (renderGlyph option font) (font ^. glyphs)
-
--- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
-sub :: Show a => String -> Setter Text Text String a
-sub needle = sets $ \func -> Text.replace (Text.pack needle) (Text.pack $ show $ func needle)
 
 -- テンプレートコード中のメタ変数を変換して、フォント生成用の Python コードを生成します。
 makeCode :: GenerateOption -> Font -> Text

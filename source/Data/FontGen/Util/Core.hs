@@ -1,6 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TypeFamilies #-}
 
 
@@ -21,6 +22,8 @@ module Data.FontGen.Util.Core
   , (~~)
   , (&~)
   , skip
+  , tshow
+  , sub
   , (@~)
   , (@=)
   )
@@ -30,6 +33,8 @@ import qualified Control.Lens as Lens
 import Control.Applicative
 import Control.Monad.State
 import Data.FontGen.Util.MonoidState
+import Data.Text (Text)
+import qualified Data.Text as Text
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
@@ -198,6 +203,22 @@ instance TrailLike t => TrailLike (MonoidState [t] ()) where
 
 instance SegmentLike t => SegmentLike (MonoidState [t] ()) where
   segmentLike loc = add [segmentLike loc]
+
+class ToText a where
+  pack :: a -> Text
+
+instance ToText String where
+  pack = Text.pack
+
+instance ToText Text where
+  pack = id
+
+tshow :: Show a => a -> Text
+tshow = Text.pack . show
+
+-- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
+sub :: (ToText a, Show b) => a -> Setter Text Text a b
+sub needle = sets $ \func -> Text.replace (pack needle) (tshow $ func needle)
 
 infixr 4 @~
 (@~) :: At s => Index s -> IxValue s -> s -> s
