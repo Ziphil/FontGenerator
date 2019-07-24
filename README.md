@@ -45,7 +45,7 @@ stack exec font-generator-exe
 
 ## フォント一覧
 現在生成できるフォントは以下の通りです。
-これらは `source/Ziphil/FontGen/Interface.hs` で定義されています。
+これらは `source/Ziphil/FontGen.hs` で定義されています。
 
 | コード | フォント名 |
 |:------:|:----------:|
