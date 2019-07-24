@@ -7,7 +7,8 @@
 
 
 module Ziphil.FontGen.Kaleg.Config
-  ( Config, weightConst
+  ( EdgeShape (..)
+  , Config, weightConst, edgeShapeVal
   , Given
   , give
   , given
@@ -19,13 +20,16 @@ import Data.Reflection (Given)
 import qualified Data.Reflection as Reflection
 
 
-data Config = Config {_weightConst :: Double}
+data EdgeShape = Miter | Round | Bevel
+  deriving (Eq, Show)
+
+data Config = Config {_weightConst :: Double, _edgeShapeVal :: EdgeShape}
   deriving (Eq, Show)
 
 makeFieldsNoPrefix ''Config
 
 instance Default Config where
-  def = Config 1
+  def = Config 1 Miter
 
 give :: Config -> (Given Config => r) -> r
 give = Reflection.give

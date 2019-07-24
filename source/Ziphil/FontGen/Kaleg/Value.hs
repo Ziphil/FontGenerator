@@ -7,6 +7,7 @@ module Ziphil.FontGen.Kaleg.Value
   , extraAscent
   , extraDescent
   , bearing
+  , edgeShape
   )
 where
 
@@ -28,3 +29,8 @@ extraDescent = 0
 
 bearing :: Given Config => Double
 bearing = 0
+
+edgeShape :: Given Config => EdgeShape
+edgeShape = edgeShapeVal'
+  where
+    edgeShapeVal' = given ^. edgeShapeVal
