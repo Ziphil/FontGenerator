@@ -2,7 +2,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 
 
-module Data.FontGen.MonoidState
+module Data.FontGen.Util.MonoidState
   ( MonoidState
   , runMonoidState
   , execMonoidState

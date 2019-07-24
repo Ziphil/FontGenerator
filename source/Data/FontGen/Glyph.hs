@@ -22,8 +22,8 @@ where
 import Control.Monad.State
 import Data.Default.Class
 import Data.FontGen.Metrics
-import Data.FontGen.MonoidState
-import Data.FontGen.Util
+import Data.FontGen.Util.Core
+import Data.FontGen.Util.MonoidState
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Diagrams.Backend.SVG

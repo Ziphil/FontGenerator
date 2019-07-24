@@ -1,7 +1,7 @@
 --
 
 
-module Data.FontGen.InterfaceUtil
+module Data.FontGen.Util.Interface
   ( colorMessage
   , colorError
   , colorInput

@@ -10,8 +10,8 @@ import Control.Monad
 import Data.Char
 import Data.FontGen
 import Data.FontGen.Font
-import Data.FontGen.InterfaceUtil
 import Data.FontGen.Render
+import Data.FontGen.Util.Interface
 import qualified Data.Map as Map
 import Text.Printf
 import Text.Regex.Posix

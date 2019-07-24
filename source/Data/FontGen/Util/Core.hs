@@ -4,7 +4,7 @@
 {-# LANGUAGE TypeFamilies #-}
 
 
-module Data.FontGen.Util
+module Data.FontGen.Util.Core
   ( rotateHalfTurn
   , rotateQuarterTurn
   , OrthoCoordinates (..)
@@ -29,7 +29,7 @@ where
 import qualified Control.Lens as Lens
 import Control.Applicative
 import Control.Monad.State
-import Data.FontGen.MonoidState
+import Data.FontGen.Util.MonoidState
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
