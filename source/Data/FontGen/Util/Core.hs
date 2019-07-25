@@ -31,8 +31,7 @@ where
 
 import qualified Control.Lens as Lens
 import Control.Applicative
-import Control.Monad.State
-import Data.FontGen.Util.MonoidState
+import Data.FontGen.Util.State
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Map (Map)
@@ -181,7 +180,7 @@ initPoint :~> initCont ~~ termPoint :~> termCont =
 -- 代入系の演算子と一緒に用いられるよう、lens パッケージで定義されているものより優先度が高く設定してあります。
 infixl 8 &~
 (&~) :: s -> State s a -> s
-val &~ state = execState state val
+val &~ obj = execState obj val
 
 skip :: Monad m => m ()
 skip = return ()
@@ -190,13 +189,13 @@ type instance V (MonoidState s a) = V s
 type instance N (MonoidState s a) = N s
 
 instance (Monoid t, HasOrigin t) => HasOrigin (MonoidState t ()) where
-  moveOriginTo point state = add (moveOriginTo point $ execMonoidState' state)
+  moveOriginTo = mapAddend . moveOriginTo
 
 instance (Monoid t, Transformable t) => Transformable (MonoidState t ()) where
-  transform op state = add (transform op $ execMonoidState' state)
+  transform = mapAddend . transform
 
 instance (Monoid t, Backwardable t) => Backwardable (MonoidState t ()) where
-  backward state = add (backward $ execMonoidState' state)
+  backward = mapAddend backward
 
 instance TrailLike t => TrailLike (MonoidState [t] ()) where
   trailLike loc = add [trailLike loc]

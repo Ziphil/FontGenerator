@@ -26,11 +26,11 @@ module Data.FontGen.Font
 where
 
 import Control.Lens
-import Control.Monad.State
 import Data.Char
 import Data.Default.Class
 import Data.FontGen.Glyph
 import Data.FontGen.Metrics
+import Data.FontGen.Util.State
 import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
