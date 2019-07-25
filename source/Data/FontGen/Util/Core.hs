@@ -83,7 +83,7 @@ instance (N (v n) ~ n, PolarCoordinates (v n)) => PolarCoordinates (Point v n) w
 
 instance (N (v n) ~ n, PolarCoordinates (v n)) => PolarCoordinates (EndPoint v n) where
   type PrevPolarDim (EndPoint v n) = PrevPolarDim (v n)
-  polar prev angle = polar prev angle :~> Nothing
+  polar prev angle = pointLike (polar prev angle)
 
 -- 極座標系で表されたデータからベクトルや点を生成します。
 infixl 4 @|
