@@ -23,6 +23,7 @@ import Data.FontGen.Font
 import Data.FontGen.Glyph
 import Data.FontGen.Metrics
 import Data.FontGen.Util.Core
+import Data.FontGen.Util.Text
 import Data.FileEmbed
 import Data.List
 import qualified Data.Map as Map

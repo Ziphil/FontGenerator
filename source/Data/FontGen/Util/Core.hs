@@ -24,8 +24,6 @@ module Data.FontGen.Util.Core
   , (~~)
   , (&~)
   , skip
-  , tshow
-  , sub
   , (@~)
   , (@=)
   )
@@ -212,22 +210,6 @@ instance TrailLike t => TrailLike (MonoidState [t] ()) where
 
 instance SegmentLike t => SegmentLike (MonoidState [t] ()) where
   segmentLike loc = add [segmentLike loc]
-
-class ToText a where
-  pack :: a -> Text
-
-instance ToText String where
-  pack = Text.pack
-
-instance ToText Text where
-  pack = id
-
-tshow :: Show a => a -> Text
-tshow = Text.pack . show
-
--- テキスト中の与えられた文字列に一致する箇所を変換するためのセッターです。
-sub :: (ToText a, Show b) => a -> Setter Text Text a b
-sub needle = sets $ \func -> Text.replace (pack needle) (tshow $ func needle)
 
 infixr 4 @~
 (@~) :: At s => Index s -> IxValue s -> s -> s
