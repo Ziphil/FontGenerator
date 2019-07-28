@@ -28,32 +28,28 @@ toState (Run runner) = State.state runner
 fromState :: State s a -> MonoidState s a
 fromState obj = Run $ State.runState obj
 
-fmapMonoid :: Monoid s => (a -> b) -> MonoidState s a -> MonoidState s b
-fmapMonoid func (Add val addend) = Add (func val) addend
-fmapMonoid func obj = fromState $ fmap func (toState obj)
+returnMonoid :: Monoid s => a -> MonoidState s a
+returnMonoid val = Add val mempty
 
-pureMonoid :: Monoid s => a -> MonoidState s a
-pureMonoid val = Add val mempty
-
-apMonoid :: Monoid s => MonoidState s (a -> b) -> MonoidState s a -> MonoidState s b
-apMonoid (Add func fstAddend) (Add val sndAddend) = Add (func val) (fstAddend <> sndAddend)
-apMonoid fstObj sndObj = fromState $ toState fstObj <*> toState sndObj
+bindDefault :: Monoid s => MonoidState s a -> (a -> MonoidState s b) -> MonoidState s b
+bindDefault obj action = fromState $ toState obj >>= toState . action
 
 bindMonoid :: Monoid s => MonoidState s a -> (a -> MonoidState s b) -> MonoidState s b
 bindMonoid obj@(Add val addend) action =
   case action val of
     Add finalVal nextAddend -> Add finalVal (addend <> nextAddend)
-    Run _ -> fromState $ toState obj >>= toState . action
-bindMonoid obj action = fromState $ toState obj >>= toState . action
+    Run _ -> bindDefault obj action
+bindMonoid obj action = bindDefault obj action
 
 instance Monoid s => Functor (MonoidState s) where
-  fmap = fmapMonoid
+  fmap = liftM
 
 instance Monoid s => Applicative (MonoidState s) where
-  pure = pureMonoid
-  (<*>) = apMonoid
+  pure = return
+  (<*>) = ap
 
 instance Monoid s => Monad (MonoidState s) where
+  return = returnMonoid
   (>>=) = bindMonoid
 
 instance Monoid s => MonadState s (MonoidState s) where
