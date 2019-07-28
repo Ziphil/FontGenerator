@@ -79,7 +79,7 @@ rimInnerBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
 -- k, p, c, l, a などの文字に共通する丸い部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partBowl :: Given Config => Part
-partBowl = concatPart parts # moveOriginBy (originX &| 0)
+partBowl = unite parts #.~> (originX &| 0)
   where
     outerRims = do
       rimOuterBowl # reflectY
@@ -92,8 +92,8 @@ partBowl = concatPart parts # moveOriginBy (originX &| 0)
       rimInnerBowl # reflectX
       rimInnerBowl # backward
     parts = do
-      makePart outerRims
-      makePart innerRims # backward # translate (thicknessX &| 0)
+      partBy outerRims
+      partBy innerRims # backward # translate (thicknessX &| 0)
     originX = bowlWidth / 2
 
 -- l の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
@@ -126,13 +126,13 @@ rimCut = origin ~~ (width &| 0)
 -- 丸い部分と重ねたときに重なった部分が太く見えすぎないように、左側を少し細く補正してあります。
 -- 原点は補正がないとしたときの左上の角にあります。
 partLesTail :: Given Config => Part
-partLesTail = makePart rims # moveOriginBy (originX &| 0)
+partLesTail = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimLeftLesTail
       rimCut
       rimRightLesTail # backward
-      makeRim $ origin ~~ (-thicknessX + lesTailCorrection &| 0)
+      rimBy $ origin ~~ (-thicknessX + lesTailCorrection &| 0)
     originX = -lesTailCorrection
 
 -- l の文字と同じ形を生成します。
@@ -155,7 +155,7 @@ rimYesLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (bend &| -height)
 -- y の文字と同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partYes :: Given Config => Part
-partYes = makePart rims # moveOriginBy (originX &| 0)
+partYes = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimYesLeg
@@ -194,7 +194,7 @@ rimInnerTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| hei
 -- t の文字と同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partTal :: Given Config => Part
-partTal = makePart rims # moveOriginBy (originX &| 0)
+partTal = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimOuterBowl # reflectY
@@ -247,7 +247,7 @@ rimInnerNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| h
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
 -- 原点は全体の中央にあります。
 partNarrowBowl :: Given Config => Part
-partNarrowBowl = concatPart parts # moveOriginBy (originX &| 0)
+partNarrowBowl = unite parts #.~> (originX &| 0)
   where
     outerRims = do
       rimOuterLeftNarrowBowl # reflectY
@@ -260,14 +260,14 @@ partNarrowBowl = concatPart parts # moveOriginBy (originX &| 0)
       rimInnerNarrowBowl # reflectX
       rimInnerNarrowBowl # backward
     parts = do
-      makePart outerRims
-      makePart innerRims # backward # translate (thicknessX &| 0)
+      partBy outerRims
+      partBy innerRims # backward # translate (thicknessX &| 0)
     originX = narrowBowlVirtualWidth / 2
 
 -- x の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partXal :: Given Config => Part
-partXal = parts # moveOriginBy (originX &| 0)
+partXal = parts #.~> (originX &| 0)
   where
     parts = do
       partNarrowBowl
@@ -306,7 +306,7 @@ rimBottomSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| ben
 -- n の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partNes :: Given Config => Part
-partNes = makePart rims # moveOriginBy (originX &| 0)
+partNes = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimOuterLeftNarrowBowl # reflectY
@@ -344,7 +344,7 @@ rimRightItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -hei
 -- i の文字と同じ形を生成します。
 -- 原点は上部の丸い部分の中央にあるので、回転や反転で変化しません。
 partIt :: Given Config => Part
-partIt = makePart rims # moveOriginBy (originX &| 0)
+partIt = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimLeftItTail
@@ -397,11 +397,11 @@ rimRightUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| height
 -- ディセンダーと重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partUpperUt :: Given Config => Part
-partUpperUt = makePart rims # moveOriginBy (originX &| 0)
+partUpperUt = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimOuterLink
-      makeRim $ origin ~~ (0 &| thicknessY - linkLowerCorrection)
+      rimBy $ origin ~~ (0 &| thicknessY - linkLowerCorrection)
       rimInnerLink # backward
       rimInnerBowl
       rimInnerTalBeak # backward
@@ -414,13 +414,13 @@ partUpperUt = makePart rims # moveOriginBy (originX &| 0)
 -- ベースラインより上の部分と重ねたときに太く見えすぎないように、上側を少し細く補正してあります。
 -- 原点は右上の角にあります。
 partUtTail :: Given Config => Part
-partUtTail = makePart rims
+partUtTail = partBy rims
   where
     rims = do
       rimLeftUtTail # backward
       rimCut
       rimRightUtTail
-      makeRim $ origin ~~ (0 &| thicknessY - linkUpperCorrection)
+      rimBy $ origin ~~ (0 &| thicknessY - linkUpperCorrection)
 
 -- u の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
@@ -469,7 +469,7 @@ rimSolidusCut = origin ~~ (0 &| -length)
 -- 0 の文字の斜線の部分を生成します。
 -- 原点は全体の中央にあります。
 partSolidus :: Given Config => Part
-partSolidus = makePart rims # moveOriginBy (originX &| originY) # rotate solidusAngle
+partSolidus = partBy rims #.~> (originX &| originY) # rotate solidusAngle
   where
     rims = do
       rimSolidusCut
@@ -516,7 +516,7 @@ rimInnerXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| heig
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
 -- 原点は全体の中央にあります。
 partXefHalf :: Given Config => Part
-partXefHalf = makePart rims # moveOriginBy (originX &| 0)
+partXefHalf = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimOuterRightNarrowBowl # reflectX
@@ -534,7 +534,7 @@ partXefHalf = makePart rims # moveOriginBy (originX &| 0)
 -- 5 の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partXef :: Given Config => Part
-partXef = parts # moveOriginBy (originX &| 0)
+partXef = parts #.~> (originX &| 0)
   where
     parts = do
       partXefHalf
@@ -589,7 +589,7 @@ rimTasShoulderStraight = origin ~~ (0 &| height)
 -- 1 の文字の横線以外の部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partTasFrame :: Given Config => Part
-partTasFrame = makePart rims # moveOriginBy (originX &| 0)
+partTasFrame = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimOuterBowl # reflectY
@@ -621,7 +621,7 @@ rimVerticalCut = origin ~~ (0 &| -height)
 -- 1 の文字の横線の部分を生成します。
 -- 原点は左上の角にあります。
 partTasCrossbar :: Given Config => Part
-partTasCrossbar = makePart rims
+partTasCrossbar = partBy rims
   where
     rims = do
       rimVerticalCut
@@ -691,7 +691,7 @@ rimYusShoulderStraight = origin ~~ (width &| 0)
 -- 3 の文字の縦線以外の部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partYusFrame :: Given Config => Part
-partYusFrame = makePart rims # moveOriginBy (originX &| 0)
+partYusFrame = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimOuterYusShoulder
@@ -723,7 +723,7 @@ rimYusCrossbarCut = origin ~~ (width &| 0)
 -- 3 の文字と縦線の部分を生成します。
 -- 原点は左上の角にあります。
 partYusCrossbar :: Given Config => Part
-partYusCrossbar = makePart rims
+partYusCrossbar = partBy rims
   where
     rims = do
       rimYusCrossbar
@@ -757,7 +757,7 @@ rimTransphoneCut = origin ~~ (width &| 0)
 -- 変音符と同じ形を生成します。
 -- 原点は右に飛び出る部分の左中央にあります。
 partTransphone :: Given Config => Part
-partTransphone = makePart rims # moveOriginBy (originX &| originY)
+partTransphone = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimTransphone
@@ -796,7 +796,7 @@ rimAcuteCut = origin ~~ (width &| 0)
 -- アキュートアクセントと同じ形を生成します。
 -- 原点は下部中央にあります。
 partAcute :: Given Config => Part
-partAcute = makePart rims # moveOriginBy (originX &| 0)
+partAcute = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimAcuteCut
@@ -828,7 +828,7 @@ rimInnerCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| h
 -- サーカムフレックスアクセントと同じ形を生成します。
 -- 原点は下部中央にあります。
 partCircumflex :: Given Config => Part
-partCircumflex = concatPart parts # moveOriginBy (originX &| originY)
+partCircumflex = unite parts #.~> (originX &| originY)
   where
     outerRims = do
       rimOuterCircumflex # reflectY
@@ -841,8 +841,8 @@ partCircumflex = concatPart parts # moveOriginBy (originX &| originY)
       rimInnerCircumflex # reflectX
       rimInnerCircumflex # backward
     parts = do
-      makePart outerRims
-      makePart innerRims # backward # translate (circumflexThicknessX &| 0)
+      partBy outerRims
+      partBy innerRims # backward # translate (circumflexThicknessX &| 0)
     originX = circumflexWidth / 2
     originY = -circumflexHeight / 2
 
@@ -855,7 +855,7 @@ rimDot = circle radius # rotateHalfTurn
 -- デックやパデックなどに含まれる円を生成します。
 -- 原点は円に外接する矩形の左下の角からオーバーシュート分だけ上に移動した位置にあります。
 partDot :: Given Config => Part
-partDot = makePart rims # moveOriginBy (0 &| originY)
+partDot = partBy rims #.~> (0 &| originY)
   where
     rims = do
       rimDot
@@ -865,7 +865,7 @@ partDot = makePart rims # moveOriginBy (0 &| originY)
 -- partDot が返すパーツと形は同じですが、原点の位置が異なります。
 -- 原点は左端にあります。
 partFloatingDot :: Given Config => Part
-partFloatingDot = makePart rims
+partFloatingDot = partBy rims
   where
     rims = do
       rimDot
@@ -879,7 +879,7 @@ rimBadekStem = origin ~~ (0 &| -height)
 -- バデックの棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partBadekStem :: Given Config => Part
-partBadekStem = makePart rims
+partBadekStem = partBy rims
   where
     rims = do
       rimCut
@@ -908,7 +908,7 @@ rimRightPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| 
 -- パデックの棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partPadekStem :: Given Config => Part
-partPadekStem = makePart rims
+partPadekStem = partBy rims
   where
     rims = do
       rimCut
@@ -925,7 +925,7 @@ rimNokStem = origin ~~ (0 &| -height)
 -- ノークと同じ形を生成します。
 -- 原点は左上の角にあります。
 partNok :: Given Config => Part
-partNok = makePart rims
+partNok = partBy rims
   where
     rims = do
       rimNokStem
@@ -944,7 +944,7 @@ rimDikakStem = origin ~> zero ~~ (0 &| leftCont) <~ (-bend &| -height)
 -- ディカックと同じ形を生成します。
 -- 原点は左上の角にあります。
 partDikak :: Given Config => Part
-partDikak = makePart rims
+partDikak = partBy rims
   where
     rims = do
       rimDikakStem
@@ -961,7 +961,7 @@ rimFekHorizontal = origin ~~ (width &| 0)
 -- フェークと同じ形を生成します。
 -- 原点は左上の角にあります。
 partFek :: Given Config => Part
-partFek = makePart rims
+partFek = partBy rims
   where
     rims = do
       rimVerticalCut
@@ -978,7 +978,7 @@ rimFohakHorizontal = origin ~~ (width &| 0)
 -- フォーハックと同じ形を生成します。
 -- 原点は左上の角にあります。
 partFohak :: Given Config => Part
-partFohak = makePart rims
+partFohak = partBy rims
   where
     rims = do
       rimVerticalCut
@@ -995,7 +995,7 @@ rimDashHorizontal = origin ~~ (width &| 0)
 -- ダッシュと同じ形を生成します。
 -- 原点は左上の角にあります。
 partDash :: Given Config => Part
-partDash = makePart rims
+partDash = partBy rims
   where
     rims = do
       rimVerticalCut
@@ -1018,7 +1018,7 @@ rimRakutHorizontal = origin ~~ (width &| 0)
 -- ラクットの縦向きの棒状の部分を生成します。
 -- 原点は左上の角にあります。
 partRakutVertical :: Given Config => Part
-partRakutVertical = makePart rims
+partRakutVertical = partBy rims
   where
     rims = do
       rimRakutVertical
@@ -1029,7 +1029,7 @@ partRakutVertical = makePart rims
 -- ラクットの横向きの棒状の部分を生成します。
 -- 原点は左上の角にあります。
 partRakutHorizontal :: Given Config => Part
-partRakutHorizontal = makePart rims
+partRakutHorizontal = partBy rims
   where
     rims = do
       rimVerticalCut

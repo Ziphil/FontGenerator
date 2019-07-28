@@ -11,11 +11,11 @@ module Data.FontGen.Glyph
   , Part
   , Glyph
   , Glyphs
-  , makeRim
-  , makePart
-  , concatPart
-  , makeGlyph
-  , makeGlyphs
+  , rimBy
+  , partBy
+  , unite
+  , glyphBy
+  , glyphsBy
   )
 where
 
@@ -41,18 +41,18 @@ type Glyphs = Map Char Glyph
 
 -- リムからリムを生成します。
 -- リムを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
-makeRim :: Rim -> Rim
-makeRim = id
+rimBy :: Rim -> Rim
+rimBy = id
 
 -- リムのリストから 1 つのパスから成るパーツを生成します。
 -- 生成の際に自動的にパスを閉じるので、リムの始点と終点は同じ点であるようにしてください。
-makePart :: Rim -> Part
-makePart rims = add [pathFromTrail . closeTrail . mconcat $ execState' rims]
+partBy :: Rim -> Part
+partBy rims = add [pathFromTrail . closeTrail . mconcat $ execState' rims]
 
 -- 複数のパーツを結合して 1 つのパスから成るパーツにします。
 -- 中に空洞がある形をしたパーツを作成するのに利用できます。
-concatPart :: Part -> Part
-concatPart parts = add [mconcat $ execState' parts]
+unite :: Part -> Part
+unite parts = add [mconcat $ execState' parts]
 
 class ReformEnvelope m s where
   reformEnvelope :: m -> s -> Glyph -> Glyph
@@ -81,8 +81,8 @@ instance ReformEnvelope Metrics WidthSpacing where
 
 -- パーツのリストからグリフを生成します。
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
-makeGlyph :: ReformEnvelope m s => m -> s -> Part -> Glyph
-makeGlyph metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . execState'
+glyphBy :: ReformEnvelope m s => m -> s -> Part -> Glyph
+glyphBy metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . execState'
 
-makeGlyphs :: State Glyphs () -> Glyphs
-makeGlyphs = flip execState Map.empty
+glyphsBy :: State Glyphs () -> Glyphs
+glyphsBy = flip execState Map.empty

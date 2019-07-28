@@ -14,7 +14,7 @@ import qualified Ziphil.FontGen.Vekos as Vekos
 
 
 fonts :: Fonts
-fonts = makeFonts list
+fonts = fontsBy list
   where
     list = do
       "Vr" @= Vekos.fontRegular

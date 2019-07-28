@@ -9,7 +9,7 @@ module Ziphil.FontGen.Gilit.GlyphUtil
   , singleTransphoneSpacing
   , doubleSpacing
   , doubleTransphoneSpacing
-  , makeGlyphWithSpacing'
+  , glyphByWith'
   )
 where
 
@@ -54,5 +54,5 @@ doubleTransphoneSpacing = doubleSpacing ^+^ transphoneSpacing
 
 -- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。
-makeGlyphWithSpacing' :: Given Config => WidthSpacing -> Part -> Glyph
-makeGlyphWithSpacing' = makeGlyph metrics
+glyphByWith' :: Given Config => WidthSpacing -> Part -> Glyph
+glyphByWith' = glyphBy metrics

@@ -78,7 +78,7 @@ rimLeftLeftOblique = origin ~~ (x &| y)
     y = -triangleHeight - thickness / (cosA obliqueAngle * 2) - thickness / 2
 
 partLeftOblique :: Given Config => Part
-partLeftOblique = makePart rims # moveOriginBy (originX &| originY)
+partLeftOblique = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimHorizontalCut
@@ -104,7 +104,7 @@ rimLeftLeftShortOblique = origin ~~ (x &| y)
     y = -triangleHeight + diamondGap * sinA obliqueAngle - thickness / 2
 
 partLeftShortOblique :: Given Config => Part
-partLeftShortOblique = makePart rims # moveOriginBy (originX &| originY)
+partLeftShortOblique = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimHorizontalCut
@@ -135,7 +135,7 @@ rimChip = origin ~~ (x &| y)
     y = -thickness / 2
 
 partLeftChippedOblique :: Given Config => Part
-partLeftChippedOblique = makePart rims # moveOriginBy (originX &| 0) 
+partLeftChippedOblique = partBy rims #.~> (originX &| 0) 
   where
     rims = do
       rimChip
@@ -155,7 +155,7 @@ rimLeftLeftCutOblique = origin ~~ (x &| y)
     y = -triangleHeight - thickness
 
 partLeftCutOblique :: Given Config => Part
-partLeftCutOblique = makePart rims # moveOriginBy (originX &| originY)
+partLeftCutOblique = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimHorizontalCut
@@ -170,7 +170,7 @@ partRightCutOblique :: Given Config => Part
 partRightCutOblique = partLeftCutOblique # reflectX'
 
 partLeftCenterOblique :: Given Config => Part
-partLeftCenterOblique = makePart rims # moveOriginBy (originX &| 0)
+partLeftCenterOblique = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimChip
@@ -207,7 +207,7 @@ rimLeftBase = origin ~~ (x &| y)
     y = -thickness
 
 partBase :: Given Config => Part
-partBase = makePart rims # moveOriginBy (originX &| originY)
+partBase = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimBottomBase
@@ -223,7 +223,7 @@ rimBottomLeftChippedBase = origin ~~ (x &| 0)
     x = triangleWidth + thickness / sinA obliqueAngle
 
 partLeftChippedBase :: Given Config => Part
-partLeftChippedBase = makePart rims # moveOriginBy (originX &| 0)
+partLeftChippedBase = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimChip
@@ -237,7 +237,7 @@ partRightChippedBase :: Given Config => Part
 partRightChippedBase = partLeftChippedBase # reflectX'
 
 partChippedBase :: Given Config => Part
-partChippedBase = makePart rims # moveOriginBy (originX &| 0)
+partChippedBase = partBy rims #.~> (originX &| 0)
   where
     rims = do
       rimChip
@@ -255,7 +255,7 @@ rimRightLeftAscender = origin ~~ (x &| y)
     y = ascenderHeight + thickness / (cosA obliqueAngle * 4)
 
 partLeftAscender :: Given Config => Part
-partLeftAscender = makePart rims # moveOriginBy (originX &| originY)
+partLeftAscender = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimCut
@@ -281,7 +281,7 @@ rimRightLeftDescender = origin ~~ (x &| y)
     y = ascenderHeight + thickness / 2 - thickness / (cosA obliqueAngle * 4)
 
 partLeftDescender :: Given Config => Part
-partLeftDescender = makePart rims # moveOriginBy (originX &| originY)
+partLeftDescender = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimLeftLeftDescender
@@ -301,7 +301,7 @@ rimLeftLeftChippedDescender = origin ~~ (x &| y)
     y = -ascenderHeight - thickness / (cosA obliqueAngle * 4)
 
 partLeftChippedDescender :: Given Config => Part
-partLeftChippedDescender = makePart rims # moveOriginBy (originX &| 0)
+partLeftChippedDescender = partBy rims #.~> (originX &| 0)
   where
     rims = do 
       rimLeftLeftChippedDescender
@@ -315,7 +315,7 @@ partRightChippedDescender :: Given Config => Part
 partRightChippedDescender = partLeftChippedDescender # reflectX'
 
 partDiamond :: Given Config => Part
-partDiamond = makePart rims # moveOriginBy (originX &| originY)
+partDiamond = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimCut
@@ -335,7 +335,7 @@ rimRightTransphone = origin ~~ (x &| y)
     y = triangleHeight + thickness
 
 partTransphone :: Given Config => Part
-partTransphone = makePart rims # moveOriginBy (originX &| originY)
+partTransphone = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimHorizontalCut
@@ -360,7 +360,7 @@ rimUpperAcuteHorizontalCut = origin ~~ (x &| 0)
     x = thickness * acuteRatio / sinA obliqueAngle
 
 partUpperAcute :: Given Config => Part
-partUpperAcute = makePart rims # moveOriginBy (originX &| originY)
+partUpperAcute = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimUpperAcuteCut # backward
@@ -370,7 +370,7 @@ partUpperAcute = makePart rims # moveOriginBy (originX &| originY)
     originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) - thickness * acuteRatio / (cosA obliqueAngle * 2)
 
 partUpperGrave :: Given Config => Part
-partUpperGrave = makePart rims # moveOriginBy (originX &| originY)
+partUpperGrave = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimUpperAcuteCut
@@ -380,7 +380,7 @@ partUpperGrave = makePart rims # moveOriginBy (originX &| originY)
     originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) + overshoot * diacriticOvershootRatio
 
 partUpperCircumflex :: Given Config => Part
-partUpperCircumflex = makePart rims # moveOriginBy (originX &| originY)
+partUpperCircumflex = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimCut
@@ -391,7 +391,7 @@ partUpperCircumflex = makePart rims # moveOriginBy (originX &| originY)
     originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) + overshoot * diacriticOvershootRatio
 
 partLowerAcute :: Given Config => Part
-partLowerAcute = makePart rims # moveOriginBy (originX &| originY)
+partLowerAcute = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimUpperAcuteCut
@@ -401,7 +401,7 @@ partLowerAcute = makePart rims # moveOriginBy (originX &| originY)
     originY = diacriticGap + thickness / 2 + thickness * acuteRatio / (cosA obliqueAngle * 2)
 
 partLowerGrave :: Given Config => Part
-partLowerGrave = makePart rims # moveOriginBy (originX &| originY)
+partLowerGrave = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimUpperAcuteCut # backward
@@ -411,7 +411,7 @@ partLowerGrave = makePart rims # moveOriginBy (originX &| originY)
     originY = diacriticGap + thickness / 2 - overshoot * diacriticOvershootRatio
 
 partLowerCircumflex :: Given Config => Part
-partLowerCircumflex = makePart rims # moveOriginBy (originX &| originY)
+partLowerCircumflex = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimCut
@@ -422,7 +422,7 @@ partLowerCircumflex = makePart rims # moveOriginBy (originX &| originY)
     originY = diacriticGap + thickness / 2 + thickness / cosA obliqueAngle - overshoot * diacriticOvershootRatio
 
 partDot :: Given Config => Part
-partDot = makePart rims # moveOriginBy (originX &| originY)
+partDot = partBy rims #.~> (originX &| originY)
   where
     rims = do
       rimCut

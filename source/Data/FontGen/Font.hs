@@ -21,7 +21,7 @@ module Data.FontGen.Font
   , fullName
   , dirName
   , Fonts
-  , makeFonts
+  , fontsBy
   )
 where
 
@@ -106,5 +106,5 @@ dirName = to $ map toLower . replace' " " "_" . intercalate "_" . modifiers
 
 type Fonts = Map String Font
 
-makeFonts :: State Fonts () -> Fonts
-makeFonts = flip execState Map.empty
+fontsBy :: State Fonts () -> Fonts
+fontsBy = flip execState Map.empty

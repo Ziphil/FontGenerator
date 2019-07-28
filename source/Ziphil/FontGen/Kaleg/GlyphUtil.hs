@@ -4,9 +4,9 @@
 module Ziphil.FontGen.Kaleg.GlyphUtil
   ( metrics
   , spacing
-  , makeGlyph'
-  , makeGlyphWithSpacing'
-  , makeGlyphs'
+  , glyphBy'
+  , glyphByWith'
+  , glyphsBy'
   )
 where
 
@@ -33,14 +33,14 @@ spacing = with &~ do
 
 -- パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスとスペーシングの情報を自動的に使用します。
-makeGlyph' :: Given Config => Part -> Glyph
-makeGlyph' = makeGlyph metrics spacing
+glyphBy' :: Given Config => Part -> Glyph
+glyphBy' = glyphBy metrics spacing
 
 -- 与えられたスペーシングの情報を用いて、パーツのリストからグリフを生成します。
 -- このとき、デフォルトのメトリクスの情報を自動的に使用します。
-makeGlyphWithSpacing' :: Given Config => FixedSpacing -> Part -> Glyph
-makeGlyphWithSpacing' = makeGlyph metrics
+glyphByWith' :: Given Config => FixedSpacing -> Part -> Glyph
+glyphByWith' = glyphBy metrics
 
 -- 対応する大文字がある場合に、その大文字にも同じグリフを割り当てるようにして、グリフマップを生成します。
-makeGlyphs' :: State Glyphs () -> Glyphs
-makeGlyphs' = uncurry Map.union . (Map.mapKeys toUpper &&& id) . makeGlyphs
+glyphsBy' :: State Glyphs () -> Glyphs
+glyphsBy' = uncurry Map.union . (Map.mapKeys toUpper &&& id) . glyphsBy

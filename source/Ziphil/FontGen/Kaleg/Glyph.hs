@@ -14,6 +14,6 @@ import Ziphil.FontGen.Kaleg.Value
 
 
 glyphs :: Given Config => Glyphs
-glyphs = makeGlyphs list
+glyphs = glyphsBy list
   where
     list = skip

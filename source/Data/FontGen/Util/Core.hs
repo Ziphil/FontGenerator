@@ -8,6 +8,8 @@
 module Data.FontGen.Util.Core
   ( rotateHalfTurn
   , rotateQuarterTurn
+  , (#.~>)
+  , (#~>)
   , OrthoCoordinates (..)
   , (&|)
   , PolarCoordinates (..)
@@ -47,6 +49,14 @@ rotateHalfTurn = rotate halfTurn
 -- 与えられた図形を 90° 回転します。
 rotateQuarterTurn :: (InSpace V2 n t, Floating n, Transformable t) => t -> t
 rotateQuarterTurn = rotate quarterTurn
+
+infixl 8 #.~>
+(#.~>) :: HasOrigin t => t -> Vn t -> t
+(#.~>) = flip moveOriginBy
+
+infixl 8 #~>
+(#~>) :: Transformable t => t -> Vn t -> t
+(#~>) = flip translate
 
 class OrthoCoordinates c where
   type PrevOrthoDim c
