@@ -12,6 +12,7 @@ module Data.FontGen.Glyph
   , partBy
   , unite
   , Glyph (..)
+  , partIn
   , glyphBy
   , Glyphs
   , glyphsBy
