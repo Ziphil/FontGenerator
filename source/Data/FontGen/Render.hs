@@ -118,7 +118,7 @@ renderDiagram' path glyphWidth = renderPretty' (toFilePath path) option
 modifyDiagram :: GenerateOption -> Path Rel File -> IO ()
 modifyDiagram option path = execCommands [command]
   where
-    command = intercalate " " $ [option ^. inkscape, toFilePath path] ++ map ("--verb " <>) verbs
+    command = unwords $ [option ^. inkscape, toFilePath path] ++ map ("--verb " <>) verbs
     verbs = ["EditSelectAll", "SelectionUnGroup", "SelectionUnion", "FileSave", "FileQuit"]
 
 renderModifyDiagram' :: GenerateOption -> Path Rel File -> Double -> Diagram B -> IO ()
@@ -163,7 +163,7 @@ writeCode option font = flip Text.writeFile code =<< path
 generateFont :: GenerateOption -> Font -> IO ()
 generateFont option font = execCommandsDir font [command]
   where
-    command = intercalate " " [option ^. python, path]
+    command = unwords [option ^. python, path]
     path = option ^. codeFileName <> ".py"
 
 -- グリフ生成からフォント生成までの一連の処理を全て行います。
