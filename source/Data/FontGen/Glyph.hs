@@ -28,26 +28,28 @@ import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
 
-type RimElem = Trail V2 Double
-type Rim = MonoidState [RimElem] ()
+type RimTrail = Trail V2 Double
+type RimHolder = [RimTrail]
+type Rim = MonoidState RimHolder ()
 
 -- リムからリムを生成します。
 -- リムを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
 rimBy :: Rim -> Rim
 rimBy = id
 
-type PartElem = Path V2 Double
-type Part = MonoidState [PartElem] ()
+type PartPath = Path V2 Double
+type PartHolder = [PartPath]
+type Part = MonoidState PartHolder ()
 
 -- リムのリストから 1 つのパスから成るパーツを生成します。
 -- 生成の際に自動的にパスを閉じるので、リムの始点と終点は同じ点であるようにしてください。
 partBy :: Rim -> Part
-partBy rims = add [pathFromTrail . closeTrail . mconcat $ execState' rims]
+partBy = add . pure . pathFromTrail . closeTrail . mconcat . execState'
 
 -- 複数のパーツを結合して 1 つのパスから成るパーツにします。
 -- 中に空洞がある形をしたパーツを作成するのに利用できます。
 unite :: Part -> Part
-unite parts = add [mconcat $ execState' parts]
+unite = add . pure . mconcat . execState'
 
 data Glyph = forall m s. ReformEnvelope m s => Glyph Part m s
 

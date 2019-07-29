@@ -206,10 +206,10 @@ instance (Monoid t, Backwardable t) => Backwardable (MonoidState t ()) where
   backward = mapAddend backward
 
 instance TrailLike t => TrailLike (MonoidState [t] ()) where
-  trailLike loc = add [trailLike loc]
+  trailLike = add . pure . trailLike
 
 instance SegmentLike t => SegmentLike (MonoidState [t] ()) where
-  segmentLike loc = add [segmentLike loc]
+  segmentLike = add . pure . segmentLike
 
 infixr 4 @~
 (@~) :: At s => Index s -> IxValue s -> s -> s
