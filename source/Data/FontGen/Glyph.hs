@@ -1,3 +1,4 @@
+{-# LANGUAGE ExistentialQuantification #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FunctionalDependencies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -5,16 +6,14 @@
 
 
 module Data.FontGen.Glyph
-  ( RimElem
-  , Rim
-  , PartElem
-  , Part
-  , Glyph
-  , Glyphs
+  ( Rim
   , rimBy
+  , Part
   , partBy
   , unite
+  , Glyph (..)
   , glyphBy
+  , Glyphs
   , glyphsBy
   )
 where
@@ -32,17 +31,13 @@ import Diagrams.Prelude
 type RimElem = Trail V2 Double
 type Rim = MonoidState [RimElem] ()
 
-type PartElem = Path V2 Double
-type Part = MonoidState [PartElem] ()
-
-type Glyph = Diagram B
-
-type Glyphs = Map Char Glyph
-
 -- リムからリムを生成します。
 -- リムを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
 rimBy :: Rim -> Rim
 rimBy = id
+
+type PartElem = Path V2 Double
+type Part = MonoidState [PartElem] ()
 
 -- リムのリストから 1 つのパスから成るパーツを生成します。
 -- 生成の際に自動的にパスを閉じるので、リムの始点と終点は同じ点であるようにしてください。
@@ -54,10 +49,16 @@ partBy rims = add [pathFromTrail . closeTrail . mconcat $ execState' rims]
 unite :: Part -> Part
 unite parts = add [mconcat $ execState' parts]
 
+data Glyph = forall m s. ReformEnvelope m s => Glyph Part m s
+
+partIn :: Glyph -> Part 
+partIn (Glyph part _ _) = part
+
 -- パーツのリストからグリフを生成します。
--- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
 glyphBy :: ReformEnvelope m s => m -> s -> Part -> Glyph
-glyphBy metrics spacing = reformEnvelope metrics spacing . mconcat . map strokePath . execState'
+glyphBy metrics spacing part = Glyph part metrics spacing
+
+type Glyphs = Map Char Glyph
 
 glyphsBy :: State Glyphs () -> Glyphs
 glyphsBy = flip execState Map.empty

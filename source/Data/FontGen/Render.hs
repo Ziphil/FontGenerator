@@ -8,7 +8,7 @@ module Data.FontGen.Render
   ( ensureOutputDir
   , Format (..)
   , GenerateOption, codeFileName, python, inkscape, format, autoHint
-  , renderGlyphs
+  , renderOutlines
   , generateFont
   , generateAll
   , RenderOption, strings, fileName, lineGap, scaleRate
@@ -23,9 +23,11 @@ import Data.FontGen.Font
 import Data.FontGen.Glyph
 import Data.FontGen.Metrics
 import Data.FontGen.Util.Core
+import Data.FontGen.Util.State
 import Data.FontGen.Util.Text
 import Data.FileEmbed
 import Data.List
+import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Text (Text)
@@ -42,8 +44,14 @@ import System.Exit
 import System.Process
 
 
-styleGlyph :: Glyph -> Diagram B
-styleGlyph = lineWidth (global 0) . fillColor black
+makeOutline :: Glyph -> Diagram B
+makeOutline (Glyph part metrics spacing) = reformEnvelope metrics spacing . mconcat . map strokePath $ execState' part
+
+makeOutlines :: Glyphs -> Map Char (Diagram B)
+makeOutlines = Map.map makeOutline
+
+styleOutline :: Diagram B -> Diagram B
+styleOutline = lineWidth (global 0) . fillColor black
 
 -- FontForge に読み込ませるために、ダイアグラムのバウンディングボックスを em 正方形に一致させます。
 adjustWidth :: Font -> Diagram B -> Diagram B
@@ -118,15 +126,15 @@ renderModifyDiagram' option path glyphWidth diagram = do
   renderDiagram' path glyphWidth diagram
   modifyDiagram option path
 
-renderGlyph :: GenerateOption -> Font -> Char -> Glyph -> IO ()
-renderGlyph option font char glyph = (\path -> renderDiagram' path (width glyph) diagram) =<< path
+renderOutline :: GenerateOption -> Font -> Char -> Diagram B -> IO ()
+renderOutline option font char glyph = (\path -> renderDiagram' path (width glyph) diagram) =<< path
   where
     path = outputFile font name "svg"
     name = show $ ord char
-    diagram = adjustWidth font $ styleGlyph glyph
+    diagram = adjustWidth font $ styleOutline glyph
 
-renderGlyphs :: GenerateOption -> Font -> IO ()
-renderGlyphs option font = void $ Map.traverseWithKey (renderGlyph option font) (font ^. glyphs)
+renderOutlines :: GenerateOption -> Font -> IO ()
+renderOutlines option font = void $ Map.traverseWithKey (renderOutline option font) (makeOutlines $ font ^. glyphs)
 
 -- テンプレートコード中のメタ変数を変換して、フォント生成用の Python コードを生成します。
 makeCode :: GenerateOption -> Font -> Text
@@ -162,7 +170,7 @@ generateFont option font = execCommandsDir font [command]
 generateAll :: GenerateOption -> Font -> IO ()
 generateAll option font = do
   ensureOutputDir font
-  renderGlyphs option font
+  renderOutlines option font
   writeCode option font
   generateFont option font
 
@@ -175,7 +183,7 @@ instance Default RenderOption where
   def = RenderOption "test" [] 200 0.1
 
 makeCharDiagram :: Font -> Char -> Diagram B
-makeCharDiagram font = styleGlyph . fromMaybe mempty . flip Map.lookup (font ^. glyphs)
+makeCharDiagram font = styleOutline . maybe mempty makeOutline . flip Map.lookup (font ^. glyphs)
 
 makeStringDiagram :: Font -> String -> Diagram B
 makeStringDiagram font = hcat . map (makeCharDiagram font)
