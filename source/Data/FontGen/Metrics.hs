@@ -12,10 +12,13 @@ module Data.FontGen.Metrics
   , Metrics
   , FixedSpacing
   , WidthSpacing
+  , ReformEnvelope (..)
   )
 where
 
+import Data.FontGen.Util.Core
 import Diagrams.Prelude
+import Diagrams.Backend.SVG
 
 
 data MetricsPoly n = MetricsPoly {_metricEm :: n, _metricAscent :: n, _metricDescent :: n}
@@ -66,3 +69,28 @@ instance Num n => Default (WidthSpacingPoly n) where
 type Metrics = MetricsPoly Double
 type FixedSpacing = FixedSpacingPoly Double
 type WidthSpacing = WidthSpacingPoly Double
+
+class ReformEnvelope m s where
+  reformEnvelope :: m -> s -> Diagram B -> Diagram B
+
+-- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
+-- 具体的には、左右にスペーシングとして設定された一定量の余白を追加します。
+reformEnvelopeFixed :: Metrics -> FixedSpacing -> Diagram B -> Diagram B
+reformEnvelopeFixed metrics spacing glyph = rectEnvelope base size glyph
+  where
+    base = (0 - spacing ^. leftBearing &| 0 - metrics ^. metricDescent)
+    size = (width glyph + spacing ^. leftBearing + spacing ^. rightBearing &| metrics ^. metricEm)
+
+-- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
+-- 具体的には、指定された X 座標を左端とし、指定された横幅になるように左端に空白を追加します。
+reformEnvelopeWidth :: Metrics -> WidthSpacing -> Diagram B -> Diagram B
+reformEnvelopeWidth metrics spacing glyph = rectEnvelope base size glyph
+  where
+    base = (spacing ^. leftEnd &| 0 - metrics ^. metricDescent)
+    size = (spacing ^. fixedWidth &| metrics ^. metricEm)
+
+instance ReformEnvelope Metrics FixedSpacing where
+  reformEnvelope = reformEnvelopeFixed
+
+instance ReformEnvelope Metrics WidthSpacing where
+  reformEnvelope = reformEnvelopeWidth

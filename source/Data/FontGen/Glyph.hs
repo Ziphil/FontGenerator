@@ -54,31 +54,6 @@ partBy rims = add [pathFromTrail . closeTrail . mconcat $ execState' rims]
 unite :: Part -> Part
 unite parts = add [mconcat $ execState' parts]
 
-class ReformEnvelope m s where
-  reformEnvelope :: m -> s -> Glyph -> Glyph
-
--- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
--- 具体的には、左右にスペーシングとして設定された一定量の余白を追加します。
-reformEnvelopeFixed :: Metrics -> FixedSpacing -> Glyph -> Glyph
-reformEnvelopeFixed metrics spacing glyph = rectEnvelope base size glyph
-  where
-    base = (0 - spacing ^. leftBearing &| 0 - metrics ^. metricDescent)
-    size = (width glyph + spacing ^. leftBearing + spacing ^. rightBearing &| metrics ^. metricEm)
-
--- 与えられたメトリクスとスペーシングの情報に従って、出力用にグリフのエンベロープを修正します。
--- 具体的には、指定された X 座標を左端とし、指定された横幅になるように左端に空白を追加します。
-reformEnvelopeWidth :: Metrics -> WidthSpacing -> Glyph -> Glyph
-reformEnvelopeWidth metrics spacing glyph = rectEnvelope base size glyph
-  where
-    base = (spacing ^. leftEnd &| 0 - metrics ^. metricDescent)
-    size = (spacing ^. fixedWidth &| metrics ^. metricEm)
-
-instance ReformEnvelope Metrics FixedSpacing where
-  reformEnvelope = reformEnvelopeFixed
-
-instance ReformEnvelope Metrics WidthSpacing where
-  reformEnvelope = reformEnvelopeWidth
-
 -- パーツのリストからグリフを生成します。
 -- このとき、左右に与えられた長さの分のスペースができるように、グリフのエンベロープも修正します。
 glyphBy :: ReformEnvelope m s => m -> s -> Part -> Glyph
