@@ -1,7 +1,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 
-
 module Data.FontGen.Util.State
   ( module Control.Monad.State
   , MonoidState

@@ -1,6 +1,5 @@
 --
 
-
 module Data.FontGen.Util.Interface
   ( colorMessage
   , colorError

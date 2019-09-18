@@ -5,7 +5,6 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-
 module Ziphil.FontGen.Kaleg.Config
   ( EdgeShape (..)
   , Config, weightConst, edgeShapeVal

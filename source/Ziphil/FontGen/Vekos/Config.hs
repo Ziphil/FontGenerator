@@ -5,7 +5,6 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-
 module Ziphil.FontGen.Vekos.Config
   ( Config, weightConst, stretchConst, contrastRatio
   , Given

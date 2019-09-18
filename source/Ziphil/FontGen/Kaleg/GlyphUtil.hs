@@ -1,6 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-
 module Ziphil.FontGen.Kaleg.GlyphUtil
   ( metrics
   , spacing

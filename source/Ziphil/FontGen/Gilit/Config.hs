@@ -5,7 +5,6 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-
 module Ziphil.FontGen.Gilit.Config
   ( Config, weightConst, stretchRatio, ascenderRatio
   , Given

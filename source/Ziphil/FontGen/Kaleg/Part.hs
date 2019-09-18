@@ -1,7 +1,6 @@
 {-# LANGUAGE ApplicativeDo #-}
 {-# LANGUAGE FlexibleContexts #-}
 
-
 module Ziphil.FontGen.Kaleg.Part
   ( ascent
   , descent

@@ -1,6 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-
 module Data.FontGen.Interface
   ( main
   )

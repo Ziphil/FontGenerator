@@ -1,6 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-
 module Ziphil.FontGen.Vekos.GlyphUtil
   ( metrics
   , spacing

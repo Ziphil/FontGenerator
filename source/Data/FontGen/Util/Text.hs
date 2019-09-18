@@ -1,7 +1,6 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RankNTypes #-}
 
-
 module Data.FontGen.Util.Text
   ( ToText (..)
   , tshow

@@ -4,7 +4,6 @@
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TypeFamilies #-}
 
-
 module Data.FontGen.Util.Core
   ( rotateHalfTurn
   , rotateQuarterTurn

@@ -1,6 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-
 module Ziphil.FontGen.Vekos.PartFunc
   ( idealThickness
   , calcTailError

@@ -1,6 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-
 module Ziphil.FontGen.Gilit.PartFunc
   ( reflectX'
   , transpose

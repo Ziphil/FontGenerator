@@ -1,6 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
 
-
 module Ziphil.FontGen.Gilit.GlyphUtil
   ( metrics
   , defaultSpacing

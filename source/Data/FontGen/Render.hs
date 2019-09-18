@@ -3,7 +3,6 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE TemplateHaskell #-}
 
-
 module Data.FontGen.Render
   ( ensureOutputDir
   , Format (..)

@@ -1,6 +1,5 @@
 --
 
-
 module Data.FontGen
   ( module Data.FontGen.Glyph
   , module Data.FontGen.Metrics
