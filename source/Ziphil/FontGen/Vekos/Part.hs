@@ -58,8 +58,8 @@ import Ziphil.FontGen.Vekos.Value
 
 
 -- k, p, c, l, a などの文字に共通する丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
-rimOuterBowl :: Given Config => Rim
-rimOuterBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneOuterBowl :: Given Config => Bone
+boneOuterBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = bowlWidth / 2
     height = mean / 2 + overshoot
@@ -67,8 +67,8 @@ rimOuterBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
     topCont = width
 
 -- k, p, c, l, a などの文字に共通する丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
-rimInnerBowl :: Given Config => Rim
-rimInnerBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneInnerBowl :: Given Config => Bone
+boneInnerBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = bowlWidth / 2 - thicknessX
     height = mean / 2 - thicknessY + overshoot
@@ -80,24 +80,24 @@ rimInnerBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
 partBowl :: Given Config => Part
 partBowl = unite parts #.~> (originX &| 0)
   where
-    outerRims = do
-      rimOuterBowl # reflectY
-      rimOuterBowl # rotateHalfTurn # backward
-      rimOuterBowl # reflectX
-      rimOuterBowl # backward
-    innerRims = do
-      rimInnerBowl # reflectY
-      rimInnerBowl # rotateHalfTurn # backward
-      rimInnerBowl # reflectX
-      rimInnerBowl # backward
+    outerBones = do
+      boneOuterBowl # reflectY
+      boneOuterBowl # rotateHalfTurn # backward
+      boneOuterBowl # reflectX
+      boneOuterBowl # backward
+    innerBones = do
+      boneInnerBowl # reflectY
+      boneInnerBowl # rotateHalfTurn # backward
+      boneInnerBowl # reflectX
+      boneInnerBowl # backward
     parts = do
-      partBy outerRims
-      partBy innerRims # backward # translate (thicknessX &| 0)
+      partBy outerBones
+      partBy innerBones # backward # translate (thicknessX &| 0)
     originX = bowlWidth / 2
 
 -- l の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
-rimLeftLesTail :: Given Config => Rim
-rimLeftLesTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
+boneLeftLesTail :: Given Config => Bone
+boneLeftLesTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
   where
     bend = lesTailBend - thicknessX / 2 + lesTailCorrection
     virtualBend = lesTailBend
@@ -106,8 +106,8 @@ rimLeftLesTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -he
     bottomCont = descent * 1.08
 
 -- l の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
-rimRightLesTail :: Given Config => Rim
-rimRightLesTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
+boneRightLesTail :: Given Config => Bone
+boneRightLesTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
   where
     bend = lesTailBend - thicknessX / 2
     height = mean / 2 + descent
@@ -115,8 +115,8 @@ rimRightLesTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -h
     bottomCont = searchTailInnerCont bend height topCont
 
 -- 文字の書き始めや書き終わりの位置にある水平に切られた部分を、左端から右端への向きで生成します。
-rimCut :: Given Config => Rim
-rimCut = origin ~~ (width &| 0)
+boneCut :: Given Config => Bone
+boneCut = origin ~~ (width &| 0)
   where
     width = thicknessX
 
@@ -125,13 +125,13 @@ rimCut = origin ~~ (width &| 0)
 -- 丸い部分と重ねたときに重なった部分が太く見えすぎないように、左側を少し細く補正してあります。
 -- 原点は補正がないとしたときの左上の角にあります。
 partLesTail :: Given Config => Part
-partLesTail = partBy rims #.~> (originX &| 0)
+partLesTail = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimLeftLesTail
-      rimCut
-      rimRightLesTail # backward
-      rimBy $ origin ~~ (-thicknessX + lesTailCorrection &| 0)
+    bones = do
+      boneLeftLesTail
+      boneCut
+      boneRightLesTail # backward
+      boneBy $ origin ~~ (-thicknessX + lesTailCorrection &| 0)
     originX = -lesTailCorrection
 
 -- l の文字と同じ形を生成します。
@@ -144,8 +144,8 @@ partLes = parts
       partLesTail # translate (bowlWidth / 2 - thicknessX &| 0)
 
 -- y の文字の下半分にある曲線を、上端から下端への向きで生成します。
-rimYesLeg :: Given Config => Rim
-rimYesLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (bend &| -height)
+boneYesLeg :: Given Config => Bone
+boneYesLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (bend &| -height)
   where
     bend = yesLegBend
     height = mean / 2
@@ -154,27 +154,27 @@ rimYesLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (bend &| -height)
 -- y の文字と同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partYes :: Given Config => Part
-partYes = partBy rims #.~> (originX &| 0)
+partYes = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimYesLeg
-      rimCut
-      rimYesLeg # backward
-      rimInnerBowl
-      rimInnerBowl # reflectX # backward
-      rimYesLeg # reflectX
-      rimCut
-      rimYesLeg # reflectX # backward
-      rimOuterBowl # reflectX
-      rimOuterBowl # backward
+    bones = do
+      boneYesLeg
+      boneCut
+      boneYesLeg # backward
+      boneInnerBowl
+      boneInnerBowl # reflectX # backward
+      boneYesLeg # reflectX
+      boneCut
+      boneYesLeg # reflectX # backward
+      boneOuterBowl # reflectX
+      boneOuterBowl # backward
     originX = bowlWidth / 2
 
 talWidth :: Given Config => Double
 talWidth = bowlWidth / 2 + talBeakWidth
 
 -- t の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
-rimOuterTalBeak :: Given Config => Rim
-rimOuterTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+boneOuterTalBeak :: Given Config => Bone
+boneOuterTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
   where
     width = talBeakWidth
     height = talBeakHeight + overshoot
@@ -182,8 +182,8 @@ rimOuterTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| hei
     topCont = width
 
 -- t の文字の右上にある部分の内側の曲線を、右端から上端への向きで生成します。
-rimInnerTalBeak :: Given Config => Rim
-rimInnerTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+boneInnerTalBeak :: Given Config => Bone
+boneInnerTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
   where
     width = talBeakWidth - thicknessX
     height = talBeakHeight - thicknessY + overshoot
@@ -193,19 +193,19 @@ rimInnerTalBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| hei
 -- t の文字と同じ形を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partTal :: Given Config => Part
-partTal = partBy rims #.~> (originX &| 0)
+partTal = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimOuterBowl # reflectY
-      rimOuterTalBeak # reflectY # backward
-      rimCut # backward
-      rimInnerTalBeak # reflectY
-      rimInnerBowl # reflectY # backward
-      rimInnerBowl
-      rimInnerTalBeak # backward
-      rimCut
-      rimOuterTalBeak
-      rimOuterBowl # backward
+    bones = do
+      boneOuterBowl # reflectY
+      boneOuterTalBeak # reflectY # backward
+      boneCut # backward
+      boneInnerTalBeak # reflectY
+      boneInnerBowl # reflectY # backward
+      boneInnerBowl
+      boneInnerTalBeak # backward
+      boneCut
+      boneOuterTalBeak
+      boneOuterBowl # backward
     originX = talWidth / 2
 
 narrowBowlWidth :: Given Config => Double
@@ -215,8 +215,8 @@ xalWidth :: Given Config => Double
 xalWidth = narrowBowlVirtualWidth * 2 - thicknessX
 
 -- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
-rimOuterLeftNarrowBowl :: Given Config => Rim
-rimOuterLeftNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneOuterLeftNarrowBowl :: Given Config => Bone
+boneOuterLeftNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2
     height = mean / 2 + overshoot
@@ -225,8 +225,8 @@ rimOuterLeftNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width 
 
 -- x, j の文字に共通する細い丸い部分の外側の曲線の 4 分の 1 を、右端から上端への向きで生成します。
 -- ただし、他のトレイルと使い方を揃えるため、左右反転してあります。
-rimOuterRightNarrowBowl :: Given Config => Rim
-rimOuterRightNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneOuterRightNarrowBowl :: Given Config => Bone
+boneOuterRightNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2 - narrowBowlCorrection
     height = mean / 2 + overshoot
@@ -234,8 +234,8 @@ rimOuterRightNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width
     topCont = width
 
 -- x, j の文字に共通する細い丸い部分の内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
-rimInnerNarrowBowl :: Given Config => Rim
-rimInnerNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneInnerNarrowBowl :: Given Config => Bone
+boneInnerNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = narrowBowlVirtualWidth / 2 - thicknessX
     height = mean / 2 - thicknessY + overshoot
@@ -248,19 +248,19 @@ rimInnerNarrowBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| h
 partNarrowBowl :: Given Config => Part
 partNarrowBowl = unite parts #.~> (originX &| 0)
   where
-    outerRims = do
-      rimOuterLeftNarrowBowl # reflectY
-      rimOuterRightNarrowBowl # rotateHalfTurn # backward
-      rimOuterRightNarrowBowl # reflectX
-      rimOuterLeftNarrowBowl # backward
-    innerRims = do
-      rimInnerNarrowBowl # reflectY
-      rimInnerNarrowBowl # rotateHalfTurn # backward
-      rimInnerNarrowBowl # reflectX
-      rimInnerNarrowBowl # backward
+    outerBones = do
+      boneOuterLeftNarrowBowl # reflectY
+      boneOuterRightNarrowBowl # rotateHalfTurn # backward
+      boneOuterRightNarrowBowl # reflectX
+      boneOuterLeftNarrowBowl # backward
+    innerBones = do
+      boneInnerNarrowBowl # reflectY
+      boneInnerNarrowBowl # rotateHalfTurn # backward
+      boneInnerNarrowBowl # reflectX
+      boneInnerNarrowBowl # backward
     parts = do
-      partBy outerRims
-      partBy innerRims # backward # translate (thicknessX &| 0)
+      partBy outerBones
+      partBy innerBones # backward # translate (thicknessX &| 0)
     originX = narrowBowlVirtualWidth / 2
 
 -- x の文字と同じ形を生成します。
@@ -277,16 +277,16 @@ nesWidth :: Given Config => Double
 nesWidth = narrowBowlVirtualWidth + spineWidth
 
 -- n の文字の書き終わりの箇所にある曲線を、上端から下端への向きで生成します。
-rimNesLeg :: Given Config => Rim
-rimNesLeg = origin ~> (0 &| -rightCont) ~~ zero <~ (-bend &| -height)
+boneNesLeg :: Given Config => Bone
+boneNesLeg = origin ~> (0 &| -rightCont) ~~ zero <~ (-bend &| -height)
   where
     bend = nesLegBend
     height = mean / 2
     rightCont = height * 0.6
 
 -- n の文字の中央部分の上側の曲線を、下端から上端への向きで生成します。
-rimTopSpine :: Given Config => Rim
-rimTopSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| bend)
+boneTopSpine :: Given Config => Bone
+boneTopSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| bend)
   where
     width = spineWidth
     bend = mean - thicknessY + overshoot * 2
@@ -294,8 +294,8 @@ rimTopSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| bend)
     rightCont = width * 1.05
 
 -- n の文字の中央部分の下側の曲線を、下端から上端への向きで生成します。
-rimBottomSpine :: Given Config => Rim
-rimBottomSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| bend)
+boneBottomSpine :: Given Config => Bone
+boneBottomSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| bend)
   where
     width = spineWidth
     bend = mean - thicknessY + overshoot * 2
@@ -305,26 +305,26 @@ rimBottomSpine = origin ~> (leftCont &| 0) ~~ (-rightCont &| 0) <~ (width &| ben
 -- n の文字と同じ形を生成します。
 -- 原点は全体の中央にあります。
 partNes :: Given Config => Part
-partNes = partBy rims #.~> (originX &| 0)
+partNes = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimOuterLeftNarrowBowl # reflectY
-      rimBottomSpine
-      rimInnerNarrowBowl # reflectX # backward
-      rimNesLeg
-      rimCut
-      rimNesLeg # backward
-      rimOuterLeftNarrowBowl # reflectX
-      rimTopSpine # backward
-      rimInnerNarrowBowl # reflectY # backward
-      rimNesLeg # rotateHalfTurn
-      rimCut # backward
-      rimNesLeg # rotateHalfTurn # backward
+    bones = do
+      boneOuterLeftNarrowBowl # reflectY
+      boneBottomSpine
+      boneInnerNarrowBowl # reflectX # backward
+      boneNesLeg
+      boneCut
+      boneNesLeg # backward
+      boneOuterLeftNarrowBowl # reflectX
+      boneTopSpine # backward
+      boneInnerNarrowBowl # reflectY # backward
+      boneNesLeg # rotateHalfTurn
+      boneCut # backward
+      boneNesLeg # rotateHalfTurn # backward
     originX = nesWidth / 2
 
 -- i の文字のディセンダーの左側の曲線を、上端から下端への向きで生成します。
-rimLeftItTail :: Given Config => Rim
-rimLeftItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -height)
+boneLeftItTail :: Given Config => Bone
+boneLeftItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -height)
   where
     bend = itTailBend - thicknessX / 2
     height = mean / 2 + descent
@@ -332,8 +332,8 @@ rimLeftItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -heig
     bottomCont = searchTailInnerCont bend height topCont
 
 -- i の文字のディセンダーの右側の曲線を、上端から下端への向きで生成します。
-rimRightItTail :: Given Config => Rim
-rimRightItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -height)
+boneRightItTail :: Given Config => Bone
+boneRightItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -height)
   where
     bend = itTailBend - thicknessX / 2
     height = mean / 2 + descent
@@ -343,22 +343,22 @@ rimRightItTail = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (bend &| -hei
 -- i の文字と同じ形を生成します。
 -- 原点は上部の丸い部分の中央にあるので、回転や反転で変化しません。
 partIt :: Given Config => Part
-partIt = partBy rims #.~> (originX &| 0)
+partIt = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimLeftItTail
-      rimCut
-      rimRightItTail # backward
-      rimInnerBowl
-      rimInnerTalBeak # backward
-      rimCut
-      rimOuterTalBeak
-      rimOuterBowl # backward
+    bones = do
+      boneLeftItTail
+      boneCut
+      boneRightItTail # backward
+      boneInnerBowl
+      boneInnerTalBeak # backward
+      boneCut
+      boneOuterTalBeak
+      boneOuterBowl # backward
     originX = talWidth / 2
 
 -- u の文字のディセンダーと接続する部分の外側の曲線を、上端から下端への向きで生成します。
-rimOuterLink :: Given Config => Rim
-rimOuterLink = origin ~> (0 &| -leftCont) ~~ (-bottomCont &| 0) <~ (width &| -height)
+boneOuterLink :: Given Config => Bone
+boneOuterLink = origin ~> (0 &| -leftCont) ~~ (-bottomCont &| 0) <~ (width &| -height)
   where
     width = linkWidth
     height = mean / 2 - linkLowerCorrection
@@ -366,8 +366,8 @@ rimOuterLink = origin ~> (0 &| -leftCont) ~~ (-bottomCont &| 0) <~ (width &| -he
     bottomCont = width
 
 -- u の文字のディセンダーと接続する部分の内側の曲線を、上端から下端への向きで生成します。
-rimInnerLink :: Given Config => Rim
-rimInnerLink = origin ~> (0 &| -leftCont) ~~ (-bottomCont &| 0) <~ (width &| -height)
+boneInnerLink :: Given Config => Bone
+boneInnerLink = origin ~> (0 &| -leftCont) ~~ (-bottomCont &| 0) <~ (width &| -height)
   where
     width = linkWidth - thicknessX
     height = mean / 2 - thicknessY
@@ -375,8 +375,8 @@ rimInnerLink = origin ~> (0 &| -leftCont) ~~ (-bottomCont &| 0) <~ (width &| -he
     bottomCont = width
 
 -- u の文字のディセンダーの左側の曲線を、下端から上端への向きで生成します。
-rimLeftUtTail :: Given Config => Rim
-rimLeftUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| height)
+boneLeftUtTail :: Given Config => Bone
+boneLeftUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| height)
   where
     bend = utTailBend + thicknessX / 2
     height = descent + thicknessY - linkUpperCorrection
@@ -384,8 +384,8 @@ rimLeftUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| height)
     topCont = bend
 
 -- u の文字のディセンダーの右側の曲線を、下端から上端への向きで生成します。
-rimRightUtTail :: Given Config => Rim
-rimRightUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| height)
+boneRightUtTail :: Given Config => Bone
+boneRightUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| height)
   where
     bend = utTailBend - thicknessX / 2
     height = descent
@@ -396,30 +396,30 @@ rimRightUtTail = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (bend &| height
 -- ディセンダーと重ねたときに太く見えすぎないように、下側を少し細く補正してあります。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partUpperUt :: Given Config => Part
-partUpperUt = partBy rims #.~> (originX &| 0)
+partUpperUt = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimOuterLink
-      rimBy $ origin ~~ (0 &| thicknessY - linkLowerCorrection)
-      rimInnerLink # backward
-      rimInnerBowl
-      rimInnerTalBeak # backward
-      rimCut
-      rimOuterTalBeak
-      rimOuterBowl # backward
+    bones = do
+      boneOuterLink
+      boneBy $ origin ~~ (0 &| thicknessY - linkLowerCorrection)
+      boneInnerLink # backward
+      boneInnerBowl
+      boneInnerTalBeak # backward
+      boneCut
+      boneOuterTalBeak
+      boneOuterBowl # backward
     originX = talWidth / 2
 
 -- u の文字のディセンダーを生成します。
 -- ベースラインより上の部分と重ねたときに太く見えすぎないように、上側を少し細く補正してあります。
 -- 原点は右上の角にあります。
 partUtTail :: Given Config => Part
-partUtTail = partBy rims
+partUtTail = partBy bones
   where
-    rims = do
-      rimLeftUtTail # backward
-      rimCut
-      rimRightUtTail
-      rimBy $ origin ~~ (0 &| thicknessY - linkUpperCorrection)
+    bones = do
+      boneLeftUtTail # backward
+      boneCut
+      boneRightUtTail
+      boneBy $ origin ~~ (0 &| thicknessY - linkUpperCorrection)
 
 -- u の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
@@ -453,28 +453,28 @@ solidusAngle = signedAngleBetween (bowlWidth / 2 &| solidusGrade) unitX
 
 -- 0 の文字の斜線の部分の長い方の直線を、左端から右端への向きで生成します。
 -- パーツを構成した後に回転することを想定しているので、このトレイルは水平です。
-rimSolidus :: Given Config => Rim
-rimSolidus = origin ~~ (length &| 0)
+boneSolidus :: Given Config => Bone
+boneSolidus = origin ~~ (length &| 0)
   where
     length = solidusLength
 
 -- 0 の文字の斜線の部分の短い方の直線を、上端から下端への向きで生成します。
 -- パーツを構成した後に回転することを想定しているので、このトレイルは鉛直です。
-rimSolidusCut :: Given Config => Rim
-rimSolidusCut = origin ~~ (0 &| -length)
+boneSolidusCut :: Given Config => Bone
+boneSolidusCut = origin ~~ (0 &| -length)
   where
     length = solidusThickness
 
 -- 0 の文字の斜線の部分を生成します。
 -- 原点は全体の中央にあります。
 partSolidus :: Given Config => Part
-partSolidus = partBy rims #.~> (originX &| originY) # rotate solidusAngle
+partSolidus = partBy bones #.~> (originX &| originY) # rotate solidusAngle
   where
-    rims = do
-      rimSolidusCut
-      rimSolidus
-      rimSolidusCut # backward
-      rimSolidus # backward
+    bones = do
+      boneSolidusCut
+      boneSolidus
+      boneSolidusCut # backward
+      boneSolidus # backward
     originX = solidusLength / 2
     originY = -solidusThickness / 2
 
@@ -494,8 +494,8 @@ xefWidth :: Given Config => Double
 xefWidth = xefHalfVirtualWidth * 2 - thicknessX
 
 -- 5 の文字の左上にある部分の外側の曲線を、右端から上端への向きで生成します。
-rimOuterXefBeak :: Given Config => Rim
-rimOuterXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneOuterXefBeak :: Given Config => Bone
+boneOuterXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = xefBeakWidth
     height = xefBeakHeight + overshoot
@@ -503,8 +503,8 @@ rimOuterXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| heig
     topCont = width
 
 -- 5 の文字の左上にある部分の内側の曲線を、右端から上端への向きで生成します。
-rimInnerXefBeak :: Given Config => Rim
-rimInnerXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneInnerXefBeak :: Given Config => Bone
+boneInnerXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = xefBeakWidth - thicknessX
     height = xefBeakHeight - thicknessY + overshoot
@@ -515,19 +515,19 @@ rimInnerXefBeak = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| heig
 -- 2 つ重ねたときに重なった部分が太く見えすぎないように、右側を少し細く補正してあります。
 -- 原点は全体の中央にあります。
 partXefHalf :: Given Config => Part
-partXefHalf = partBy rims #.~> (originX &| 0)
+partXefHalf = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimOuterRightNarrowBowl # reflectX
-      rimOuterXefBeak # backward
-      rimCut
-      rimInnerXefBeak
-      rimInnerNarrowBowl # reflectX # backward
-      rimInnerNarrowBowl # rotateHalfTurn
-      rimInnerXefBeak # reflectY # backward
-      rimCut # backward
-      rimOuterXefBeak # reflectY
-      rimOuterRightNarrowBowl # rotateHalfTurn # backward
+    bones = do
+      boneOuterRightNarrowBowl # reflectX
+      boneOuterXefBeak # backward
+      boneCut
+      boneInnerXefBeak
+      boneInnerNarrowBowl # reflectX # backward
+      boneInnerNarrowBowl # rotateHalfTurn
+      boneInnerXefBeak # reflectY # backward
+      boneCut # backward
+      boneOuterXefBeak # reflectY
+      boneOuterRightNarrowBowl # rotateHalfTurn # backward
     originX = -xefHalfVirtualWidth / 2 + narrowBowlCorrection
 
 -- 5 の文字と同じ形を生成します。
@@ -544,8 +544,8 @@ tasWidth :: Given Config => Double
 tasWidth = bowlWidth / 2 + max tasShoulderWidth tasBeakWidth
 
 -- 1 の文字の右上にある部分の外側の曲線を、右端から上端への向きで生成します。
-rimOuterTasBeak :: Given Config => Rim
-rimOuterTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+boneOuterTasBeak :: Given Config => Bone
+boneOuterTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
   where
     width = tasBeakWidth
     height = tasBeakHeight + overshoot
@@ -553,8 +553,8 @@ rimOuterTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| hei
     topCont = width
 
 -- 1 の文字の右上にある部分の内側の曲線を、右端から上端への向きで生成します。
-rimInnerTasBeak :: Given Config => Rim
-rimInnerTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
+boneInnerTasBeak :: Given Config => Bone
+boneInnerTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| height)
   where
     width = tasBeakWidth - thicknessX
     height = tasBeakHeight - thicknessY + overshoot
@@ -562,8 +562,8 @@ rimInnerTasBeak = origin ~> (0 &| rightCont) ~~ (topCont &| 0) <~ (-width &| hei
     topCont = width
 
 -- 1 の文字の右下にある部分の外側の曲線を、上端から下端への向きで生成します。
-rimOuterTasShoulder :: Given Config => Rim
-rimOuterTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
+boneOuterTasShoulder :: Given Config => Bone
+boneOuterTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
   where
     width = tasShoulderWidth
     height = tasCrossbarAltitude + thicknessY / 2 - tasShoulderStraightHeight + overshoot
@@ -571,8 +571,8 @@ rimOuterTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-widt
     bottomCont = width
 
 -- 1 の文字の右下にある部分の内側の曲線を、上端から下端への向きで生成します。
-rimInnerTasShoulder :: Given Config => Rim
-rimInnerTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
+boneInnerTasShoulder :: Given Config => Bone
+boneInnerTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-width &| -height)
   where
     width = tasShoulderWidth - thicknessX
     height = tasCrossbarAltitude - thicknessY / 2 - tasShoulderStraightHeight + overshoot
@@ -580,53 +580,53 @@ rimInnerTasShoulder = origin ~> (0 &| -rightCont) ~~ (bottomCont &| 0) <~ (-widt
     bottomCont = width
 
 -- 1 の文字の右下にある部分に含まれる直線を、上端から下端への向きで生成します。
-rimTasShoulderStraight :: Given Config => Rim
-rimTasShoulderStraight = origin ~~ (0 &| height)
+boneTasShoulderStraight :: Given Config => Bone
+boneTasShoulderStraight = origin ~~ (0 &| height)
   where
     height = tasShoulderStraightHeight
 
 -- 1 の文字の横線以外の部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partTasFrame :: Given Config => Part
-partTasFrame = partBy rims #.~> (originX &| 0)
+partTasFrame = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimOuterBowl # reflectY
-      rimOuterTasShoulder # backward
-      rimTasShoulderStraight
-      rimCut # backward
-      rimTasShoulderStraight # backward
-      rimInnerTasShoulder
-      rimInnerBowl # reflectY # backward
-      rimInnerBowl
-      rimInnerTasBeak # backward
-      rimCut
-      rimOuterTasBeak
-      rimOuterBowl # backward
+    bones = do
+      boneOuterBowl # reflectY
+      boneOuterTasShoulder # backward
+      boneTasShoulderStraight
+      boneCut # backward
+      boneTasShoulderStraight # backward
+      boneInnerTasShoulder
+      boneInnerBowl # reflectY # backward
+      boneInnerBowl
+      boneInnerTasBeak # backward
+      boneCut
+      boneOuterTasBeak
+      boneOuterBowl # backward
     originX = tasWidth / 2
 
 -- 1 の文字の横線の部分の直線を、左端から右端への向きで生成します。
-rimTasCrossbar :: Given Config => Rim
-rimTasCrossbar = origin ~~ (width &| 0)
+boneTasCrossbar :: Given Config => Bone
+boneTasCrossbar = origin ~~ (width &| 0)
   where
     width = bowlWidth / 2 + tasShoulderWidth - thicknessX
 
 -- 文字の書き始めや書き終わりの位置にある垂直に切られた部分を、上端から下端への向きで生成します。
-rimVerticalCut :: Given Config => Rim
-rimVerticalCut = origin ~~ (0 &| -height)
+boneVerticalCut :: Given Config => Bone
+boneVerticalCut = origin ~~ (0 &| -height)
   where
     height = thicknessY
 
 -- 1 の文字の横線の部分を生成します。
 -- 原点は左上の角にあります。
 partTasCrossbar :: Given Config => Part
-partTasCrossbar = partBy rims
+partTasCrossbar = partBy bones
   where
-    rims = do
-      rimVerticalCut
-      rimTasCrossbar
-      rimVerticalCut # backward
-      rimTasCrossbar # backward
+    bones = do
+      boneVerticalCut
+      boneTasCrossbar
+      boneVerticalCut # backward
+      boneTasCrossbar # backward
 
 -- 1 の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
@@ -638,8 +638,8 @@ partTas = parts
       partTasCrossbar # translate (thicknessX / 2 - tasWidth / 2 &| tasCrossbarAltitude - mean / 2 + thicknessY / 2)
 
 -- 3 の文字の左上にある丸い部分の外側の曲線を、左端から上端への向きで生成します。
-rimOuterYusBowl :: Given Config => Rim
-rimOuterYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneOuterYusBowl :: Given Config => Bone
+boneOuterYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = yusWidth / 2
     height = mean / 2 + overshoot
@@ -647,8 +647,8 @@ rimOuterYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| heig
     topCont = width
 
 -- 3 の文字の左上にある丸い部分の内側の曲線を、左端から上端への向きで生成します。
-rimInnerYusBowl :: Given Config => Rim
-rimInnerYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneInnerYusBowl :: Given Config => Bone
+boneInnerYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = yusWidth / 2 - thicknessX
     height = mean / 2 - thicknessY + overshoot
@@ -656,16 +656,16 @@ rimInnerYusBowl = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| heig
     topCont = width
 
 -- 3 の文字の右下にある曲線を、上端から下端への向きで生成します。
-rimYusLeg :: Given Config => Rim
-rimYusLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (-bend &| -height)
+boneYusLeg :: Given Config => Bone
+boneYusLeg = origin ~> (0 &| -leftCont) ~~ zero <~ (-bend &| -height)
   where
     bend = yusLegBend
     height = mean / 2
     leftCont = height * 0.6
 
 -- 3 の文字の左下にある部分の外側の曲線を、左端から下端への向きで生成します。
-rimOuterYusShoulder :: Given Config => Rim
-rimOuterYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
+boneOuterYusShoulder :: Given Config => Bone
+boneOuterYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
   where
     width = yusCrossbarLatitude + thicknessX * yusCrossbarThicknessRatio / 2 - yusShoulderStraightWidth
     height = mean / 2
@@ -673,8 +673,8 @@ rimOuterYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &|
     topCont = width
 
 -- 3 の文字の左下にある部分の内側の曲線を、左端から下端への向きで生成します。
-rimInnerYusShoulder :: Given Config => Rim
-rimInnerYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
+boneInnerYusShoulder :: Given Config => Bone
+boneInnerYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &| -height)
   where
     width = yusCrossbarLatitude + thicknessX * (yusCrossbarThicknessRatio - 2) / 2 - yusShoulderStraightWidth
     height = mean / 2 - thicknessY
@@ -682,53 +682,53 @@ rimInnerYusShoulder = origin ~> (0 &| -leftCont) ~~ (-topCont &| 0) <~ (width &|
     topCont = width
 
 -- 3 の文字の左下にある部分に含まれる直線を、左端から右端への向きで生成します。
-rimYusShoulderStraight :: Given Config => Rim
-rimYusShoulderStraight = origin ~~ (width &| 0)
+boneYusShoulderStraight :: Given Config => Bone
+boneYusShoulderStraight = origin ~~ (width &| 0)
   where
     width = yusShoulderStraightWidth
 
 -- 3 の文字の縦線以外の部分を生成します。
 -- 原点は全体の中央にあるので、回転や反転で変化しません。
 partYusFrame :: Given Config => Part
-partYusFrame = partBy rims #.~> (originX &| 0)
+partYusFrame = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimOuterYusShoulder
-      rimYusShoulderStraight
-      rimVerticalCut # backward
-      rimYusShoulderStraight # backward
-      rimInnerYusShoulder # backward
-      rimInnerYusBowl
-      rimInnerYusBowl # reflectX # backward
-      rimYusLeg
-      rimCut
-      rimYusLeg # backward
-      rimOuterYusBowl # reflectX
-      rimOuterYusBowl # backward
+    bones = do
+      boneOuterYusShoulder
+      boneYusShoulderStraight
+      boneVerticalCut # backward
+      boneYusShoulderStraight # backward
+      boneInnerYusShoulder # backward
+      boneInnerYusBowl
+      boneInnerYusBowl # reflectX # backward
+      boneYusLeg
+      boneCut
+      boneYusLeg # backward
+      boneOuterYusBowl # reflectX
+      boneOuterYusBowl # backward
     originX = yusWidth / 2
 
 -- 3 の文字の縦線の部分の直線を、上端から下端への向きで生成します。
-rimYusCrossbar :: Given Config => Rim
-rimYusCrossbar = origin ~~ (0 &| -height)
+boneYusCrossbar :: Given Config => Bone
+boneYusCrossbar = origin ~~ (0 &| -height)
   where
     height = mean - thicknessY
 
 -- 3 の文字の縦線の部分の水平に切られた部分を、左端から右端への向きで生成します。
-rimYusCrossbarCut :: Given Config => Rim
-rimYusCrossbarCut = origin ~~ (width &| 0)
+boneYusCrossbarCut :: Given Config => Bone
+boneYusCrossbarCut = origin ~~ (width &| 0)
   where
     width = thicknessX * yusCrossbarThicknessRatio
 
 -- 3 の文字と縦線の部分を生成します。
 -- 原点は左上の角にあります。
 partYusCrossbar :: Given Config => Part
-partYusCrossbar = partBy rims
+partYusCrossbar = partBy bones
   where
-    rims = do
-      rimYusCrossbar
-      rimYusCrossbarCut
-      rimYusCrossbar # backward
-      rimYusCrossbarCut # backward
+    bones = do
+      boneYusCrossbar
+      boneYusCrossbarCut
+      boneYusCrossbar # backward
+      boneYusCrossbarCut # backward
 
 -- 3 の文字と同じ形を生成します。
 -- 原点は丸い部分の中央にあるので、回転や反転で変化しません。
@@ -740,37 +740,37 @@ partYus = parts
       partYusCrossbar # translate (yusCrossbarLatitude - yusWidth / 2 - thicknessX * yusCrossbarThicknessRatio / 2 &| mean / 2 - thicknessY / 2)
 
 -- 変音符の右に飛び出るように曲がる曲線の上半分を、下端から上端への向きで生成します。
-rimTransphone :: Given Config => Rim
-rimTransphone = origin ~> zero ~~ (0 &| rightCont) <~ (bend &| -height)
+boneTransphone :: Given Config => Bone
+boneTransphone = origin ~> zero ~~ (0 &| rightCont) <~ (bend &| -height)
   where
     bend = transphoneBend
     height = mean / 2
     rightCont = height * 0.6
 
 -- 変音符の上下にある水平に切られた部分を、左端から右端への向きで生成します。
-rimTransphoneCut :: Given Config => Rim
-rimTransphoneCut = origin ~~ (width &| 0)
+boneTransphoneCut :: Given Config => Bone
+boneTransphoneCut = origin ~~ (width &| 0)
   where
     width = thicknessX * transphoneThicknessRatio
 
 -- 変音符と同じ形を生成します。
 -- 原点は右に飛び出る部分の左中央にあります。
 partTransphone :: Given Config => Part
-partTransphone = partBy rims #.~> (originX &| originY)
+partTransphone = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimTransphone
-      rimTransphone # reflectY # backward
-      rimTransphoneCut
-      rimTransphone # reflectY
-      rimTransphone # backward
-      rimTransphoneCut # backward
+    bones = do
+      boneTransphone
+      boneTransphone # reflectY # backward
+      boneTransphoneCut
+      boneTransphone # reflectY
+      boneTransphone # backward
+      boneTransphoneCut # backward
     originX = transphoneBend
     originY = -mean / 2
   
 -- アキュートアクセントの丸い部分の外側の曲線の半分を、左下端から上端への向きで生成します。
-rimOuterAcute :: Given Config => Rim
-rimOuterAcute = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneOuterAcute :: Given Config => Bone
+boneOuterAcute = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = acuteWidth / 2
     height = acuteHeight
@@ -778,8 +778,8 @@ rimOuterAcute = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height
     topCont = width
     
 -- アキュートアクセントの丸い部分の内側の曲線の半分を、左下端から上端への向きで生成します。
-rimInnerAcute :: Given Config => Rim
-rimInnerAcute = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneInnerAcute :: Given Config => Bone
+boneInnerAcute = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = acuteWidth / 2 - acuteThicknessX
     height = acuteHeight - acuteThicknessY
@@ -787,28 +787,28 @@ rimInnerAcute = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height
     topCont = width
 
 -- アキュートアクセントの下部にある水平に切られた部分を、左端から右端への向きで生成します。
-rimAcuteCut :: Given Config => Rim
-rimAcuteCut = origin ~~ (width &| 0)
+boneAcuteCut :: Given Config => Bone
+boneAcuteCut = origin ~~ (width &| 0)
   where
     width = acuteThicknessX
 
 -- アキュートアクセントと同じ形を生成します。
 -- 原点は下部中央にあります。
 partAcute :: Given Config => Part
-partAcute = partBy rims #.~> (originX &| 0)
+partAcute = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimAcuteCut
-      rimInnerAcute
-      rimInnerAcute # reflectX # backward
-      rimAcuteCut
-      rimOuterAcute # reflectX
-      rimOuterAcute # backward
+    bones = do
+      boneAcuteCut
+      boneInnerAcute
+      boneInnerAcute # reflectX # backward
+      boneAcuteCut
+      boneOuterAcute # reflectX
+      boneOuterAcute # backward
     originX = acuteWidth / 2
 
 -- サーカムフレックスアクセントの外側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
-rimOuterCircumflex :: Given Config => Rim
-rimOuterCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneOuterCircumflex :: Given Config => Bone
+boneOuterCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = circumflexWidth / 2
     height = circumflexHeight / 2
@@ -816,8 +816,8 @@ rimOuterCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| h
     topCont = width
 
 -- サーカムフレックスアクセントの内側の曲線の 4 分の 1 を、左端から上端への向きで生成します。
-rimInnerCircumflex :: Given Config => Rim
-rimInnerCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
+boneInnerCircumflex :: Given Config => Bone
+boneInnerCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| height)
   where
     width = circumflexWidth / 2 - circumflexThicknessX
     height = circumflexHeight / 2 - circumflexThicknessY
@@ -829,66 +829,66 @@ rimInnerCircumflex = origin ~> (0 &| leftCont) ~~ (-topCont &| 0) <~ (width &| h
 partCircumflex :: Given Config => Part
 partCircumflex = unite parts #.~> (originX &| originY)
   where
-    outerRims = do
-      rimOuterCircumflex # reflectY
-      rimOuterCircumflex # rotateHalfTurn # backward
-      rimOuterCircumflex # reflectX
-      rimOuterCircumflex # backward
-    innerRims = do
-      rimInnerCircumflex # reflectY
-      rimInnerCircumflex # rotateHalfTurn # backward
-      rimInnerCircumflex # reflectX
-      rimInnerCircumflex # backward
+    outerBones = do
+      boneOuterCircumflex # reflectY
+      boneOuterCircumflex # rotateHalfTurn # backward
+      boneOuterCircumflex # reflectX
+      boneOuterCircumflex # backward
+    innerBones = do
+      boneInnerCircumflex # reflectY
+      boneInnerCircumflex # rotateHalfTurn # backward
+      boneInnerCircumflex # reflectX
+      boneInnerCircumflex # backward
     parts = do
-      partBy outerRims
-      partBy innerRims # backward # translate (circumflexThicknessX &| 0)
+      partBy outerBones
+      partBy innerBones # backward # translate (circumflexThicknessX &| 0)
     originX = circumflexWidth / 2
     originY = -circumflexHeight / 2
 
 -- デックやパデックなどに含まれる円の曲線を、左端から反時計回りに生成します。
-rimDot :: Given Config => Rim
-rimDot = circle radius # rotateHalfTurn
+boneDot :: Given Config => Bone
+boneDot = circle radius # rotateHalfTurn
   where
     radius = dotWidth / 2
 
 -- デックやパデックなどに含まれる円を生成します。
 -- 原点は円に外接する矩形の左下の角からオーバーシュート分だけ上に移動した位置にあります。
 partDot :: Given Config => Part
-partDot = partBy rims #.~> (0 &| originY)
+partDot = partBy bones #.~> (0 &| originY)
   where
-    rims = do
-      rimDot
+    bones = do
+      boneDot
     originY = -dotWidth / 2 + overshoot
 
 -- カルタックなどに含まれるベースラインより上に浮いた円を生成します。
 -- partDot が返すパーツと形は同じですが、原点の位置が異なります。
 -- 原点は左端にあります。
 partFloatingDot :: Given Config => Part
-partFloatingDot = partBy rims
+partFloatingDot = partBy bones
   where
-    rims = do
-      rimDot
+    bones = do
+      boneDot
 
 -- バデックの棒状の部分の直線を、上端から下端への向きで生成します。
-rimBadekStem :: Given Config => Rim
-rimBadekStem = origin ~~ (0 &| -height)
+boneBadekStem :: Given Config => Bone
+boneBadekStem = origin ~~ (0 &| -height)
   where
     height = ascent - dotWidth - badekGap + overshoot
 
 -- バデックの棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partBadekStem :: Given Config => Part
-partBadekStem = partBy rims
+partBadekStem = partBy bones
   where
-    rims = do
-      rimCut
-      rimBadekStem # backward
-      rimCut # backward
-      rimBadekStem
+    bones = do
+      boneCut
+      boneBadekStem # backward
+      boneCut # backward
+      boneBadekStem
 
 -- パデックの棒状の部分の左側の曲線を、上端から下端への向きで生成します。
-rimLeftPadekStem :: Given Config => Rim
-rimLeftPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
+boneLeftPadekStem :: Given Config => Bone
+boneLeftPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
   where
     bend = padekBend
     height = ascent - dotWidth - badekGap + overshoot
@@ -896,8 +896,8 @@ rimLeftPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -
     bottomCont = height * 0.55
 
 -- パデックの棒状の部分の右側の曲線を、上端から下端への向きで生成します。
-rimRightPadekStem :: Given Config => Rim
-rimRightPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
+boneRightPadekStem :: Given Config => Bone
+boneRightPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| -height)
   where
     bend = padekBend
     height = ascent - dotWidth - badekGap + overshoot
@@ -907,34 +907,34 @@ rimRightPadekStem = origin ~> (0 &| -topCont) ~~ (0 &| bottomCont) <~ (-bend &| 
 -- パデックの棒状の部分を生成します。
 -- 原点は左下の角にあります。
 partPadekStem :: Given Config => Part
-partPadekStem = partBy rims
+partPadekStem = partBy bones
   where
-    rims = do
-      rimCut
-      rimRightPadekStem # backward
-      rimCut # backward
-      rimLeftPadekStem
+    bones = do
+      boneCut
+      boneRightPadekStem # backward
+      boneCut # backward
+      boneLeftPadekStem
 
 -- ノークの棒状の部分の縦の曲線を、上端から下端への向きで生成します。
-rimNokStem :: Given Config => Rim
-rimNokStem = origin ~~ (0 &| -height)
+boneNokStem :: Given Config => Bone
+boneNokStem = origin ~~ (0 &| -height)
   where
     height = nokHeight
 
 -- ノークと同じ形を生成します。
 -- 原点は左上の角にあります。
 partNok :: Given Config => Part
-partNok = partBy rims
+partNok = partBy bones
   where
-    rims = do
-      rimNokStem
-      rimCut
-      rimNokStem # backward
-      rimCut # backward
+    bones = do
+      boneNokStem
+      boneCut
+      boneNokStem # backward
+      boneCut # backward
 
 -- ディカックの棒状の部分の曲線を、上端から下端への向きで生成します。
-rimDikakStem :: Given Config => Rim
-rimDikakStem = origin ~> zero ~~ (0 &| leftCont) <~ (-bend &| -height)
+boneDikakStem :: Given Config => Bone
+boneDikakStem = origin ~> zero ~~ (0 &| leftCont) <~ (-bend &| -height)
   where
     bend = dikakBend
     height = dikakHeight
@@ -943,98 +943,98 @@ rimDikakStem = origin ~> zero ~~ (0 &| leftCont) <~ (-bend &| -height)
 -- ディカックと同じ形を生成します。
 -- 原点は左上の角にあります。
 partDikak :: Given Config => Part
-partDikak = partBy rims
+partDikak = partBy bones
   where
-    rims = do
-      rimDikakStem
-      rimCut
-      rimDikakStem # backward
-      rimCut # backward
+    bones = do
+      boneDikakStem
+      boneCut
+      boneDikakStem # backward
+      boneCut # backward
 
 -- フェークの直線を、左端から右端への向きで生成します。
-rimFekHorizontal :: Given Config => Rim
-rimFekHorizontal = origin ~~ (width &| 0)
+boneFekHorizontal :: Given Config => Bone
+boneFekHorizontal = origin ~~ (width &| 0)
   where
     width = fekWidth
 
 -- フェークと同じ形を生成します。
 -- 原点は左上の角にあります。
 partFek :: Given Config => Part
-partFek = partBy rims
+partFek = partBy bones
   where
-    rims = do
-      rimVerticalCut
-      rimFekHorizontal
-      rimVerticalCut # backward
-      rimFekHorizontal # backward
+    bones = do
+      boneVerticalCut
+      boneFekHorizontal
+      boneVerticalCut # backward
+      boneFekHorizontal # backward
 
 -- フォーハックの直線を、左端から右端への向きで生成します。
-rimFohakHorizontal :: Given Config => Rim
-rimFohakHorizontal = origin ~~ (width &| 0)
+boneFohakHorizontal :: Given Config => Bone
+boneFohakHorizontal = origin ~~ (width &| 0)
   where
     width = fohakWidth
 
 -- フォーハックと同じ形を生成します。
 -- 原点は左上の角にあります。
 partFohak :: Given Config => Part
-partFohak = partBy rims
+partFohak = partBy bones
   where
-    rims = do
-      rimVerticalCut
-      rimFohakHorizontal
-      rimVerticalCut # backward
-      rimFohakHorizontal # backward
+    bones = do
+      boneVerticalCut
+      boneFohakHorizontal
+      boneVerticalCut # backward
+      boneFohakHorizontal # backward
 
 -- ダッシュの直線を、左端から右端への向きで生成します。
-rimDashHorizontal :: Given Config => Rim
-rimDashHorizontal = origin ~~ (width &| 0)
+boneDashHorizontal :: Given Config => Bone
+boneDashHorizontal = origin ~~ (width &| 0)
   where
     width = dashWidth
 
 -- ダッシュと同じ形を生成します。
 -- 原点は左上の角にあります。
 partDash :: Given Config => Part
-partDash = partBy rims
+partDash = partBy bones
   where
-    rims = do
-      rimVerticalCut
-      rimDashHorizontal
-      rimVerticalCut # backward
-      rimDashHorizontal # backward
+    bones = do
+      boneVerticalCut
+      boneDashHorizontal
+      boneVerticalCut # backward
+      boneDashHorizontal # backward
 
 -- ラクットの縦向きの棒状の部分の直線を、上端から下端への向きで生成します。
-rimRakutVertical :: Given Config => Rim
-rimRakutVertical = origin ~~ (0 &| -height)
+boneRakutVertical :: Given Config => Bone
+boneRakutVertical = origin ~~ (0 &| -height)
   where
     height = rakutHeight
 
 -- ラクットの横向きの棒状の部分の直線を、左端から右端への向きで生成します。
-rimRakutHorizontal :: Given Config => Rim
-rimRakutHorizontal = origin ~~ (width &| 0)
+boneRakutHorizontal :: Given Config => Bone
+boneRakutHorizontal = origin ~~ (width &| 0)
   where
     width = rakutWidth
 
 -- ラクットの縦向きの棒状の部分を生成します。
 -- 原点は左上の角にあります。
 partRakutVertical :: Given Config => Part
-partRakutVertical = partBy rims
+partRakutVertical = partBy bones
   where
-    rims = do
-      rimRakutVertical
-      rimCut
-      rimRakutVertical # backward
-      rimCut # backward
+    bones = do
+      boneRakutVertical
+      boneCut
+      boneRakutVertical # backward
+      boneCut # backward
 
 -- ラクットの横向きの棒状の部分を生成します。
 -- 原点は左上の角にあります。
 partRakutHorizontal :: Given Config => Part
-partRakutHorizontal = partBy rims
+partRakutHorizontal = partBy bones
   where
-    rims = do
-      rimVerticalCut
-      rimRakutHorizontal
-      rimVerticalCut # backward
-      rimRakutHorizontal # backward
+    bones = do
+      boneVerticalCut
+      boneRakutHorizontal
+      boneVerticalCut # backward
+      boneRakutHorizontal # backward
 
 -- 開きラクットと同じ形を生成します。
 -- 原点は左上の角にあります。

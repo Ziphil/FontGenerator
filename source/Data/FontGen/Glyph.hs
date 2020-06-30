@@ -3,8 +3,8 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 
 module Data.FontGen.Glyph
-  ( Rim
-  , rimBy
+  ( Bone
+  , boneBy
   , Part
   , partBy
   , unite
@@ -26,22 +26,22 @@ import Diagrams.Backend.SVG
 import Diagrams.Prelude
 
 
-type RimTrail = Trail V2 Double
-type RimHolder = [RimTrail]
-type Rim = MonoidState RimHolder ()
+type BoneTrail = Trail V2 Double
+type BoneHolder = [BoneTrail]
+type Bone = MonoidState BoneHolder ()
 
--- リムからリムを生成します。
--- リムを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
-rimBy :: Rim -> Rim
-rimBy = id
+-- ボーンからボーンを生成します。
+-- ボーンを返す多相関数を do 構文内で使った場合に、型変数の曖昧性を排除するのに利用できます。
+boneBy :: Bone -> Bone
+boneBy = id
 
 type PartPath = Path V2 Double
 type PartHolder = [PartPath]
 type Part = MonoidState PartHolder ()
 
--- リムのリストから 1 つのパスから成るパーツを生成します。
--- 生成の際に自動的にパスを閉じるので、リムの始点と終点は同じ点であるようにしてください。
-partBy :: Rim -> Part
+-- ボーンのリストから 1 つのパスから成るパーツを生成します。
+-- 生成の際に自動的にパスを閉じるので、ボーンの始点と終点は同じ点であるようにしてください。
+partBy :: Bone -> Part
 partBy = add . pure . pathFromTrail . closeTrail . mconcat . execState'
 
 -- 複数のパーツを結合して 1 つのパスから成るパーツにします。

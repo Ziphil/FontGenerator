@@ -53,115 +53,115 @@ import Ziphil.FontGen.Gilit.Value
 obliqueAngle :: Given Config => Angle Double
 obliqueAngle = atan2A triangleHeight (triangleWidth / 2)
 
-rimCut :: Given Config => Rim
-rimCut = origin ~~ (x &| y)
+boneCut :: Given Config => Bone
+boneCut = origin ~~ (x &| y)
   where
     x = thickness / (sinA obliqueAngle * 2)
     y = thickness / (cosA obliqueAngle * 2)
 
-rimHorizontalCut :: Given Config => Rim
-rimHorizontalCut = origin ~~ (x &| 0)
+boneHorizontalCut :: Given Config => Bone
+boneHorizontalCut = origin ~~ (x &| 0)
   where
     x = thickness / sinA obliqueAngle
 
-rimRightLeftOblique :: Given Config => Rim
-rimRightLeftOblique = origin ~~ (x &| y)
+boneRightLeftOblique :: Given Config => Bone
+boneRightLeftOblique = origin ~~ (x &| y)
   where
     x = y / tanA obliqueAngle
     y = triangleHeight + thickness / 2
 
-rimLeftLeftOblique :: Given Config => Rim
-rimLeftLeftOblique = origin ~~ (x &| y)
+boneLeftLeftOblique :: Given Config => Bone
+boneLeftLeftOblique = origin ~~ (x &| y)
   where
     x = y / tanA obliqueAngle
     y = -triangleHeight - thickness / (cosA obliqueAngle * 2) - thickness / 2
 
 partLeftOblique :: Given Config => Part
-partLeftOblique = partBy rims #.~> (originX &| originY)
+partLeftOblique = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimHorizontalCut
-      rimRightLeftOblique
-      rimCut # reflectY # backward
-      rimLeftLeftOblique
+    bones = do
+      boneHorizontalCut
+      boneRightLeftOblique
+      boneCut # reflectY # backward
+      boneLeftLeftOblique
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
 partRightOblique :: Given Config => Part
 partRightOblique = partLeftOblique # reflectX'
 
-rimRightLeftShortOblique :: Given Config => Rim
-rimRightLeftShortOblique = origin ~~ (x &| y)
+boneRightLeftShortOblique :: Given Config => Bone
+boneRightLeftShortOblique = origin ~~ (x &| y)
   where
     x = y / tanA obliqueAngle
     y = triangleHeight - diamondGap * sinA obliqueAngle + thickness / 2 - thickness / (cosA obliqueAngle * 2)
 
-rimLeftLeftShortOblique :: Given Config => Rim
-rimLeftLeftShortOblique = origin ~~ (x &| y)
+boneLeftLeftShortOblique :: Given Config => Bone
+boneLeftLeftShortOblique = origin ~~ (x &| y)
   where
     x = y / tanA obliqueAngle
     y = -triangleHeight + diamondGap * sinA obliqueAngle - thickness / 2
 
 partLeftShortOblique :: Given Config => Part
-partLeftShortOblique = partBy rims #.~> (originX &| originY)
+partLeftShortOblique = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimHorizontalCut
-      rimRightLeftShortOblique
-      rimCut # reflectY # backward
-      rimLeftLeftShortOblique
+    bones = do
+      boneHorizontalCut
+      boneRightLeftShortOblique
+      boneCut # reflectY # backward
+      boneLeftLeftShortOblique
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
 partRightShortOblique :: Given Config => Part
 partRightShortOblique = partLeftShortOblique # reflectX'
 
-rimHorizontalChippedCut :: Given Config => Rim
-rimHorizontalChippedCut = origin ~~ (x &| 0)
+boneHorizontalChippedCut :: Given Config => Bone
+boneHorizontalChippedCut = origin ~~ (x &| 0)
   where
     x = thickness / sinA obliqueAngle - thickness / tanA obliqueAngle
 
-rimLeftLeftChippedOblique :: Given Config => Rim
-rimLeftLeftChippedOblique = origin ~~ (x &| y)
+boneLeftLeftChippedOblique :: Given Config => Bone
+boneLeftLeftChippedOblique = origin ~~ (x &| y)
   where
     x = y / tanA obliqueAngle
     y = -triangleHeight - thickness / (cosA obliqueAngle * 2)
 
-rimChip :: Given Config => Rim
-rimChip = origin ~~ (x &| y)
+boneChip :: Given Config => Bone
+boneChip = origin ~~ (x &| y)
   where
     x = -y / tanA obliqueAngle
     y = -thickness / 2
 
 partLeftChippedOblique :: Given Config => Part
-partLeftChippedOblique = partBy rims #.~> (originX &| 0) 
+partLeftChippedOblique = partBy bones #.~> (originX &| 0) 
   where
-    rims = do
-      rimChip
-      rimHorizontalChippedCut
-      rimRightLeftOblique
-      rimCut # reflectY # backward
-      rimLeftLeftChippedOblique
+    bones = do
+      boneChip
+      boneHorizontalChippedCut
+      boneRightLeftOblique
+      boneCut # reflectY # backward
+      boneLeftLeftChippedOblique
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedOblique :: Given Config => Part
 partRightChippedOblique = partLeftChippedOblique # reflectX'
 
-rimLeftLeftCutOblique :: Given Config => Rim
-rimLeftLeftCutOblique = origin ~~ (x &| y)
+boneLeftLeftCutOblique :: Given Config => Bone
+boneLeftLeftCutOblique = origin ~~ (x &| y)
   where
     x = y / tanA obliqueAngle
     y = -triangleHeight - thickness
 
 partLeftCutOblique :: Given Config => Part
-partLeftCutOblique = partBy rims #.~> (originX &| originY)
+partLeftCutOblique = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimHorizontalCut
-      rimRightLeftOblique
-      rimChip # rotateHalfTurn
-      rimHorizontalChippedCut # backward
-      rimLeftLeftCutOblique
+    bones = do
+      boneHorizontalCut
+      boneRightLeftOblique
+      boneChip # rotateHalfTurn
+      boneHorizontalChippedCut # backward
+      boneLeftLeftCutOblique
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
@@ -169,265 +169,265 @@ partRightCutOblique :: Given Config => Part
 partRightCutOblique = partLeftCutOblique # reflectX'
 
 partLeftCenterOblique :: Given Config => Part
-partLeftCenterOblique = partBy rims #.~> (originX &| 0)
+partLeftCenterOblique = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimChip
-      rimHorizontalChippedCut
-      rimRightLeftOblique
-      rimChip # rotateHalfTurn
-      rimHorizontalChippedCut # backward
-      rimRightLeftOblique # backward
+    bones = do
+      boneChip
+      boneHorizontalChippedCut
+      boneRightLeftOblique
+      boneChip # rotateHalfTurn
+      boneHorizontalChippedCut # backward
+      boneRightLeftOblique # backward
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightCenterOblique :: Given Config => Part
 partRightCenterOblique = partLeftCenterOblique # reflectX'
 
-rimBottomBase :: Given Config => Rim
-rimBottomBase = origin ~~ (x &| 0)
+boneBottomBase :: Given Config => Bone
+boneBottomBase = origin ~~ (x &| 0)
   where
     x = triangleWidth + thickness / sinA obliqueAngle + thickness / tanA obliqueAngle
 
-rimRightBase :: Given Config => Rim
-rimRightBase = origin ~~ (x &| y)
+boneRightBase :: Given Config => Bone
+boneRightBase = origin ~~ (x &| y)
   where
     x = -thickness / tanA obliqueAngle
     y = thickness
 
-rimTopBase :: Given Config => Rim
-rimTopBase = origin ~~ (x &| 0)
+boneTopBase :: Given Config => Bone
+boneTopBase = origin ~~ (x &| 0)
   where
     x = -triangleWidth - thickness / sinA obliqueAngle + thickness / tanA obliqueAngle
 
-rimLeftBase :: Given Config => Rim
-rimLeftBase = origin ~~ (x &| y)
+boneLeftBase :: Given Config => Bone
+boneLeftBase = origin ~~ (x &| y)
   where
     x = -thickness / tanA obliqueAngle
     y = -thickness
 
 partBase :: Given Config => Part
-partBase = partBy rims #.~> (originX &| originY)
+partBase = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimBottomBase
-      rimRightBase
-      rimTopBase
-      rimLeftBase
+    bones = do
+      boneBottomBase
+      boneRightBase
+      boneTopBase
+      boneLeftBase
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
-rimBottomLeftChippedBase :: Given Config => Rim
-rimBottomLeftChippedBase = origin ~~ (x &| 0)
+boneBottomLeftChippedBase :: Given Config => Bone
+boneBottomLeftChippedBase = origin ~~ (x &| 0)
   where
     x = triangleWidth + thickness / sinA obliqueAngle
 
 partLeftChippedBase :: Given Config => Part
-partLeftChippedBase = partBy rims #.~> (originX &| 0)
+partLeftChippedBase = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimChip
-      rimBottomLeftChippedBase
-      rimRightBase
-      rimTopBase
-      rimChip # reflectY # backward
+    bones = do
+      boneChip
+      boneBottomLeftChippedBase
+      boneRightBase
+      boneTopBase
+      boneChip # reflectY # backward
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedBase :: Given Config => Part
 partRightChippedBase = partLeftChippedBase # reflectX'
 
 partChippedBase :: Given Config => Part
-partChippedBase = partBy rims #.~> (originX &| 0)
+partChippedBase = partBy bones #.~> (originX &| 0)
   where
-    rims = do
-      rimChip
-      rimTopBase # backward
-      rimChip # reflectX # backward
-      rimChip # rotateHalfTurn
-      rimTopBase
-      rimChip # reflectY # backward
+    bones = do
+      boneChip
+      boneTopBase # backward
+      boneChip # reflectX # backward
+      boneChip # rotateHalfTurn
+      boneTopBase
+      boneChip # reflectY # backward
     originX = thickness / (sinA obliqueAngle * 2)
 
-rimRightLeftAscender :: Given Config => Rim
-rimRightLeftAscender = origin ~~ (x &| y)
+boneRightLeftAscender :: Given Config => Bone
+boneRightLeftAscender = origin ~~ (x &| y)
   where
     x = -y / tanA obliqueAngle
     y = ascenderHeight + thickness / (cosA obliqueAngle * 4)
 
 partLeftAscender :: Given Config => Part
-partLeftAscender = partBy rims #.~> (originX &| originY)
+partLeftAscender = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimCut
-      rimRightLeftAscender
-      rimCut # backward
-      rimRightLeftAscender # backward
+    bones = do
+      boneCut
+      boneRightLeftAscender
+      boneCut # backward
+      boneRightLeftAscender # backward
     originX = -triangleWidth / 2
     originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
 
 partRightAscender :: Given Config => Part
 partRightAscender = partLeftAscender # reflectX'
 
-rimLeftLeftDescender :: Given Config => Rim
-rimLeftLeftDescender = origin ~~ (x &| y)
+boneLeftLeftDescender :: Given Config => Bone
+boneLeftLeftDescender = origin ~~ (x &| y)
   where
     x = -y / tanA obliqueAngle
     y = -ascenderHeight - thickness / 2 - thickness / (cosA obliqueAngle * 4)
 
-rimRightLeftDescender :: Given Config => Rim
-rimRightLeftDescender = origin ~~ (x &| y)
+boneRightLeftDescender :: Given Config => Bone
+boneRightLeftDescender = origin ~~ (x &| y)
   where
     x = -y / tanA obliqueAngle
     y = ascenderHeight + thickness / 2 - thickness / (cosA obliqueAngle * 4)
 
 partLeftDescender :: Given Config => Part
-partLeftDescender = partBy rims #.~> (originX &| originY)
+partLeftDescender = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimLeftLeftDescender
-      rimCut
-      rimRightLeftDescender
-      rimHorizontalCut # backward
+    bones = do
+      boneLeftLeftDescender
+      boneCut
+      boneRightLeftDescender
+      boneHorizontalCut # backward
     originX = thickness / (sinA obliqueAngle * 2) + thickness / (tanA obliqueAngle * 2)
     originY = -thickness / 2
 
 partRightDescender :: Given Config => Part
 partRightDescender = partLeftDescender # reflectX'
 
-rimLeftLeftChippedDescender :: Given Config => Rim
-rimLeftLeftChippedDescender = origin ~~ (x &| y)
+boneLeftLeftChippedDescender :: Given Config => Bone
+boneLeftLeftChippedDescender = origin ~~ (x &| y)
   where
     x = -y / tanA obliqueAngle
     y = -ascenderHeight - thickness / (cosA obliqueAngle * 4)
 
 partLeftChippedDescender :: Given Config => Part
-partLeftChippedDescender = partBy rims #.~> (originX &| 0)
+partLeftChippedDescender = partBy bones #.~> (originX &| 0)
   where
-    rims = do 
-      rimLeftLeftChippedDescender
-      rimCut
-      rimRightLeftDescender
-      rimHorizontalChippedCut # backward
-      rimChip
+    bones = do 
+      boneLeftLeftChippedDescender
+      boneCut
+      boneRightLeftDescender
+      boneHorizontalChippedCut # backward
+      boneChip
     originX = thickness / (sinA obliqueAngle * 2)
 
 partRightChippedDescender :: Given Config => Part
 partRightChippedDescender = partLeftChippedDescender # reflectX'
 
 partDiamond :: Given Config => Part
-partDiamond = partBy rims #.~> (originX &| originY)
+partDiamond = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimCut
-      rimCut # reflectY # backward
-      rimCut # rotateHalfTurn
-      rimCut # reflectX # backward
+    bones = do
+      boneCut
+      boneCut # reflectY # backward
+      boneCut # rotateHalfTurn
+      boneCut # reflectX # backward
     originX = -triangleWidth / 2
     originY = -triangleHeight + thickness / (cosA obliqueAngle * 2)
 
 horizontalTransphoneGap :: Given Config => Double
 horizontalTransphoneGap = transphoneGap / sinA obliqueAngle
 
-rimRightTransphone :: Given Config => Rim
-rimRightTransphone = origin ~~ (x &| y)
+boneRightTransphone :: Given Config => Bone
+boneRightTransphone = origin ~~ (x &| y)
   where
     x = -y / tanA obliqueAngle
     y = triangleHeight + thickness
 
 partTransphone :: Given Config => Part
-partTransphone = partBy rims #.~> (originX &| originY)
+partTransphone = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimHorizontalCut
-      rimRightTransphone
-      rimHorizontalCut # backward
-      rimRightTransphone # backward
+    bones = do
+      boneHorizontalCut
+      boneRightTransphone
+      boneHorizontalCut # backward
+      boneRightTransphone # backward
     originX = -triangleWidth - horizontalTransphoneGap - thickness / (sinA obliqueAngle * 2) - thickness / (tanA obliqueAngle * 2)
     originY = thickness / 2
 
 overshoot :: Given Config => Double
 overshoot = thickness / (cosA obliqueAngle * 2) - thickness / 2
 
-rimUpperAcuteCut :: Given Config => Rim
-rimUpperAcuteCut = origin ~~ (x &| y)
+boneUpperAcuteCut :: Given Config => Bone
+boneUpperAcuteCut = origin ~~ (x &| y)
   where
     x = thickness * acuteRatio / (sinA obliqueAngle * 2)
     y = thickness * acuteRatio / (cosA obliqueAngle * 2)
 
-rimUpperAcuteHorizontalCut :: Given Config => Rim
-rimUpperAcuteHorizontalCut = origin ~~ (x &| 0)
+boneUpperAcuteHorizontalCut :: Given Config => Bone
+boneUpperAcuteHorizontalCut = origin ~~ (x &| 0)
   where
     x = thickness * acuteRatio / sinA obliqueAngle
 
 partUpperAcute :: Given Config => Part
-partUpperAcute = partBy rims #.~> (originX &| originY)
+partUpperAcute = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimUpperAcuteCut # backward
-      rimUpperAcuteHorizontalCut
-      rimUpperAcuteCut # reflectX
+    bones = do
+      boneUpperAcuteCut # backward
+      boneUpperAcuteHorizontalCut
+      boneUpperAcuteCut # reflectX
     originX = -triangleWidth / 2
     originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) - thickness * acuteRatio / (cosA obliqueAngle * 2)
 
 partUpperGrave :: Given Config => Part
-partUpperGrave = partBy rims #.~> (originX &| originY)
+partUpperGrave = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimUpperAcuteCut
-      rimUpperAcuteHorizontalCut # backward
-      rimUpperAcuteCut # reflectX # backward
+    bones = do
+      boneUpperAcuteCut
+      boneUpperAcuteHorizontalCut # backward
+      boneUpperAcuteCut # reflectX # backward
     originX = -triangleWidth / 2
     originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) + overshoot * diacriticOvershootRatio
 
 partUpperCircumflex :: Given Config => Part
-partUpperCircumflex = partBy rims #.~> (originX &| originY)
+partUpperCircumflex = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimCut
-      rimCut # reflectY # backward
-      rimCut # rotateHalfTurn
-      rimCut # reflectX # backward
+    bones = do
+      boneCut
+      boneCut # reflectY # backward
+      boneCut # rotateHalfTurn
+      boneCut # reflectX # backward
     originX = -triangleWidth / 2
     originY = -triangleHeight - diacriticGap - thickness / (cosA obliqueAngle * 2) + overshoot * diacriticOvershootRatio
 
 partLowerAcute :: Given Config => Part
-partLowerAcute = partBy rims #.~> (originX &| originY)
+partLowerAcute = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimUpperAcuteCut
-      rimUpperAcuteHorizontalCut # backward
-      rimUpperAcuteCut # reflectX # backward
+    bones = do
+      boneUpperAcuteCut
+      boneUpperAcuteHorizontalCut # backward
+      boneUpperAcuteCut # reflectX # backward
     originX = -triangleWidth / 2
     originY = diacriticGap + thickness / 2 + thickness * acuteRatio / (cosA obliqueAngle * 2)
 
 partLowerGrave :: Given Config => Part
-partLowerGrave = partBy rims #.~> (originX &| originY)
+partLowerGrave = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimUpperAcuteCut # backward
-      rimUpperAcuteHorizontalCut
-      rimUpperAcuteCut # reflectX
+    bones = do
+      boneUpperAcuteCut # backward
+      boneUpperAcuteHorizontalCut
+      boneUpperAcuteCut # reflectX
     originX = -triangleWidth / 2
     originY = diacriticGap + thickness / 2 - overshoot * diacriticOvershootRatio
 
 partLowerCircumflex :: Given Config => Part
-partLowerCircumflex = partBy rims #.~> (originX &| originY)
+partLowerCircumflex = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimCut
-      rimCut # reflectY # backward
-      rimCut # rotateHalfTurn
-      rimCut # reflectX # backward
+    bones = do
+      boneCut
+      boneCut # reflectY # backward
+      boneCut # rotateHalfTurn
+      boneCut # reflectX # backward
     originX = -triangleWidth / 2
     originY = diacriticGap + thickness / 2 + thickness / cosA obliqueAngle - overshoot * diacriticOvershootRatio
 
 partDot :: Given Config => Part
-partDot = partBy rims #.~> (originX &| originY)
+partDot = partBy bones #.~> (originX &| originY)
   where
-    rims = do
-      rimCut
-      rimCut # reflectY # backward
-      rimCut # rotateHalfTurn
-      rimCut # reflectX # backward
+    bones = do
+      boneCut
+      boneCut # reflectY # backward
+      boneCut # rotateHalfTurn
+      boneCut # reflectX # backward
     originX = -triangleWidth / 4
     originY = -triangleHeight / 2 + thickness / (cosA obliqueAngle * 2)
 
